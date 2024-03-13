@@ -3,6 +3,7 @@ import React from 'react';
 import {atom, useAtom} from 'jotai';
 import {atomWithQuery} from 'jotai-tanstack-query';
 import {useFlipper} from '@react-navigation/devtools';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const idAtom = atom(1);
 const userAtom = atomWithQuery(get => ({
   queryKey: ['users', get(idAtom)],
@@ -17,7 +18,10 @@ const App = () => {
   if (isError) return <Text>Error</Text>;
   return (
     <View>
-      <Text>{JSON.stringify(data, null, 2)}</Text>
+      <Text style={{fontFamily: 'Raleway-Bold'}}>
+        {JSON.stringify(data, null, 2)}
+      </Text>
+      <AntDesign name="arrowright" />
     </View>
   );
 };
