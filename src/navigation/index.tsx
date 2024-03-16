@@ -25,6 +25,7 @@ const AppNavigation = () => {
           headerShown: false,
           statusBarColor: 'transparent',
           statusBarStyle: 'dark',
+          statusBarTranslucent: true,
         }}>
         <Stack.Screen
           name="SplashScreen"

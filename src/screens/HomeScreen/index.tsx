@@ -3,6 +3,8 @@ import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import {navigationRef} from '@navigation';
+import {AppButton, AppTextInput} from '@components';
+import {s} from '@utils/config';
 type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
 const HomeScreen = () => {
   return (
@@ -70,6 +72,8 @@ const HomeScreen = () => {
           Navigation to List Exam
         </Text>
       </TouchableOpacity>
+      <AppButton label="AA" width={s(320)} />
+      <AppTextInput />
     </View>
   );
 };

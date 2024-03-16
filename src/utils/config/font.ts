@@ -12,6 +12,7 @@ export const FONT_FAMILY = {
 };
 
 type TFontStyle = {
+  XXL: number;
   XL: number;
   L: number;
   M: number;
@@ -24,7 +25,8 @@ type TFontStyle = {
 };
 
 const SIZE: TFontStyle = {
-  XL: fontScaleRatio(mvs(24)),
+  XXL: fontScaleRatio(mvs(24)),
+  XL: fontScaleRatio(mvs(20)),
   L: fontScaleRatio(mvs(16)),
   M: fontScaleRatio(mvs(14)),
   S: fontScaleRatio(mvs(13)),
@@ -75,9 +77,9 @@ export const FONT = {
   },
   title: {
     M: fontPropertiesGenerator(FONT_FAMILY.bold, SIZE.M),
-    XL: {
-      bold: fontPropertiesGenerator(FONT_FAMILY.bold, SIZE.XL),
-      semiBold: fontPropertiesGenerator(FONT_FAMILY.semibold, SIZE.XL),
+    XXL: {
+      bold: fontPropertiesGenerator(FONT_FAMILY.bold, SIZE.XXL),
+      semiBold: fontPropertiesGenerator(FONT_FAMILY.semibold, SIZE.XXL),
     },
     h1: fontPropertiesGenerator(FONT_FAMILY.bold, SIZE.h1),
   },
