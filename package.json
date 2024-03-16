@@ -19,6 +19,7 @@
     "jotai-tanstack-query": "^0.8.5",
     "react": "18.2.0",
     "react-native": "0.72.9",
+    "react-native-bootsplash": "^5.4.1",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.15.0",
     "react-native-mmkv": "^2.12.1",
