@@ -2,15 +2,16 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
+import {navigationRef} from '@navigation';
 type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
-const HomeScreen = ({navigation}: Props) => {
+const HomeScreen = () => {
   return (
     <View
       style={{
         gap: 30,
       }}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ChatBox')}
+        onPress={() => navigationRef.navigate('ChatBox')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,
@@ -25,7 +26,7 @@ const HomeScreen = ({navigation}: Props) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('News')}
+        onPress={() => navigationRef.navigate('News')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,
@@ -40,7 +41,7 @@ const HomeScreen = ({navigation}: Props) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ListResult')}
+        onPress={() => navigationRef.navigate('ListResult')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,
@@ -55,7 +56,7 @@ const HomeScreen = ({navigation}: Props) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ListExam')}
+        onPress={() => navigationRef.navigate('ListExam')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,

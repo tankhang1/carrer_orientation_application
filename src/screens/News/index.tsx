@@ -2,15 +2,16 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
+import {navigationRef} from '@navigation';
 type Props = NativeStackScreenProps<TRootStackNav, 'News'>;
-const News = ({navigation}: Props) => {
+const News = () => {
   return (
     <View
       style={{
         gap: 20,
       }}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('NewsDetail1')}
+        onPress={() => navigationRef.navigate('NewsDetail1')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,
@@ -25,7 +26,7 @@ const News = ({navigation}: Props) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('NewsDetail2')}
+        onPress={() => navigationRef.navigate('NewsDetail2')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,

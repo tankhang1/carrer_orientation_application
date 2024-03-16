@@ -2,12 +2,14 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
+import {navigationRef} from '@navigation';
 type Props = NativeStackScreenProps<TRootStackNav, 'ExamQuestion'>;
-const ExamQuestion = ({navigation}: Props) => {
+
+const ExamQuestion = () => {
   return (
     <View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('UploadResult')}
+        onPress={() => navigationRef.navigate('UploadResult')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,

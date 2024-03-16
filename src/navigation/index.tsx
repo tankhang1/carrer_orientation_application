@@ -14,11 +14,18 @@ import Chatbox from '@screens/Chatbox';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import News from '@screens/News';
 import NewsDetail2 from '@screens/NewsDetail2';
+import {createNavigationContainerRef} from '@react-navigation/native';
 const Stack = createNativeStackNavigator<TRootStackNav>();
+export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          statusBarColor: 'transparent',
+          statusBarStyle: 'dark',
+        }}>
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}></Stack.Screen>

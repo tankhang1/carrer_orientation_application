@@ -2,12 +2,13 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
+import {navigationRef} from '@navigation';
 type Props = NativeStackScreenProps<TRootStackNav, 'SplashScreen'>;
-const SplashScreen = ({navigation}: Props) => {
+const SplashScreen = () => {
   return (
     <View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('HomeScreen')}
+        onPress={() => navigationRef.navigate('HomeScreen')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,
