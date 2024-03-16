@@ -46,7 +46,7 @@ type TAppTextInput = {
  * @augments Partial<import('react-native').TextInputProps>
  */
 
-const AppTextInput: React.FC<TAppTextInput> = ({
+const AppTextInput = ({
   width,
   height,
   outStyle,
@@ -61,7 +61,7 @@ const AppTextInput: React.FC<TAppTextInput> = ({
   onChangeText,
   placeholder = 'Nhập thông tin',
   ...rest
-}) => {
+}: TAppTextInput) => {
   const containerInitStyle = StyleSheet.flatten([
     styles.container,
     width && {width},
@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
     ...FONT.content.M.regular,
   },
 });
-export default memo(AppTextInput);
+export default AppTextInput;

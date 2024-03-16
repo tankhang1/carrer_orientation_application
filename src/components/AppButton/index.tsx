@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
   },
 });
-export default memo(AppButton);
+export default AppButton;

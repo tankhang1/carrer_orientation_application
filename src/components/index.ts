@@ -1,3 +1,4 @@
 import AppButton from './AppButton';
 import AppTextInput from './AppTextInput';
-export {AppButton, AppTextInput};
+import AppCard from './AppCard';
+export {AppButton, AppTextInput, AppCard};
