@@ -1,22 +1,8 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  Button,
-} from 'react-native';
-import React, {
-  useMemo,
-  useImperativeHandle,
-  forwardRef,
-  useRef,
-  useEffect,
-} from 'react';
+import {StyleSheet, FlatList} from 'react-native';
+import React, {useMemo, useImperativeHandle, forwardRef, useRef} from 'react';
 import {s, width} from '@utils/config';
 import Dot from './Dot';
 import {SharedValue} from 'react-native-reanimated';
-import Animated from 'react-native-reanimated';
 type TIndicator = {
   length?: number;
   animatedValue: SharedValue<number>;

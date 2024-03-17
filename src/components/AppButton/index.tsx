@@ -9,11 +9,11 @@ import {
   InteractionManager,
   TouchableOpacity,
 } from 'react-native';
-import React, {memo} from 'react';
+import React from 'react';
 import {COLORS} from '@utils/config/color';
 import {FONT} from '@utils/config/font';
 import {s} from '@utils/config/responsive';
-type TType = 'fill' | 'outline' | 'transparent';
+export type TType = 'fill' | 'outline' | 'transparent';
 
 const BUTTON_BASE_STYLE = {
   fill: {

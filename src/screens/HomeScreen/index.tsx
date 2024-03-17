@@ -1,38 +1,68 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import {navigationRef} from '@navigation';
-import {AppButton, AppCard, AppTextInput} from '@components';
-import {s} from '@utils/config';
-import AppImage from '@components/AppImage';
-import AppNoData from '@components/AppNoData';
-import {Carousel} from './components';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {COLORS, FONT, s, vs} from '@utils/config';
+import {Carousel, ButtonFunction, NewsCard, HistoryCard} from './components';
+import AppView from '@components/AppView';
+import {AppButton} from '@components';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AppRoundedButton from '@components/AppRoundedButton';
 type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
+
 const HomeScreen = () => {
+  const BUTTONS = [
+    {icon: 'pencil', title: 'Kiểm tra', onPress: () => {}},
+    {icon: 'history', title: 'Lịch sử', onPress: () => {}},
+    {icon: 'newspaper-o', title: 'Tin tức', onPress: () => {}},
+  ];
   return (
-    <View
-      style={{
-        gap: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-      }}>
-      <Text>Home Screen</Text>
-      {/* <Carousel /> */}
-      <AppCard
-        imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXCm4MjY9Hr8BBGrOMaDjZGCru4ge0Se0OAw&usqp=CAU"
-        title="Nhiều trường đại học công bố phương thức tuyển sinh"
-        subTitle="17/3/2024"
-      />
-      <AppCard
-        imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXCm4MjY9Hr8BBGrOMaDjZGCru4ge0Se0OAw&usqp=CAU"
-        title="Nhiều trường đại học công bố phương thức tuyển sinh"
-        subTitle="17/3/2024"
-        type="large"
-      />
-    </View>
+    <>
+      <AppView>
+        <View style={{gap: vs(10)}}>
+          <Text style={styles.title}>
+            Tư vấn hướng nghiệp và chọn ngành cho học sinh THPT
+          </Text>
+          <Carousel />
+          <ButtonFunction buttons={BUTTONS} />
+          <NewsCard />
+          <HistoryCard />
+        </View>
+      </AppView>
+      <View style={styles.floatingBtnContainer}>
+        <AppRoundedButton type="fill" style={styles.floatingBtn} shadow={true}>
+          <Ionicons
+            name="chatbubble-ellipses-outline"
+            color={COLORS.white}
+            size={s(20)}
+          />
+        </AppRoundedButton>
+      </View>
+    </>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  title: {
+    textAlign: 'center',
+    paddingHorizontal: s(27),
+    ...FONT.content.M.bold,
+    marginTop: s(10),
+  },
+  floatingBtnContainer: {
+    position: 'absolute',
+    zIndex: 999,
+    right: s(30),
+    bottom: vs(20),
+  },
+  floatingBtn: {
+    width: s(60),
+    height: s(60),
+  },
+});
 export default HomeScreen;

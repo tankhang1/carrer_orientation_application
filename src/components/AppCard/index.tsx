@@ -7,8 +7,8 @@ import {
   TextStyle,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
-import {COLORS, FONT, s} from '@utils/config';
+import React, {memo} from 'react';
+import {COLORS, FONT, s, width} from '@utils/config';
 import AppImage from '@components/AppImage';
 type TAppCard = {
   imageUrl: string;
@@ -33,6 +33,16 @@ const CARD_BASE_TYPE = {
     width: s(311),
   },
 };
+const CARD_FONT = {
+  small: {
+    title: FONT.content.XXS.semiBold,
+    subTitle: FONT.content.XXXS.regular,
+  },
+  large: {
+    title: FONT.content.M.semiBold,
+    subTitle: FONT.content.XS.medium,
+  },
+};
 const AppCard = ({
   imageUrl,
   title,
@@ -53,8 +63,15 @@ const AppCard = ({
     <TouchableOpacity style={initStyle}>
       <AppImage source={{uri: imageUrl}} style={[styles.image]} />
       <View style={type === 'large' && styles.largeTitle}>
-        <Text style={[FONT.content.s1, subTitleStyle]}>{subTitle}</Text>
-        <Text style={[FONT.content.XXS.semiBold, titleStyle]} numberOfLines={4}>
+        <Text
+          style={[
+            CARD_FONT[type].subTitle,
+            {color: COLORS.grey},
+            subTitleStyle,
+          ]}>
+          {subTitle}
+        </Text>
+        <Text style={[CARD_FONT[type].title, titleStyle]} numberOfLines={4}>
           {title}
         </Text>
       </View>
@@ -66,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     alignItems: 'center',
+    maxWidth: width,
   },
   image: {
     width: s(80),
@@ -89,4 +107,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-export default AppCard;
+export default memo(AppCard);

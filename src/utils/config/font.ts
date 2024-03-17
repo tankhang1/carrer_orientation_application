@@ -60,6 +60,7 @@ export const FONT = {
     },
     XXS: {
       semiBold: fontPropertiesGenerator(FONT_FAMILY.semibold, SIZE.XXS),
+      medium: fontPropertiesGenerator(FONT_FAMILY.medium, SIZE.XXS),
     },
     XXXS: {
       regular: fontPropertiesGenerator(FONT_FAMILY.regular, SIZE.XXXS),
@@ -82,5 +83,15 @@ export const FONT = {
       semiBold: fontPropertiesGenerator(FONT_FAMILY.semibold, SIZE.XXL),
     },
     h1: fontPropertiesGenerator(FONT_FAMILY.bold, SIZE.h1),
+  },
+  link: {
+    ...fontPropertiesGenerator(FONT_FAMILY.medium, SIZE.XS),
+    textDecorationLine: 'underline' as
+      | 'none'
+      | 'underline'
+      | 'line-through'
+      | 'underline line-through'
+      | undefined,
+    color: COLORS.darkBlue,
   },
 };
