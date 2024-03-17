@@ -4,6 +4,7 @@ import {
   useWindowDimensions,
   ScrollView,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -92,12 +93,7 @@ const NewsDetail2 = () => {
         style={{
           paddingHorizontal: s(15),
         }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: s(10),
-          }}>
+        <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => navigationRef.goBack()}>
             <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
           </TouchableOpacity>
@@ -109,6 +105,17 @@ const NewsDetail2 = () => {
           contentWidth={width}
           renderersProps={renderersProps}
           enableExperimentalMarginCollapsing={true}
+          tagsStyles={{
+            header: {
+              color: 'black',
+            },
+            main: {
+              color: 'black',
+            },
+            footer: {
+              color: 'black',
+            },
+          }}
         />
       </SafeAreaView>
     </AppView>
@@ -116,3 +123,10 @@ const NewsDetail2 = () => {
 };
 
 export default NewsDetail2;
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(10),
+  },
+});

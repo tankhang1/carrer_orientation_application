@@ -62,6 +62,11 @@ const NewsDetail1 = () => {
           contentWidth={width}
           renderersProps={renderersProps}
           enableExperimentalMarginCollapsing={true}
+          tagsStyles={{
+            article: {
+              color: 'black',
+            },
+          }}
         />
       </SafeAreaView>
     </ScrollView>

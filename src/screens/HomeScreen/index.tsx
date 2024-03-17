@@ -36,7 +36,11 @@ const HomeScreen = () => {
         </View>
       </AppView>
       <View style={styles.floatingBtnContainer}>
-        <AppRoundedButton type="fill" style={styles.floatingBtn} shadow={true}>
+        <AppRoundedButton
+          type="fill"
+          style={styles.floatingBtn}
+          shadow={true}
+          onPress={() => navigationRef.navigate('ChatBox')}>
           <Ionicons
             name="chatbubble-ellipses-outline"
             color={COLORS.white}

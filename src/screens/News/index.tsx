@@ -29,7 +29,7 @@ const News = () => {
   return (
     <AppView style={styles.overall}>
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigationRef.goBack()}>
           <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
         </TouchableOpacity>
         <Text style={FONT.title.XXL.bold}>Tin tức</Text>
