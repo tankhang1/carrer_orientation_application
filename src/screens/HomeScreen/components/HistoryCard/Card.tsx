@@ -1,6 +1,7 @@
 import {View, Text, StyleSheet, Image, ImageSourcePropType} from 'react-native';
 import React, {useMemo} from 'react';
 import {COLORS, FONT, s, vs, width} from '@utils/config';
+import AppImage from '@components/AppImage';
 
 const GENERAL = {
   IQ: '120/300',
@@ -43,7 +44,10 @@ const GeneralItem = ({url, score, name}: TGeneral) => {
     </View>
   );
 };
-const Card = () => {
+type TCard = {
+  isExpand?: boolean;
+};
+const Card = ({isExpand}: TCard) => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.date}>17/2/2024</Text>
@@ -85,6 +89,31 @@ const Card = () => {
           );
         })}
       </View>
+      {isExpand && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: s(10),
+          }}>
+          <AppImage
+            source={{
+              uri: 'https://huongnghiepsongan.com/wp-content/uploads/2020/09/Song-An_mat-ma-holland_2-02-1400x797.png',
+            }}
+            style={{
+              width: s(50),
+              height: s(50),
+            }}
+          />
+          <Text style={[FONT.content.M.regular, {width: '80%'}]}>
+            Người yêu thích Kỹ thuật thường thực tế, thích khám phá, thao tác
+            một cách trật tự và có hệ thống, thích làm việc với những vật cụ thể
+            như máy móc, công cụ dụng cụ, con vật,… Năng lực nổi trội: thủ công,
+            cơ khí, nông nghiệp, điện, kỹ thuật,… Năng lượng thiếu hụt: Xã hội
+            và Giáo dục.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -93,7 +122,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: s(10),
     paddingHorizontal: s(10),
-    maxWidth: s(305),
+    maxWidth: width * 0.9,
+    width: '100%',
     paddingVertical: vs(5),
     gap: vs(5),
   },

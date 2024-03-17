@@ -15,7 +15,13 @@ type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
 const HomeScreen = () => {
   const BUTTONS = [
     {icon: 'pencil', title: 'Kiểm tra', onPress: () => {}},
-    {icon: 'history', title: 'Lịch sử', onPress: () => {}},
+    {
+      icon: 'history',
+      title: 'Lịch sử',
+      onPress: () => {
+        navigationRef.navigate('ListResult');
+      },
+    },
     {
       icon: 'newspaper-o',
       title: 'Tin tức',
