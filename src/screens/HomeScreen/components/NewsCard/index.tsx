@@ -2,6 +2,7 @@ import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import React, {memo, useCallback} from 'react';
 import {FONT, s, vs} from '@utils/config';
 import {AppCard} from '@components';
+import {navigationRef} from '@navigation';
 const card = {
   imageUrl:
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGn6vq0C1-MRqFGbUcBJ7M9pn20QAp4JYQnw&usqp=CAU',
@@ -32,7 +33,7 @@ const NewsCard = () => {
     <View style={styles.container}>
       <View style={styles.title}>
         <Text style={FONT.content.M.bold}>Tin tức mới nhất</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigationRef.navigate('News')}>
           <Text style={FONT.link}>Xem thêm</Text>
         </TouchableOpacity>
       </View>

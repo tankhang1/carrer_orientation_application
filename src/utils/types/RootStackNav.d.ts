@@ -8,6 +8,8 @@ export type TRootStackNav = {
   Result: undefined;
   News: undefined;
   NewsDetail1: undefined;
-  NewsDetail2: undefined;
+  NewsDetail2: {
+    title: string;
+  };
   ChatBox: undefined;
 };

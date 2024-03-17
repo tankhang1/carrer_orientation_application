@@ -1,16 +1,24 @@
-import {ImageBackground, StyleSheet, ScrollView, View} from 'react-native';
+import {
+  ImageBackground,
+  StyleSheet,
+  ScrollView,
+  View,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLORS} from '@utils/config';
 type TAppView = {
   children?: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
 };
-const AppView = ({children}: TAppView) => {
+const AppView = ({children, style}: TAppView) => {
   return (
     <ImageBackground
       source={require('@assets/images/background.png')}
       resizeMode="cover"
-      style={styles.wrapper}>
+      style={[styles.wrapper, style]}>
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <View>{children && children}</View>

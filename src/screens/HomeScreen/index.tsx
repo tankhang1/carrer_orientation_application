@@ -16,7 +16,11 @@ const HomeScreen = () => {
   const BUTTONS = [
     {icon: 'pencil', title: 'Kiểm tra', onPress: () => {}},
     {icon: 'history', title: 'Lịch sử', onPress: () => {}},
-    {icon: 'newspaper-o', title: 'Tin tức', onPress: () => {}},
+    {
+      icon: 'newspaper-o',
+      title: 'Tin tức',
+      onPress: () => navigationRef.navigate('News'),
+    },
   ];
   return (
     <>

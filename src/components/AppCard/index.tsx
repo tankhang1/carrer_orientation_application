@@ -20,6 +20,7 @@ type TAppCard = {
   imageStyle?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
   subTitleStyle?: StyleProp<TextStyle>;
+  onPress?: () => void;
 };
 const CARD_BASE_TYPE = {
   small: {
@@ -30,7 +31,7 @@ const CARD_BASE_TYPE = {
   large: {
     flexDirection: 'row',
     padding: s(15),
-    width: s(311),
+    width: '100%',
   },
 };
 const CARD_FONT = {
@@ -45,6 +46,7 @@ const CARD_FONT = {
 };
 const AppCard = ({
   imageUrl,
+
   title,
   subTitle,
   type = 'small',
@@ -52,6 +54,7 @@ const AppCard = ({
   shadow = false,
   titleStyle,
   subTitleStyle,
+  onPress,
 }: TAppCard) => {
   const initStyle = StyleSheet.flatten([
     styles.container,
@@ -60,7 +63,7 @@ const AppCard = ({
     shadow && styles.shadow,
   ]) as ViewStyle;
   return (
-    <TouchableOpacity style={initStyle}>
+    <TouchableOpacity style={initStyle} onPress={onPress}>
       <AppImage source={{uri: imageUrl}} style={[styles.image]} />
       <View style={type === 'large' && styles.largeTitle}>
         <Text
