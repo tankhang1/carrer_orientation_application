@@ -1,12 +1,30 @@
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
+import AppView from '@components/AppView';
+import AppHeader from '@components/AppHeader';
+import {Chart, HollandResult} from './components';
+import {s, vs} from '@utils/config';
 
 const Result = () => {
   return (
-    <View>
-      <Text>Result</Text>
-    </View>
+    <AppView>
+      <AppHeader title="Kết quả" />
+      <View style={styles.container}>
+        <View style={{overflow: 'hidden'}}>
+          <Chart />
+        </View>
+        <HollandResult />
+      </View>
+    </AppView>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    gap: vs(10),
+    marginTop: vs(10),
+    paddingHorizontal: s(27),
+    marginBottom: vs(20),
+  },
+});
 export default Result;

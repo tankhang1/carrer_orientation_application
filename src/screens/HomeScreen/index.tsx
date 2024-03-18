@@ -3,18 +3,22 @@ import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import {navigationRef} from '@navigation';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {Carousel, ButtonFunction, NewsCard, HistoryCard} from './components';
 import AppView from '@components/AppView';
-import {AppButton} from '@components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppRoundedButton from '@components/AppRoundedButton';
 type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
 
 const HomeScreen = () => {
   const BUTTONS = [
-    {icon: 'pencil', title: 'Kiểm tra', onPress: () => {}},
+    {
+      icon: 'pencil',
+      title: 'Kiểm tra',
+      onPress: () => {
+        navigationRef.navigate('ListExam');
+      },
+    },
     {
       icon: 'history',
       title: 'Lịch sử',

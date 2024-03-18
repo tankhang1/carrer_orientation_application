@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLORS} from '@utils/config';
 type TAppView = {
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -18,9 +17,9 @@ const AppView = ({children, style}: TAppView) => {
     <ImageBackground
       source={require('@assets/images/background.png')}
       resizeMode="cover"
-      style={[styles.wrapper, style]}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
+      style={styles.wrapper}>
+      <SafeAreaView style={[styles.container, style]}>
+        <ScrollView removeClippedSubviews renderToHardwareTextureAndroid>
           <View>{children && children}</View>
         </ScrollView>
       </SafeAreaView>

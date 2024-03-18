@@ -82,6 +82,7 @@ export const FONT = {
       bold: fontPropertiesGenerator(FONT_FAMILY.bold, SIZE.XXL),
       semiBold: fontPropertiesGenerator(FONT_FAMILY.semibold, SIZE.XXL),
     },
+    XL: fontPropertiesGenerator(FONT_FAMILY.semibold, SIZE.XL),
     h1: fontPropertiesGenerator(FONT_FAMILY.bold, SIZE.h1),
   },
   link: {

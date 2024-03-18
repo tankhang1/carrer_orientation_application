@@ -1,0 +1,55 @@
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ImageProps,
+  TextStyle,
+  ImageSourcePropType,
+  StyleProp,
+} from 'react-native';
+import React from 'react';
+import {COLORS, FONT, s, vs} from '@utils/config';
+import AppImage from '@components/AppImage';
+import {Source} from 'react-native-fast-image';
+type TExamCard = {
+  image: (ImageSourcePropType & (number | Source)) | undefined;
+  name: string;
+  namePosition?: 'left' | 'right';
+  onPress?: () => void;
+  titleStyle?: StyleProp<TextStyle>;
+};
+const ExamCard = ({
+  image,
+  name,
+  namePosition = 'left',
+  onPress = () => {},
+  titleStyle,
+}: TExamCard) => {
+  const nameStyle = StyleSheet.flatten([
+    styles.examTitle,
+    namePosition === 'left' && {left: s(20)},
+    namePosition === 'right' && {right: s(30)},
+    titleStyle,
+  ]) as TextStyle;
+  return (
+    <TouchableOpacity style={{justifyContent: 'center'}} onPress={onPress}>
+      <AppImage source={image} style={styles.image} resizeMode="stretch" />
+      <Text style={nameStyle}>{name}</Text>
+    </TouchableOpacity>
+  );
+};
+const styles = StyleSheet.create({
+  image: {
+    width: s(307),
+    height: vs(136),
+    borderRadius: s(10),
+  },
+  examTitle: {
+    position: 'absolute',
+    ...FONT.title.XXL.bold,
+    fontSize: s(50),
+    color: COLORS.white,
+  },
+});
+export default ExamCard;
