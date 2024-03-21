@@ -24,6 +24,14 @@ const Result = () => {
           <Text style={FONT.content.M.bold}>Nhóm thân thiện</Text>
         </View>
       </ImageBackground>
+      <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
+        <Text style={FONT.content.M.bold}>Tổng kết:</Text> Bạn thuộc tiếp người
+        thông minh nhất thế giới. Trong đó có một vài ví dụ cụ thể như: Elon
+        musk. Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài
+        ví dụ cụ thể như: Elon musk. Bạn thuộc tiếp người thông minh nhất thế
+        giới. Trong đó có một vài ví dụ cụ thể như: Elon musk.
+      </Text>
+
       <ImageBackground
         source={require('@assets/images/IQImage.png')}
         style={styles.imageIQContainer}>
@@ -51,13 +59,6 @@ const Result = () => {
         </View>
         <HollandResult />
       </View>
-      <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
-        <Text style={FONT.content.M.bold}>Tổng kết:</Text> Bạn thuộc tiếp người
-        thông minh nhất thế giới. Trong đó có một vài ví dụ cụ thể như: Elon
-        musk. Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài
-        ví dụ cụ thể như: Elon musk. Bạn thuộc tiếp người thông minh nhất thế
-        giới. Trong đó có một vài ví dụ cụ thể như: Elon musk.
-      </Text>
     </AppView>
   );
 };
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
   imageIQContainer: {
     width: '100%',
     height: 200,
+    marginTop: vs(10),
   },
   eqQuestionContainer: {
     width: 100,
