@@ -16,14 +16,12 @@ type TExamCard = {
   image: (ImageSourcePropType & (number | Source)) | undefined;
   name: string;
   namePosition?: 'left' | 'right';
-  onPress?: () => void;
   titleStyle?: StyleProp<TextStyle>;
 };
 const ExamCard = ({
   image,
   name,
   namePosition = 'left',
-  onPress = () => {},
   titleStyle,
 }: TExamCard) => {
   const nameStyle = StyleSheet.flatten([
@@ -33,10 +31,10 @@ const ExamCard = ({
     titleStyle,
   ]) as TextStyle;
   return (
-    <TouchableOpacity style={{justifyContent: 'center'}} onPress={onPress}>
+    <View style={{justifyContent: 'center'}}>
       <AppImage source={image} style={styles.image} resizeMode="stretch" />
       <Text style={nameStyle}>{name}</Text>
-    </TouchableOpacity>
+    </View>
   );
 };
 const styles = StyleSheet.create({

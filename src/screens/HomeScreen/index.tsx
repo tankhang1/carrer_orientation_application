@@ -54,7 +54,7 @@ const HomeScreen = () => {
           <Ionicons
             name="chatbubble-ellipses-outline"
             color={COLORS.white}
-            size={s(20)}
+            size={s(24)}
           />
         </AppRoundedButton>
       </View>

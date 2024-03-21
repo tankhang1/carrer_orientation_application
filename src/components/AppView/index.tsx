@@ -5,23 +5,43 @@ import {
   View,
   StyleProp,
   ViewStyle,
+  FlatList,
+  ListRenderItemInfo,
+  FlatListProps,
 } from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-type TAppView = {
+type TAppView<TData> = {
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
-};
-const AppView = ({children, style}: TAppView) => {
+  data?: TData[];
+  renderItem?: (
+    info: ListRenderItemInfo<TData>,
+  ) => React.ReactElement<
+    any,
+    string | React.JSXElementConstructor<any>
+  > | null;
+} & Partial<FlatListProps<TData>>;
+const AppView = <TData,>({
+  children,
+  style,
+  data = [],
+  renderItem,
+  ...FlatlistProps
+}: TAppView<TData>) => {
   return (
     <ImageBackground
       source={require('@assets/images/background.png')}
       resizeMode="cover"
       style={styles.wrapper}>
       <SafeAreaView style={[styles.container, style]}>
-        <ScrollView removeClippedSubviews renderToHardwareTextureAndroid>
-          <View>{children && children}</View>
-        </ScrollView>
+        {data?.length === 0 ? (
+          <ScrollView removeClippedSubviews renderToHardwareTextureAndroid>
+            <View>{children && children}</View>
+          </ScrollView>
+        ) : (
+          <FlatList data={data} renderItem={renderItem} {...FlatlistProps} />
+        )}
       </SafeAreaView>
     </ImageBackground>
   );

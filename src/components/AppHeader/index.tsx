@@ -13,11 +13,19 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 type TAppHeader = {
   title?: string;
   style?: StyleProp<ViewStyle>;
+  onPress?: () => void;
 };
-const AppHeader = ({title, style}: TAppHeader) => {
+const AppHeader = ({title, style, onPress}: TAppHeader) => {
   return (
     <View style={[styles.header, style]}>
-      <TouchableOpacity onPress={() => navigationRef.goBack()}>
+      <TouchableOpacity
+        onPress={() => {
+          if (onPress) {
+            onPress();
+          } else {
+            navigationRef.goBack();
+          }
+        }}>
         <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
       </TouchableOpacity>
       {title && <Text style={styles.title}>{title}</Text>}

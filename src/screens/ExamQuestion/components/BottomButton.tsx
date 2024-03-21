@@ -1,28 +1,25 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React from 'react';
 import {COLORS, s, vs} from '@utils/config';
-import {BlurView} from '@react-native-community/blur';
 import AppRoundedButton from '@components/AppRoundedButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {AppProgressBar} from '@components';
 import {navigationRef} from '@navigation';
-const BottomButton = () => {
+type TBottomButton = {
+  onNext?: () => void;
+  onPrev?: () => void;
+};
+const BottomButton = ({onNext, onPrev}: TBottomButton) => {
   return (
     <View style={styles.container}>
-      {/* <BlurView
-        style={styles.blurView}
-        overlayColor="transparent"
-        blurType="light"
-        blurAmount={5}
-        reducedTransparencyFallbackColor="transparent"
-      /> */}
-      <AppRoundedButton type="fill">
+      <AppRoundedButton type="fill" onPress={onPrev}>
         <Entypo name="chevron-left" size={s(20)} color={COLORS.white} />
       </AppRoundedButton>
       <AppProgressBar />
       <AppRoundedButton
         type="fill"
-        onPress={() => navigationRef.navigate('Result')}>
+        //onPress={() => navigationRef.navigate('Result')}
+        onPress={onNext}>
         <Entypo name="chevron-right" size={s(20)} color={COLORS.white} />
       </AppRoundedButton>
     </View>
@@ -42,10 +39,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.9)',
     borderTopLeftRadius: s(10),
     borderTopRightRadius: s(10),
-  },
-  blurView: {
-    backgroundColor: 'rgba(255,255,255,0.6)',
-    ...StyleSheet.absoluteFillObject,
   },
 });
 export default BottomButton;

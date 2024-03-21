@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
@@ -8,8 +8,7 @@ import {COLORS, FONT, s, vs} from '@utils/config';
 import AppHeader from '@components/AppHeader';
 import AppImage from '@components/AppImage';
 import ExamCard from './components/ExamCard';
-import {AppButton, AppCard} from '@components';
-import {BlurView} from '@react-native-community/blur';
+import {AppButton} from '@components';
 type Props = NativeStackScreenProps<TRootStackNav, 'ListExam'>;
 
 const ListExam = () => {
@@ -21,38 +20,28 @@ const ListExam = () => {
           <ExamCard
             name="IQ"
             image={require('@assets/images/IQ_background.jpg')}
-            onPress={() => {}}
           />
           <ExamCard
             name="EQ"
             image={require('@assets/images/EQ_background.jpg')}
-            onPress={() => {}}
             namePosition="right"
           />
-          <TouchableOpacity style={styles.card}>
+          <View style={styles.card}>
             <Text style={[FONT.title.XL]}>{`Tính cách \n Holland`}</Text>
             <AppImage
               source={require('@assets/images/Holland_background.png')}
               style={styles.image}
             />
-          </TouchableOpacity>
+          </View>
           <ExamCard
             name="Điểm trung bình"
             image={require('@assets/images/school.jpg')}
-            onPress={() => {}}
             namePosition="right"
             titleStyle={{fontSize: s(30), color: COLORS.red}}
           />
         </View>
       </AppView>
       <View style={styles.bottomSheet}>
-        {/* <BlurView
-          style={styles.blurView}
-          overlayColor="transparent"
-          blurType="light"
-          blurAmount={5}
-          reducedTransparencyFallbackColor="transparent"
-        /> */}
         <AppButton
           label="Bắt đầu kiểm tra"
           buttonStyle={{width: s(307)}}
@@ -90,10 +79,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     paddingVertical: vs(20),
-  },
-  blurView: {
-    //backgroundColor: 'rgba(255,255,255,0.6)',
-    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255,255,255,0.6)',
   },
 });
 export default ListExam;

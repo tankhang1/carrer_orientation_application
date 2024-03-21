@@ -20,9 +20,7 @@ const HollandResult = () => {
                 contentWidth={200}
                 enableExperimentalMarginCollapsing={true}
                 tagsStyles={{
-                  article: {
-                    color: 'black',
-                  },
+                  article: {color: COLORS.black},
                 }}
               />
             </View>

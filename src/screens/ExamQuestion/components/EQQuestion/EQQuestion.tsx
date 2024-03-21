@@ -4,9 +4,16 @@ import {FONT} from '@utils/config';
 import RadioButton from './RadioButton';
 import {EQ_TEST} from '@screens/ExamQuestion/mock';
 import {styles} from '@screens/ExamQuestion/styles';
-const EQQuestion = () => {
-  const [questionNumber, setQuestionNumber] = useState(0);
-  const question = useMemo(() => EQ_TEST[questionNumber], [questionNumber]);
+type TEQQuestion = {
+  question: IQuestion;
+  questionNumber: number;
+  setQuestionNumber: (questionNumber: number) => void;
+};
+const EQQuestion = ({
+  question,
+  questionNumber,
+  setQuestionNumber,
+}: TEQQuestion) => {
   const [selected, setSelected] = useState(-1);
   useEffect(() => {
     if (questionNumber !== 0) {
@@ -15,7 +22,7 @@ const EQQuestion = () => {
   }, [questionNumber]);
   return (
     <View style={styles.container}>
-      <Text style={styles.question}>{question.question}</Text>
+      <Text style={styles.question}>{question?.questionTitle}</Text>
       {question?.answers?.map((answer, index) => {
         return (
           <View style={styles.answerCard} key={index}>
@@ -23,10 +30,10 @@ const EQQuestion = () => {
               selected={selected === index}
               onPress={() => {
                 setSelected(index);
-                setTimeout(() => setQuestionNumber(questionNumber + 1));
+                //setTimeout(() => setQuestionNumber(questionNumber + 1));
               }}
             />
-            <Text style={styles.answer}>{answer}</Text>
+            <Text style={styles.answer}>{answer.content}</Text>
           </View>
         );
       })}

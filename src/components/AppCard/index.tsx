@@ -46,7 +46,6 @@ const CARD_FONT = {
 };
 const AppCard = ({
   imageUrl,
-
   title,
   subTitle,
   type = 'small',

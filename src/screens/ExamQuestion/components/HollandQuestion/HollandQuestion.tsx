@@ -1,14 +1,11 @@
 import {View, Text} from 'react-native';
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {styles} from '@screens/ExamQuestion/styles';
-import {HOLLAND_TEST} from '@screens/ExamQuestion/mock';
 import Checkbox from './Checkbox';
-const HollandQuestion = () => {
-  const [questionNumber, setQuestionNumber] = useState(0);
-  const question = useMemo(
-    () => HOLLAND_TEST[questionNumber],
-    [questionNumber],
-  );
+type THollandQuestion = {
+  question: IQuestion;
+};
+const HollandQuestion = ({question}: THollandQuestion) => {
   const [selections, setSelections] = useState<number[]>([]);
 
   const onPress = (index: number) => {
@@ -22,7 +19,7 @@ const HollandQuestion = () => {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.question}>{question.question}</Text>
+      <Text style={styles.question}>{question.questionTitle}</Text>
       {question?.answers?.map((answer, index) => {
         return (
           <View style={styles.answerCard} key={index}>
@@ -30,7 +27,7 @@ const HollandQuestion = () => {
               isCheck={selections?.includes(index)}
               onPress={() => onPress(index)}
             />
-            <Text style={styles.answer}>{answer}</Text>
+            <Text style={styles.answer}>{answer.content}</Text>
           </View>
         );
       })}
