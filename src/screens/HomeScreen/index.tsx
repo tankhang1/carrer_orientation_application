@@ -1,37 +1,39 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import React, {lazy, Suspense} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import {navigationRef} from '@navigation';
-import {COLORS, FONT, s, vs} from '@utils/config';
-import {Carousel, ButtonFunction, NewsCard, HistoryCard} from './components';
+import {COLORS, FONT, s, vs, width} from '@utils/config';
+import {ButtonFunction, NewsCard, HistoryCard} from './components';
 import AppView from '@components/AppView';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppRoundedButton from '@components/AppRoundedButton';
-type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
+import AppSkeleton from '@components/AppSkeleton';
 
+const Carousel = lazy(() => import('./components/Carousel/Carousel'));
+type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
+const BUTTONS = [
+  {
+    icon: 'pencil',
+    title: 'Kiểm tra',
+    onPress: () => {
+      navigationRef.navigate('ListExam');
+    },
+  },
+  {
+    icon: 'history',
+    title: 'Lịch sử',
+    onPress: () => {
+      navigationRef.navigate('ListResult');
+    },
+  },
+  {
+    icon: 'newspaper-o',
+    title: 'Tin tức',
+    onPress: () => navigationRef.navigate('News'),
+  },
+];
 const HomeScreen = () => {
-  const BUTTONS = [
-    {
-      icon: 'pencil',
-      title: 'Kiểm tra',
-      onPress: () => {
-        navigationRef.navigate('ListExam');
-      },
-    },
-    {
-      icon: 'history',
-      title: 'Lịch sử',
-      onPress: () => {
-        navigationRef.navigate('ListResult');
-      },
-    },
-    {
-      icon: 'newspaper-o',
-      title: 'Tin tức',
-      onPress: () => navigationRef.navigate('News'),
-    },
-  ];
   return (
     <>
       <AppView>
@@ -39,9 +41,12 @@ const HomeScreen = () => {
           <Text style={styles.title}>
             Tư vấn hướng nghiệp và chọn ngành cho học sinh THPT
           </Text>
-          <Carousel />
+          <Suspense fallback={<AppSkeleton width={'100%'} height={238} />}>
+            <Carousel />
+          </Suspense>
           <ButtonFunction buttons={BUTTONS} />
           <NewsCard />
+
           <HistoryCard />
         </View>
       </AppView>

@@ -6,24 +6,19 @@ import {
   ListRenderItemInfo,
   TouchableOpacity,
 } from 'react-native';
-import React, {memo} from 'react';
+import React, {lazy, memo, Suspense} from 'react';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {NewsDataCategories, TNewsCategory} from '../mock';
 import AppImage from '@components/AppImage';
 import {navigationRef} from '@navigation';
-
+import AppSkeleton from '@components/AppSkeleton';
+const CategoryItem = lazy(() => import('./CategoryItem'));
 const Admissions = () => {
   const renderCategory = ({item, index}: ListRenderItemInfo<TNewsCategory>) => {
     return (
-      <TouchableOpacity
-        key={index}
-        style={styles.categoryItem}
-        onPress={() =>
-          navigationRef.navigate('NewsDetail2', {title: item.title})
-        }>
-        <AppImage source={item.image} style={styles.image} />
-        <Text style={FONT.title.M}>{item.title}</Text>
-      </TouchableOpacity>
+      <Suspense fallback={<AppSkeleton width={'100%'} height={'100%'} />}>
+        <CategoryItem item={item} key={index} />
+      </Suspense>
     );
   };
   return (

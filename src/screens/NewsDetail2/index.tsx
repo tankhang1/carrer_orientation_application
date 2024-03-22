@@ -5,14 +5,16 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLORS, FONT, s} from '@utils/config';
+import {COLORS, FONT, s, vs} from '@utils/config';
 import {navigationRef} from '@navigation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import RenderHTML from 'react-native-render-html';
 import AppView from '@components/AppView';
+import AppSkeleton from '@components/AppSkeleton';
+const RenderHTML = lazy(() => import('react-native-render-html'));
 const source = {
   html: `<header>
   <h1>Khoa học dữ liệu</h1>
@@ -100,23 +102,34 @@ const NewsDetail2 = () => {
           <Text style={FONT.content.L}>{params?.title}</Text>
         </View>
 
-        <RenderHTML
-          source={source}
-          contentWidth={width}
-          renderersProps={renderersProps}
-          enableExperimentalMarginCollapsing={true}
-          tagsStyles={{
-            header: {
-              color: 'black',
-            },
-            main: {
-              color: 'black',
-            },
-            footer: {
-              color: 'black',
-            },
-          }}
-        />
+        <Suspense
+          fallback={
+            <View style={{gap: vs(5), marginTop: 10}}>
+              <AppSkeleton width={'100%'} height={20} radius={10} />
+              <AppSkeleton width={'92%'} height={20} radius={10} />
+              <AppSkeleton width={'67%'} height={20} radius={10} />
+              <AppSkeleton width={'80%'} height={20} radius={10} />
+              <AppSkeleton width={'10%'} height={20} radius={10} />
+            </View>
+          }>
+          <RenderHTML
+            source={source}
+            contentWidth={width}
+            renderersProps={renderersProps}
+            enableExperimentalMarginCollapsing={true}
+            tagsStyles={{
+              header: {
+                color: 'black',
+              },
+              main: {
+                color: 'black',
+              },
+              footer: {
+                color: 'black',
+              },
+            }}
+          />
+        </Suspense>
       </SafeAreaView>
     </AppView>
   );

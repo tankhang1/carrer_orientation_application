@@ -1,8 +1,10 @@
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
-import React, {memo, useCallback} from 'react';
+import React, {lazy, memo, Suspense, useCallback} from 'react';
 import {FONT, s, vs} from '@utils/config';
-import {AppCard} from '@components';
+
 import {navigationRef} from '@navigation';
+import AppSkeleton from '@components/AppSkeleton';
+const AppCard = lazy(() => import('@components/AppCard'));
 const card = {
   imageUrl:
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGn6vq0C1-MRqFGbUcBJ7M9pn20QAp4JYQnw&usqp=CAU',
@@ -19,12 +21,16 @@ const NewsCard = () => {
   const renderCard = useCallback(
     ({item, index}: {item: TCard; index: number}) => {
       return (
-        <AppCard
-          key={index}
-          imageUrl={item.imageUrl}
-          title={item.title}
-          subTitle={item.date.toString()}
-        />
+        <Suspense
+          fallback={<AppSkeleton width={100} height={150} radius={10} />}>
+          <AppCard
+            key={index}
+            index={index}
+            imageUrl={item.imageUrl}
+            title={item.title}
+            subTitle={item.date.toString()}
+          />
+        </Suspense>
       );
     },
     [],

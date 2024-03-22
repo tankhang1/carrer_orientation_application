@@ -13,8 +13,7 @@ const App = () => {
   useEffect(() => {
     BootSplash.hide({fade: true});
   }, []);
-  // return <AppNavigation />;
-  return <Result />;
+  return <AppNavigation />;
 };
 
 export default App;

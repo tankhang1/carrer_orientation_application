@@ -47,7 +47,7 @@ const Chart = () => {
           strokeDasharray: [0, 0],
         }}
         yAxisTextStyle={FONT.content.S}
-        xAxisLabelTextStyle={FONT.content.M.semiBold}
+        xAxisLabelTextStyle={FONT.content.XS.medium}
         onPress={() => console.log('press')}
       />
     </View>

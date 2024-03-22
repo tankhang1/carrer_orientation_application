@@ -7,16 +7,34 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
 import AppView from '@components/AppView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {COLORS, FONT, s, vs} from '@utils/config';
+import {COLORS, FONT, s, vs, width} from '@utils/config';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Card from '@screens/HomeScreen/components/HistoryCard/Card';
+const Card = lazy(
+  () => import('@screens/HomeScreen/components/HistoryCard/Card'),
+);
 import {navigationRef} from '@navigation';
+import AppSkeleton from '@components/AppSkeleton';
+const AppListResultHeader = () => {
+  return (
+    <View style={styles.headerContainer}>
+      <TouchableOpacity onPress={() => navigationRef.goBack()}>
+        <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
+      </TouchableOpacity>
+      <Text style={FONT.title.XXL.bold}>Kết quả kiểm tra</Text>
+    </View>
+  );
+};
 const ListResult = () => {
   const renderCard = ({item, index}: ListRenderItemInfo<any>) => {
-    return <Card key={index} isExpand={true} />;
+    return (
+      <Suspense
+        fallback={<AppSkeleton width={width * 0.9} height={300} radius={10} />}>
+        <Card key={index} isExpand={true} index={index} />
+      </Suspense>
+    );
   };
   return (
     <ImageBackground
@@ -26,27 +44,17 @@ const ListResult = () => {
         flex: 1,
       }}>
       <SafeAreaView style={{flex: 1}}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={() => navigationRef.goBack()}>
-            <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
-          </TouchableOpacity>
-          <Text style={FONT.title.XXL.bold}>Kết quả kiểm tra</Text>
-        </View>
-
-        <View
-          style={{
-            marginTop: vs(10),
-            flex: 1,
-          }}>
-          <FlatList
-            data={Array.from({length: 10})}
-            renderItem={renderCard}
-            contentContainerStyle={{
-              gap: vs(10),
-              alignSelf: 'center',
-            }}
-          />
-        </View>
+        <AppView
+          data={Array.from({length: 10})}
+          renderItem={renderCard}
+          contentContainerStyle={{
+            gap: vs(10),
+            alignSelf: 'center',
+          }}
+          ListHeaderComponent={<AppListResultHeader />}
+          renderToHardwareTextureAndroid
+          removeClippedSubviews
+        />
       </SafeAreaView>
     </ImageBackground>
   );

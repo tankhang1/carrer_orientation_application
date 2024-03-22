@@ -21,9 +21,11 @@ const ExamQuestion = () => {
   const EQ = useMemo(() => SAMPLE_EXAM[1].questions, []);
   const HOLLAND = useMemo(() => SAMPLE_EXAM[2].questions, []);
   const onNext = useCallback(() => {
-    if (questionNumber < SAMPLE_EXAM?.length - 1) {
+    if (questionNumber <= SAMPLE_EXAM?.length - 1) {
       setQuestionNumber(questionNumber + 1);
     }
+    if (questionNumber === SAMPLE_EXAM?.length)
+      navigationRef.navigate('Result');
   }, [SAMPLE_EXAM, questionNumber]);
   const onPrev = useCallback(() => {
     if (questionNumber > 0) {

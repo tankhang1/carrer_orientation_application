@@ -1,8 +1,9 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
 import {FONT, s, vs} from '@utils/config';
-import Card from './Card';
 import {navigationRef} from '@navigation';
+import AppSkeleton from '@components/AppSkeleton';
+const Card = lazy(() => import('./Card'));
 const HistoryCard = () => {
   return (
     <View style={styles.container}>
@@ -12,8 +13,14 @@ const HistoryCard = () => {
           <Text style={FONT.link}>Xem thêm</Text>
         </TouchableOpacity>
       </View>
-      <Card />
-      <Card />
+      <Suspense
+        fallback={<AppSkeleton width={'100%'} height={200} radius={10} />}>
+        <Card />
+      </Suspense>
+      <Suspense
+        fallback={<AppSkeleton width={'100%'} height={200} radius={10} />}>
+        <Card />
+      </Suspense>
     </View>
   );
 };

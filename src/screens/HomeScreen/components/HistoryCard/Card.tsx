@@ -2,6 +2,7 @@ import {View, Text, StyleSheet, Image, ImageSourcePropType} from 'react-native';
 import React, {useMemo} from 'react';
 import {COLORS, FONT, s, vs, width} from '@utils/config';
 import AppImage from '@components/AppImage';
+import Animated, {FadeIn} from 'react-native-reanimated';
 
 const GENERAL = {
   IQ: '120/300',
@@ -46,10 +47,11 @@ const GeneralItem = ({url, score, name}: TGeneral) => {
 };
 type TCard = {
   isExpand?: boolean;
+  index?: number;
 };
-const Card = ({isExpand}: TCard) => {
+const Card = ({isExpand, index = 0}: TCard) => {
   return (
-    <View style={styles.wrapper}>
+    <Animated.View entering={FadeIn.delay(index * 150)} style={styles.wrapper}>
       <Text style={styles.date}>17/2/2024</Text>
       <View style={styles.row}>
         <GeneralItem
@@ -114,7 +116,7 @@ const Card = ({isExpand}: TCard) => {
           </Text>
         </View>
       )}
-    </View>
+    </Animated.View>
   );
 };
 const styles = StyleSheet.create({

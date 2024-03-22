@@ -3,8 +3,7 @@ import React from 'react';
 import AppView from '@components/AppView';
 import AppHeader from '@components/AppHeader';
 import {Chart, HollandResult} from './components';
-import {COLORS, FONT, s, vs} from '@utils/config';
-import AppImage from '@components/AppImage';
+import {FONT, s, vs} from '@utils/config';
 
 const Result = () => {
   return (

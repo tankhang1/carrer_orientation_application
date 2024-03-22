@@ -5,17 +5,16 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import React, {useDeferredValue, useState} from 'react';
+import React, {lazy, useDeferredValue, useState} from 'react';
 import AppView from '@components/AppView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLORS, FONT, s, vs} from '@utils/config';
-import {AppButton, AppTextInput} from '@components';
+import {AppTextInput, AppButton} from '@components';
 import {NewsCategory} from './mock';
 
 import NewsJobs from './components/NewsJobs';
 import Admissions from './components/Admissions';
 import {navigationRef} from '@navigation';
-
 const News = () => {
   const [categoryId, setCategoryId] = useState(NewsCategory[0].id);
   const [searchInfo, setSearchInfo] = useState('');

@@ -10,7 +10,15 @@ import {
 import React, {memo} from 'react';
 import {COLORS, FONT, s, width} from '@utils/config';
 import AppImage from '@components/AppImage';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  SlideInDown,
+  SlideOutDown,
+  SlideOutLeft,
+} from 'react-native-reanimated';
 type TAppCard = {
+  index?: number;
   imageUrl: string;
   title?: string;
   subTitle?: string;
@@ -44,6 +52,7 @@ const CARD_FONT = {
     subTitle: FONT.content.XS.medium,
   },
 };
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const AppCard = ({
   imageUrl,
   title,
@@ -53,6 +62,7 @@ const AppCard = ({
   shadow = false,
   titleStyle,
   subTitleStyle,
+  index,
   onPress,
 }: TAppCard) => {
   const initStyle = StyleSheet.flatten([
@@ -62,7 +72,11 @@ const AppCard = ({
     shadow && styles.shadow,
   ]) as ViewStyle;
   return (
-    <TouchableOpacity style={initStyle} onPress={onPress}>
+    <AnimatedTouchable
+      entering={FadeIn.delay((index ?? 0) * 150)}
+      exiting={FadeOut}
+      style={initStyle}
+      onPress={onPress}>
       <AppImage source={{uri: imageUrl}} style={[styles.image]} />
       <View style={type === 'large' && styles.largeTitle}>
         <Text
@@ -77,7 +91,7 @@ const AppCard = ({
           {title}
         </Text>
       </View>
-    </TouchableOpacity>
+    </AnimatedTouchable>
   );
 };
 const styles = StyleSheet.create({

@@ -88,7 +88,9 @@ const Carousel = () => {
     [data],
   );
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      onLayout={e => console.log(e.nativeEvent.layout.height)}>
       <Animated.FlatList
         data={data}
         ref={listRef}

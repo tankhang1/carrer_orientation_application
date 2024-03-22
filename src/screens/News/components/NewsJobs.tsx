@@ -1,10 +1,11 @@
 import {View, Text, FlatList, ListRenderItemInfo} from 'react-native';
-import React, {memo} from 'react';
+import React, {lazy, memo, Suspense} from 'react';
 import {NewsData, TNewsData} from '../mock';
 import {vs} from '@utils/config';
-import {AppCard} from '@components';
 import dayjs from 'dayjs';
 import {navigationRef} from '@navigation';
+import AppSkeleton from '@components/AppSkeleton';
+const AppCard = lazy(() => import('@components/AppCard'));
 type TNewsJobsProps = {
   deferSearchInfo: string;
 };
@@ -13,14 +14,17 @@ const NewsJobs = ({deferSearchInfo}: TNewsJobsProps) => {
     const searchPattern = new RegExp(deferSearchInfo, 'i');
     if (searchPattern.test(item.content))
       return (
-        <AppCard
-          key={index}
-          imageUrl={item.image}
-          subTitle={dayjs(item.createdAt).format('DD/MM/YYYY')}
-          title={item.content}
-          type="large"
-          onPress={() => navigationRef.navigate('NewsDetail1')}
-        />
+        <Suspense fallback={<AppSkeleton width={'100%'} height={200} />}>
+          <AppCard
+            index={index}
+            key={index}
+            imageUrl={item.image}
+            subTitle={dayjs(item.createdAt).format('DD/MM/YYYY')}
+            title={item.content}
+            type="large"
+            onPress={() => navigationRef.navigate('NewsDetail1')}
+          />
+        </Suspense>
       );
     return null;
   };
