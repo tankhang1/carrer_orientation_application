@@ -9,7 +9,7 @@ declare type TExam =
   | 'EQ'
   | 'Holland'
   | 'SchoolScore';
-declare interface IAnswer {
+declare interface IOption {
   image?: string;
   content: string;
   isResult?: boolean;
@@ -17,7 +17,7 @@ declare interface IAnswer {
 declare interface IQuestion {
   questionTitle: string;
   image?: string;
-  answers?: IAnswer[];
+  options?: IOption[];
 }
 declare interface IExam {
   type: TExam;

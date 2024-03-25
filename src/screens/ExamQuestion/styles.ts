@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   question: {
     ...FONT.content.M.semiBold,
   },
-  answerCard: {
+  optionCard: {
     backgroundColor: COLORS.white,
     borderRadius: s(10),
     padding: s(10),
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     gap: s(5),
     alignItems: 'center',
   },
-  answer: {
+  option: {
     ...FONT.content.M.regular,
     width: '90%',
   },

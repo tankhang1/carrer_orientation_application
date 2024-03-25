@@ -1,8 +1,6 @@
 import {
   View,
   Text,
-  ImageBackground,
-  FlatList,
   ListRenderItemInfo,
   TouchableOpacity,
   StyleSheet,
@@ -11,7 +9,6 @@ import React, {lazy, Suspense} from 'react';
 import AppView from '@components/AppView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLORS, FONT, s, vs, width} from '@utils/config';
-import {SafeAreaView} from 'react-native-safe-area-context';
 const Card = lazy(
   () => import('@screens/HomeScreen/components/HistoryCard/Card'),
 );
@@ -37,26 +34,14 @@ const ListResult = () => {
     );
   };
   return (
-    <ImageBackground
-      source={require('@assets/images/background.png')}
-      resizeMode="cover"
-      style={{
-        flex: 1,
-      }}>
-      <SafeAreaView style={{flex: 1}}>
-        <AppView
-          data={Array.from({length: 10})}
-          renderItem={renderCard}
-          contentContainerStyle={{
-            gap: vs(10),
-            alignSelf: 'center',
-          }}
-          ListHeaderComponent={<AppListResultHeader />}
-          renderToHardwareTextureAndroid
-          removeClippedSubviews
-        />
-      </SafeAreaView>
-    </ImageBackground>
+    <AppView
+      data={Array.from({length: 10})}
+      renderItem={renderCard}
+      contentContainerStyle={styles.containerStyle}
+      ListHeaderComponent={<AppListResultHeader />}
+      renderToHardwareTextureAndroid
+      removeClippedSubviews
+    />
   );
 };
 
@@ -67,5 +52,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: s(10),
     gap: s(10),
+  },
+  containerStyle: {
+    gap: vs(10),
+    alignSelf: 'center',
   },
 });

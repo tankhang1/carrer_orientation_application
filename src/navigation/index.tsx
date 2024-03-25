@@ -13,9 +13,8 @@ import {TRootStackNav} from '@utils/types/RootStackNav';
 import News from '@screens/News';
 import HomeScreen from '@screens/HomeScreen';
 import NewsDetail2 from '@screens/NewsDetail2';
-const SplashScreen = register({loader: () => import('@screens/SplashScreen')});
+import SplashScreen from '@screens/SplashScreen';
 import {createNavigationContainerRef} from '@react-navigation/native';
-import {register} from 'react-native-bundle-splitter';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
