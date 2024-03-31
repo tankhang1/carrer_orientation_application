@@ -20,14 +20,14 @@ const HollandQuestion = ({question}: THollandQuestion) => {
   return (
     <View style={styles.container}>
       <Text style={styles.question}>{question.questionTitle}</Text>
-      {question?.answers?.map((answer, index) => {
+      {question?.options?.map((option, index) => {
         return (
-          <View style={styles.answerCard} key={index}>
+          <View style={styles.optionCard} key={index}>
             <Checkbox
               isCheck={selections?.includes(index)}
               onPress={() => onPress(index)}
             />
-            <Text style={styles.answer}>{answer.content}</Text>
+            <Text style={styles.option}>{option.content}</Text>
           </View>
         );
       })}

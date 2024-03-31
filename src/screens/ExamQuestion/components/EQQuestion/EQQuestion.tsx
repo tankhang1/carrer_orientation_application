@@ -1,8 +1,6 @@
 import {View, Text} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import {FONT} from '@utils/config';
+import React, {useEffect, useState} from 'react';
 import RadioButton from './RadioButton';
-import {EQ_TEST} from '@screens/ExamQuestion/mock';
 import {styles} from '@screens/ExamQuestion/styles';
 type TEQQuestion = {
   question: IQuestion;
@@ -23,9 +21,9 @@ const EQQuestion = ({
   return (
     <View style={styles.container}>
       <Text style={styles.question}>{question?.questionTitle}</Text>
-      {question?.answers?.map((answer, index) => {
+      {question?.options?.map((option, index) => {
         return (
-          <View style={styles.answerCard} key={index}>
+          <View style={styles.optionCard} key={index}>
             <RadioButton
               selected={selected === index}
               onPress={() => {
@@ -33,7 +31,7 @@ const EQQuestion = ({
                 //setTimeout(() => setQuestionNumber(questionNumber + 1));
               }}
             />
-            <Text style={styles.answer}>{answer.content}</Text>
+            <Text style={styles.option}>{option.content}</Text>
           </View>
         );
       })}
