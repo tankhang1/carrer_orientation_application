@@ -5,13 +5,15 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {Suspense} from 'react';
 import RenderHTML from 'react-native-render-html';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {COLORS, s} from '@utils/config';
+import {COLORS, s, vs} from '@utils/config';
 import AppView from '@components/AppView';
 import {navigationRef} from '@navigation';
+import AppHeader from '@components/AppHeader';
+import AppSkeleton from '@components/AppSkeleton';
 const source = {
   html: `   <article>
   <h2>Phó Trưởng Ban Nội chính Trung ương làm quyền Bí thư Lâm Đồng</h2>
@@ -50,24 +52,38 @@ const NewsDetail1 = () => {
   const {width} = useWindowDimensions();
   return (
     <ScrollView>
-      <SafeAreaView
-        style={{
-          paddingHorizontal: s(15),
-        }}>
-        <TouchableOpacity onPress={() => navigationRef.goBack()}>
-          <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
-        </TouchableOpacity>
-        <RenderHTML
-          source={source}
-          contentWidth={width}
-          renderersProps={renderersProps}
-          enableExperimentalMarginCollapsing={true}
-          tagsStyles={{
-            article: {
-              color: 'black',
-            },
-          }}
-        />
+      <SafeAreaView>
+        <AppHeader />
+        <View style={{paddingHorizontal: s(27)}}>
+          <Suspense
+            fallback={
+              <View style={{gap: vs(5), marginTop: 10}}>
+                <AppSkeleton width={'100%'} height={20} radius={10} />
+                <AppSkeleton width={'92%'} height={20} radius={10} />
+                <AppSkeleton width={'67%'} height={20} radius={10} />
+                <AppSkeleton width={'80%'} height={20} radius={10} />
+                <AppSkeleton width={'10%'} height={20} radius={10} />
+              </View>
+            }>
+            <RenderHTML
+              source={source}
+              contentWidth={width}
+              renderersProps={renderersProps}
+              enableExperimentalMarginCollapsing={true}
+              tagsStyles={{
+                header: {
+                  color: 'black',
+                },
+                main: {
+                  color: 'black',
+                },
+                footer: {
+                  color: 'black',
+                },
+              }}
+            />
+          </Suspense>
+        </View>
       </SafeAreaView>
     </ScrollView>
   );

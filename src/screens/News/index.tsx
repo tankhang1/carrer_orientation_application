@@ -15,6 +15,7 @@ import {NewsCategory} from './mock';
 import NewsJobs from './components/NewsJobs';
 import Admissions from './components/Admissions';
 import {navigationRef} from '@navigation';
+import AppHeader from '@components/AppHeader';
 const News = () => {
   const [categoryId, setCategoryId] = useState(NewsCategory[0].id);
   const [searchInfo, setSearchInfo] = useState('');
@@ -27,13 +28,12 @@ const News = () => {
   };
   return (
     <AppView style={styles.overall}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigationRef.goBack()}>
-          <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
-        </TouchableOpacity>
-        <Text style={FONT.title.XXL.bold}>Tin tức</Text>
-        <View style={{width: s(25)}} />
-      </View>
+      <AppHeader
+        title="Tin tức"
+        style={{
+          marginBottom: 10,
+        }}
+      />
       <AppTextInput
         width={'100%'}
         value={searchInfo}
