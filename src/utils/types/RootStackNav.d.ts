@@ -1,5 +1,4 @@
 export type TRootStackNav = {
-  SplashScreen: undefined;
   HomeScreen: undefined;
   ListResult: undefined;
   ListExam: undefined;

@@ -1,4 +1,3 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -13,7 +12,6 @@ import {TRootStackNav} from '@utils/types/RootStackNav';
 import News from '@screens/News';
 import HomeScreen from '@screens/HomeScreen';
 import NewsDetail2 from '@screens/NewsDetail2';
-import SplashScreen from '@screens/SplashScreen';
 import {createNavigationContainerRef} from '@react-navigation/native';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
@@ -27,9 +25,6 @@ const AppNavigation = () => {
           statusBarStyle: 'dark',
           statusBarTranslucent: true,
         }}>
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}></Stack.Screen>
         <Stack.Screen name="HomeScreen" component={HomeScreen}></Stack.Screen>
         <Stack.Screen name="ListResult" component={ListResult}></Stack.Screen>
         <Stack.Screen name="ListExam" component={ListExam}></Stack.Screen>

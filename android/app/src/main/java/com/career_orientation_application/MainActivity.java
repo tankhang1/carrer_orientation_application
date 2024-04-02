@@ -19,6 +19,12 @@ public class MainActivity extends ReactActivity {
     return "Career_Orientation_Application";
   }
 
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    RNBootSplash.init(this, R.style.BootTheme); 
+    super.onCreate(null);
+  }
+
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util
    * class {@link
