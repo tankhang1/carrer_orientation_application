@@ -13,6 +13,7 @@ import News from '@screens/News';
 import HomeScreen from '@screens/HomeScreen';
 import NewsDetail2 from '@screens/NewsDetail2';
 import {createNavigationContainerRef} from '@react-navigation/native';
+import SplashScreen from '@screens/SplashScreen';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
@@ -25,6 +26,7 @@ const AppNavigation = () => {
           statusBarStyle: 'dark',
           statusBarTranslucent: true,
         }}>
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen}></Stack.Screen>
         <Stack.Screen name="ListResult" component={ListResult}></Stack.Screen>
         <Stack.Screen name="ListExam" component={ListExam}></Stack.Screen>
