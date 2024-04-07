@@ -14,16 +14,8 @@ const Card = lazy(
 );
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
-const AppListResultHeader = () => {
-  return (
-    <View style={styles.headerContainer}>
-      <TouchableOpacity onPress={() => navigationRef.goBack()}>
-        <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
-      </TouchableOpacity>
-      <Text style={FONT.title.XXL.bold}>Kết quả kiểm tra</Text>
-    </View>
-  );
-};
+import AppHeader from '@components/AppHeader';
+
 const ListResult = () => {
   const renderCard = ({item, index}: ListRenderItemInfo<any>) => {
     return (
@@ -38,7 +30,7 @@ const ListResult = () => {
       data={Array.from({length: 10})}
       renderItem={renderCard}
       contentContainerStyle={styles.containerStyle}
-      ListHeaderComponent={<AppListResultHeader />}
+      ListHeaderComponent={<AppHeader title="Kết quả kiểm tra" />}
       renderToHardwareTextureAndroid
       removeClippedSubviews
     />
