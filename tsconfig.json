@@ -12,7 +12,8 @@
       "screens/*": ["./src/screens/*"],
       "service/*": ["./src/service/*"],
       "store/*": ["./src/store/*"],
-      "utils/*": ["./src/utils/*"]
+      "utils/*": ["./src/utils/*"],
+      "interface/*": ["./src/interfaces/*"]
     }
   }
 }

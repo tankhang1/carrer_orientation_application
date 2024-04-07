@@ -2,6 +2,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import AppImage from '@components/AppImage';
 import {FONT, s, vs, width} from '@utils/config';
+import {IQuestion} from '@interfaces/DTO';
 const OPTIONS = new Array(4).fill(require('@assets/images/sample2.png'));
 type TIQQuestion = {
   question: IQuestion;
@@ -10,15 +11,24 @@ const IQQuestion = ({question}: TIQQuestion) => {
   return (
     <View>
       <Text style={styles.questionTitle}>{question.questionTitle}</Text>
-      <AppImage source={{uri: question?.image}} style={styles.questionImage} />
+      <AppImage
+        source={{uri: question?.image}}
+        style={styles.questionImage}
+        resizeMode="contain"
+      />
       <View style={styles.optionContainer}>
-        {OPTIONS?.map((option, index) => {
+        {question.options?.map((option, index) => {
           return (
             <TouchableOpacity key={index} style={styles.optionWrapper}>
               <Text style={[FONT.content.M.semiBold, {marginTop: vs(10)}]}>
-                A
+                {option.content}
               </Text>
-              <AppImage source={option} style={styles.optionImage} />
+              {option.image && (
+                <AppImage
+                  source={{uri: option.image}}
+                  style={styles.optionImage}
+                />
+              )}
             </TouchableOpacity>
           );
         })}

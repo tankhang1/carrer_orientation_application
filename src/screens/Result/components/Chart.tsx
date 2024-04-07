@@ -48,7 +48,7 @@ const Chart = () => {
         }}
         yAxisTextStyle={FONT.content.S}
         xAxisLabelTextStyle={FONT.content.XS.medium}
-        onPress={() => console.log('press')}
+        //onPress={() => console.log('press')}
       />
     </View>
   );

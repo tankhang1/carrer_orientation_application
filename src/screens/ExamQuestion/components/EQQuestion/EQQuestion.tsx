@@ -2,6 +2,7 @@ import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import RadioButton from './RadioButton';
 import {styles} from '@screens/ExamQuestion/styles';
+import {IQuestion} from '@interfaces/DTO';
 type TEQQuestion = {
   question: IQuestion;
   questionNumber: number;

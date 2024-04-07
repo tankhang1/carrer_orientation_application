@@ -3,7 +3,16 @@ import React, {useEffect} from 'react';
 import {COLORS, width} from '@utils/config';
 import LottieView from 'lottie-react-native';
 import {navigationRef} from '@navigation';
+import {useQuery} from '@tanstack/react-query';
 const SplashScreen = () => {
+  // const {isPending, error, data} = useQuery({
+  //   queryKey: ['repoData'],
+  //   queryFn: () =>
+  //     fetch('https://api.github.com/repos/TanStack/query').then(res =>
+  //       res.json(),
+  //     ),
+  // });
+  //console.log(data);
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigationRef.navigate('HomeScreen');

@@ -2,6 +2,7 @@ import {View, Text} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '@screens/ExamQuestion/styles';
 import Checkbox from './Checkbox';
+import {IQuestion} from '@interfaces/DTO';
 type THollandQuestion = {
   question: IQuestion;
 };

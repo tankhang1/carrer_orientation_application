@@ -1,4 +1,6 @@
-declare type TExam =
+import {IResponse} from '..';
+
+export type TExam =
   | 'R'
   | 'I'
   | 'A'
@@ -9,17 +11,20 @@ declare type TExam =
   | 'EQ'
   | 'Holland'
   | 'SchoolScore';
-declare interface IOption {
+export interface IOption {
   image?: string;
   content: string;
   isResult?: boolean;
 }
-declare interface IQuestion {
+export interface IQuestion {
   questionTitle: string;
   image?: string;
   options?: IOption[];
 }
-declare interface IExam {
+export interface IExam {
   type: TExam;
   questions: IQuestion[];
+}
+export interface IExamResponse extends IResponse {
+  data: IExam[];
 }
