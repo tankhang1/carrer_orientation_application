@@ -4,6 +4,7 @@ import {FONT, s, vs} from '@utils/config';
 
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
+import Animated, {FadeInLeft, FadeOut, FadeIn} from 'react-native-reanimated';
 const AppCard = lazy(() => import('@components/AppCard'));
 const card = {
   imageUrl:
@@ -23,13 +24,17 @@ const NewsCard = () => {
       return (
         <Suspense
           fallback={<AppSkeleton width={100} height={150} radius={10} />}>
-          <AppCard
-            key={index}
-            index={index}
-            imageUrl={item.imageUrl}
-            title={item.title}
-            subTitle={item.date.toString()}
-          />
+          <Animated.View
+            entering={FadeIn.delay((index ?? 0) * 100)}
+            exiting={FadeOut}>
+            <AppCard
+              key={index}
+              index={index}
+              imageUrl={item.imageUrl}
+              title={item.title}
+              subTitle={item.date.toString()}
+            />
+          </Animated.View>
         </Suspense>
       );
     },

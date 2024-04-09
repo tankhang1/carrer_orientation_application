@@ -3,7 +3,10 @@ import React, {lazy, Suspense} from 'react';
 import {FONT, s, vs} from '@utils/config';
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
-const Card = lazy(() => import('./Card'));
+const AppHistoryCard = lazy(
+  () => import('@components/AppHistoryCard/AppHistoryCard'),
+);
+
 const HistoryCard = () => {
   return (
     <View style={styles.container}>
@@ -15,11 +18,11 @@ const HistoryCard = () => {
       </View>
       <Suspense
         fallback={<AppSkeleton width={'100%'} height={200} radius={10} />}>
-        <Card />
+        <AppHistoryCard />
       </Suspense>
       <Suspense
         fallback={<AppSkeleton width={'100%'} height={200} radius={10} />}>
-        <Card />
+        <AppHistoryCard />
       </Suspense>
     </View>
   );

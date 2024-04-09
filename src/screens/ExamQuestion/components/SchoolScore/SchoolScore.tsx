@@ -6,7 +6,6 @@ import {AppTextInput} from '@components';
 const SchoolScore = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}></View>
       <Text style={styles.title}>
         Vui lòng nhập điểm trung bình của từng môn nhé!
       </Text>
@@ -29,10 +28,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: s(27),
     gap: vs(10),
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
   title: {
     ...FONT.content.M.semiBold,

@@ -4,11 +4,14 @@ import AppView from '@components/AppView';
 import AppHeader from '@components/AppHeader';
 import {Chart, HollandResult} from './components';
 import {FONT, s, vs} from '@utils/config';
-
-const Result = () => {
+import {navigationRef} from '@navigation';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {TRootStackNav} from '@utils/types/RootStackNav';
+type Props = NativeStackScreenProps<TRootStackNav, 'Result'>;
+const Result = ({navigation}: Props) => {
   return (
     <AppView>
-      <AppHeader title="Kết quả" />
+      <AppHeader title="Kết quả" onPress={() => navigation.pop(2)} />
       <ImageBackground
         source={require('@assets/images/background.jpg')}
         style={styles.header}>
