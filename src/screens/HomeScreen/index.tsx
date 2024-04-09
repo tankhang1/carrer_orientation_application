@@ -3,7 +3,7 @@ import React, {lazy, Suspense} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import {navigationRef} from '@navigation';
-import {COLORS, FONT, s, vs, width} from '@utils/config';
+import {COLORS, FONT, s, vs} from '@utils/config';
 import {ButtonFunction, NewsCard, HistoryCard} from './components';
 import AppView from '@components/AppView';
 import Ionicons from 'react-native-vector-icons/Ionicons';

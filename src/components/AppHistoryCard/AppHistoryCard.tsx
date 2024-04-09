@@ -49,7 +49,7 @@ type TCard = {
   isExpand?: boolean;
   index?: number;
 };
-const Card = ({isExpand, index = 0}: TCard) => {
+const AppHistoryCard = ({isExpand, index = 0}: TCard) => {
   return (
     <Animated.View entering={FadeIn.delay(index * 150)} style={styles.wrapper}>
       <Text style={styles.date}>17/2/2024</Text>
@@ -158,4 +158,4 @@ const styles = StyleSheet.create({
     borderRadius: s(5),
   },
 });
-export default Card;
+export default AppHistoryCard;

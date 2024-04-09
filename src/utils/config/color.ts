@@ -10,4 +10,5 @@ export const COLORS = {
   grey: '#B2B1B1',
   darkBlue: 'blue',
   lightGrey: '#D9D9D9',
+  backdrop: '#00000099',
 };

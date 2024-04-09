@@ -7,10 +7,9 @@ import {
 } from 'react-native';
 import React, {lazy, Suspense} from 'react';
 import AppView from '@components/AppView';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLORS, FONT, s, vs, width} from '@utils/config';
-const Card = lazy(
-  () => import('@screens/HomeScreen/components/HistoryCard/Card'),
+const AppHistoryCard = lazy(
+  () => import('@components/AppHistoryCard/AppHistoryCard'),
 );
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
@@ -21,7 +20,7 @@ const ListResult = () => {
     return (
       <Suspense
         fallback={<AppSkeleton width={width * 0.9} height={300} radius={10} />}>
-        <Card key={index} isExpand={true} index={index} />
+        <AppHistoryCard key={index} isExpand={true} index={index} />
       </Suspense>
     );
   };

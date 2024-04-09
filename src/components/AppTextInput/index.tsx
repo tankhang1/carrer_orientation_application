@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: s(8),
     ...FONT.content.M.regular,
+    paddingVertical: s(10),
   },
 });
 export default AppTextInput;

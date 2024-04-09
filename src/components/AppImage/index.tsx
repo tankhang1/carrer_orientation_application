@@ -42,6 +42,7 @@ const AppImage = ({
         onLoadStart={onLoadStart}
         onLoadEnd={onLoadEnd}
         onError={onError}
+        resizeMode={resizeMode}
       />
       {isLoading && (
         <View style={styles.fallBack}>

@@ -1,4 +1,4 @@
 import BottomButton from './BottomButton';
-import IQQuestion from './IQQuestion/IQQuestion';
-import EQQuestion from './EQQuestion/EQQuestion';
-export {BottomButton, IQQuestion, EQQuestion};
+import Question from './Question/Question';
+import SchoolScore from './SchoolScore/SchoolScore';
+export {BottomButton, Question, SchoolScore};
