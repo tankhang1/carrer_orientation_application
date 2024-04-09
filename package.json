@@ -33,6 +33,7 @@
     "react-native-screens": "^3.29.0",
     "react-native-svg": "^15.1.0",
     "react-native-vector-icons": "^10.0.3",
+    "react-native-webview": "^13.8.4",
     "wonka": "^6.3.4"
   },
   "devDependencies": {

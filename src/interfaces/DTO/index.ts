@@ -4,3 +4,4 @@ export interface IResponse {
 }
 
 export * from './Exam/exam';
+export * from './New/new';

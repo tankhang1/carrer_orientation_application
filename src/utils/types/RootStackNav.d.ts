@@ -7,7 +7,9 @@ export type TRootStackNav = {
   UploadResult: undefined;
   Result: undefined;
   News: undefined;
-  NewsDetail1: undefined;
+  NewsDetail1: {
+    content: string;
+  };
   NewsDetail2: {
     title: string;
   };

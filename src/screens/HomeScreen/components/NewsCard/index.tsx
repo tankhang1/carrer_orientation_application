@@ -1,10 +1,23 @@
-import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Pressable,
+} from 'react-native';
 import React, {lazy, memo, Suspense, useCallback} from 'react';
 import {FONT, s, vs} from '@utils/config';
 
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
 import Animated, {FadeInLeft, FadeOut, FadeIn} from 'react-native-reanimated';
+import {DefaultError, useQuery} from '@tanstack/react-query';
+import {QUERY_KEY} from '@utils/constants';
+import {INew, INewCategory, INewsResponse} from '@interfaces/DTO';
+import useAPI from '@service/api';
+import {ENDPOINTS_URL} from '@service';
+import {TNewsData} from '@screens/News/mock';
 const AppCard = lazy(() => import('@components/AppCard'));
 const card = {
   imageUrl:
@@ -18,9 +31,15 @@ type TCard = {
   title: string;
 };
 const CARDS: TCard[] = new Array(6).fill(card);
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const NewsCard = () => {
+  const {isLoading, data, isError} = useQuery<unknown, DefaultError, INew[]>({
+    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWS],
+    queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
+  });
+  console.log(data);
   const renderCard = useCallback(
-    ({item, index}: {item: TCard; index: number}) => {
+    ({item, index}: {item: INew; index: number}) => {
       return (
         <Suspense
           fallback={<AppSkeleton width={100} height={150} radius={10} />}>
@@ -30,9 +49,12 @@ const NewsCard = () => {
             <AppCard
               key={index}
               index={index}
-              imageUrl={item.imageUrl}
+              imageUrl={item.image.shortImage}
               title={item.title}
-              subTitle={item.date.toString()}
+              subTitle={''}
+              onPress={() =>
+                navigationRef.navigate('NewsDetail1', {content: item.content})
+              }
             />
           </Animated.View>
         </Suspense>
@@ -50,7 +72,7 @@ const NewsCard = () => {
       </View>
       <FlatList
         horizontal
-        data={CARDS}
+        data={data}
         renderItem={renderCard}
         contentContainerStyle={styles.listContainer}
         showsHorizontalScrollIndicator={false}
