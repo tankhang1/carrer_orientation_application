@@ -1,15 +1,18 @@
 import {View, Text, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import RadioButton from './RadioButton';
-import {styles} from '@screens/ExamQuestion/styles';
-import {IQuestion} from '@interfaces/DTO';
+import {styles} from './styles';
+import {IQuestion, TExam} from '@interfaces/DTO';
 import AppImage from '@components/AppImage';
 import {width} from '@utils/config';
 import Checkbox from './Checkbox';
+import {TAnswer} from '@screens/ExamQuestion';
 type Props = {
   question: IQuestion;
   questionNumber: number;
-  type?: 'single-choice' | 'multiple-choice';
+  type?: TExam;
+  answers: TAnswer;
+  questionIndex: number;
 };
 type TImage = {
   w?: number;
@@ -18,17 +21,26 @@ type TImage = {
 const Question = ({
   question,
   questionNumber,
-  type = 'multiple-choice',
+  type = 'R',
+  answers,
+  questionIndex,
 }: Props) => {
   const [selected, setSelected] = useState(-1);
   const [imageSize, setImageSize] = useState<TImage>({w: 0, h: 0});
   const [multipleSelections, setMultipleSelections] = useState<number[]>([]);
   useEffect(() => {
     if (questionNumber !== 0) {
-      type === 'single-choice' ? setSelected(-1) : setMultipleSelections([]);
+      if (type === 'IQ' || type === 'EQ') {
+        setSelected(-1);
+        return;
+      }
+      console.log('multi', multipleSelections);
+
+      setMultipleSelections([]);
     }
   }, [questionNumber]);
 
+  //console.log(answers);
   // useEffect(() => {
   //   if (question?.image) {
   //     Image.getSize(question?.image!, (w, h) => {
@@ -36,6 +48,7 @@ const Question = ({
   //     });
   //   }
   // }, [question?.image]);
+
   const onPress = (index: number) => {
     const selection = multipleSelections?.findIndex(item => item === index);
     if (selection === -1) {
@@ -76,11 +89,12 @@ const Question = ({
                 />
               )}
               <View style={styles.optionTitle}>
-                {type === 'single-choice' ? (
+                {type === 'EQ' || type === 'IQ' ? (
                   <RadioButton
                     selected={selected === index}
                     onPress={() => {
                       setSelected(index);
+                      answers.set(type, {[questionIndex]: selected});
                     }}
                   />
                 ) : (

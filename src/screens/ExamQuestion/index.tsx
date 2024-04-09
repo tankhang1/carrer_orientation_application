@@ -10,8 +10,13 @@ import {DefaultError, useQuery} from '@tanstack/react-query';
 type Props = NativeStackScreenProps<TRootStackNav, 'ExamQuestion'>;
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
-import {IExam, IExamResponse, IResponse} from '@interfaces/DTO';
+import {IExam, IExamResponse, IResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
+export type TAnswer = Map<TExam, number[] | Record<string, number>>;
+type TExamInfo = {
+  headerTitle: string;
+  examType: TExam;
+};
 const ExamQuestion = () => {
   const {isPending, error, data, isLoading} = useQuery<
     unknown,
@@ -24,6 +29,7 @@ const ExamQuestion = () => {
   const [questionNumber, setQuestionNumber] = useState(0);
   const [openModalNext, setOpenModalNext] = useState(false);
   //const [answers, setAnswers] = useState()
+  const answers: TAnswer = new Map();
   const isContinue = useRef(false);
   const IQ = useMemo(
     () => data?.data?.find(exam => exam.type === 'IQ')?.questions || [],
@@ -46,6 +52,7 @@ const ExamQuestion = () => {
       setQuestionNumber(questionNumber + 1);
     }
     if (questionNumber > totalExams) navigationRef.navigate('Result');
+    console.log('answer', answers);
   }, [data?.data, questionNumber, totalExams]);
 
   const onPrev = useCallback(() => {
@@ -53,19 +60,22 @@ const ExamQuestion = () => {
       setQuestionNumber(questionNumber - 1);
     }
   }, [data?.data, questionNumber]);
-  const headerTitle = useMemo(() => {
+
+  const examInfo: TExamInfo = useMemo(() => {
     if (questionNumber < HOLLAND?.length) {
-      return 'Holland';
+      return {
+        headerTitle: 'Holland',
+        examType: HOLLAND[questionNumber].type,
+      };
     }
     if (questionNumber < HOLLAND?.length + IQ?.length) {
-      return 'Kiểm tra trí tuệ';
+      return {headerTitle: 'Kiểm tra trí tuệ', examType: 'IQ'};
     }
     if (questionNumber < totalExams) {
-      return 'Kiểm tra cảm xúc';
+      return {headerTitle: 'Kiểm tra cảm xúc', examType: 'EQ'};
     }
-    return 'Điểm trung bình';
+    return {headerTitle: 'Điểm trung bình', examType: 'SchoolScore'};
   }, [questionNumber]);
-
   useEffect(() => {
     if (
       questionNumber === HOLLAND?.length &&
@@ -76,24 +86,26 @@ const ExamQuestion = () => {
       isContinue.current = true;
     }
   }, [questionNumber, isContinue?.current, data]);
+
   return (
     <>
       <AppView>
-        <AppHeader title={headerTitle} />
+        <AppHeader title={examInfo.headerTitle} />
         {isLoading || !data?.data ? (
           <ActivityIndicator size={'large'} />
         ) : (
           <View style={styles.container}>
-            {questionNumber < HOLLAND?.length ? (
+            {questionNumber < totalExams ? (
               <Question
-                question={HOLLAND[questionNumber].questions[0]}
+                question={
+                  questionNumber < HOLLAND?.length
+                    ? HOLLAND[questionNumber].questions[0]
+                    : IQ_EQ_List[questionNumber - HOLLAND?.length]
+                }
                 questionNumber={questionNumber}
-              />
-            ) : questionNumber < totalExams ? (
-              <Question
-                question={IQ_EQ_List[questionNumber - HOLLAND?.length]}
-                questionNumber={questionNumber}
-                type="single-choice"
+                type={examInfo.examType}
+                answers={answers}
+                questionIndex={questionNumber - HOLLAND?.length + 1}
               />
             ) : (
               <SchoolScore />
