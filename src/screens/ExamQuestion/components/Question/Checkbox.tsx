@@ -8,8 +8,17 @@ type Props = {
 };
 const Checkbox = ({isCheck = false, onPress = () => {}}: Props) => {
   return (
-    <Pressable style={styles.box} onPress={onPress} hitSlop={10}>
-      {isCheck && <Entypo name="check" color={COLORS.blue} size={s(16)} />}
+    <Pressable
+      style={[
+        styles.box,
+        {
+          backgroundColor: isCheck ? COLORS.blue : COLORS.white,
+          borderWidth: isCheck ? 0 : 1,
+        },
+      ]}
+      onPress={onPress}
+      hitSlop={10}>
+      {isCheck && <Entypo name="check" color={COLORS.white} size={s(16)} />}
     </Pressable>
   );
 };

@@ -10,13 +10,23 @@ import {DefaultError, useQuery} from '@tanstack/react-query';
 type Props = NativeStackScreenProps<TRootStackNav, 'ExamQuestion'>;
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
-import {IExam, IExamResponse, IResponse, TExam} from '@interfaces/DTO';
+import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
-export type TAnswer = Map<TExam, number[] | Record<string, number>>;
+export type TAnswer = Map<TExam, number[]>;
 type TExamInfo = {
   headerTitle: string;
   examType: TExam;
 };
+const initialAnswers: TAnswer = new Map([
+  ['R', []],
+  ['I', []],
+  ['A', []],
+  ['S', []],
+  ['E', []],
+  ['C', []],
+  ['IQ', []],
+  ['EQ', []],
+]);
 const ExamQuestion = () => {
   const {isPending, error, data, isLoading} = useQuery<
     unknown,
@@ -28,8 +38,9 @@ const ExamQuestion = () => {
   });
   const [questionNumber, setQuestionNumber] = useState(0);
   const [openModalNext, setOpenModalNext] = useState(false);
-  //const [answers, setAnswers] = useState()
-  const answers: TAnswer = new Map();
+  const [answers, setAnswers] = useState<TAnswer>(initialAnswers);
+  const [selections, setSelections] = useState<number[]>([]);
+  const [errorNotAnswer, setErrorNotAnswer] = useState(false);
   const isContinue = useRef(false);
   const IQ = useMemo(
     () => data?.data?.find(exam => exam.type === 'IQ')?.questions || [],
@@ -46,26 +57,52 @@ const ExamQuestion = () => {
       [],
     [data?.data],
   );
-  const totalExams = useMemo(() => data?.data?.length ?? 0, [data?.data]);
+  const totalExams = useMemo(
+    () => HOLLAND?.length + IQ_EQ_List?.length || 1,
+    [data?.data],
+  );
+  const questionIndex = useMemo(
+    () => questionNumber - HOLLAND?.length,
+    [questionNumber, HOLLAND?.length],
+  );
+  const onUpdateAnswer = () => {
+    const currentAnswer = answers;
+    if (examInfo.examType === 'EQ' || examInfo.examType === 'IQ') {
+      let tmp = currentAnswer.get(examInfo.examType)!;
+      tmp[questionIndex] = selections[0];
+      currentAnswer.set(examInfo.examType, tmp);
+      setAnswers(currentAnswer);
+      return;
+    }
+    currentAnswer.set(examInfo.examType, selections);
+    setAnswers(currentAnswer);
+  };
   const onNext = useCallback(() => {
+    if (selections?.length === 0 || selections[0] === -1) {
+      setErrorNotAnswer(true);
+      return;
+    }
+    if (errorNotAnswer) {
+      setErrorNotAnswer(false);
+    }
     if (questionNumber <= totalExams) {
       setQuestionNumber(questionNumber + 1);
+      onUpdateAnswer();
     }
     if (questionNumber > totalExams) navigationRef.navigate('Result');
-    console.log('answer', answers);
-  }, [data?.data, questionNumber, totalExams]);
+  }, [data?.data, questionNumber, totalExams, selections]);
 
   const onPrev = useCallback(() => {
     if (questionNumber > 0) {
       setQuestionNumber(questionNumber - 1);
+      onUpdateAnswer();
     }
-  }, [data?.data, questionNumber]);
-
+  }, [data?.data, questionNumber, selections]);
   const examInfo: TExamInfo = useMemo(() => {
-    if (questionNumber < HOLLAND?.length) {
+    if (questionNumber < HOLLAND?.length || questionNumber === 0) {
       return {
         headerTitle: 'Holland',
-        examType: HOLLAND[questionNumber].type,
+        examType: HOLLAND[questionNumber]?.type || 'R',
       };
     }
     if (questionNumber < HOLLAND?.length + IQ?.length) {
@@ -95,25 +132,34 @@ const ExamQuestion = () => {
           <ActivityIndicator size={'large'} />
         ) : (
           <View style={styles.container}>
-            {questionNumber < totalExams ? (
+            {/* {questionNumber < totalExams ? (
               <Question
                 question={
                   questionNumber < HOLLAND?.length
                     ? HOLLAND[questionNumber].questions[0]
-                    : IQ_EQ_List[questionNumber - HOLLAND?.length]
+                    : IQ_EQ_List[questionIndex]
                 }
                 questionNumber={questionNumber}
                 type={examInfo.examType}
+                questionIndex={questionIndex}
+                selections={selections}
+                setSelections={setSelections}
                 answers={answers}
-                questionIndex={questionNumber - HOLLAND?.length + 1}
+                error={errorNotAnswer}
               />
             ) : (
               <SchoolScore />
-            )}
+            )} */}
+            <SchoolScore />
           </View>
         )}
       </AppView>
-      <BottomButton onNext={onNext} onPrev={onPrev} />
+      <BottomButton
+        onNext={onNext}
+        onPrev={onPrev}
+        maxValue={totalExams}
+        currentValue={questionNumber}
+      />
       <AppModal
         disableBackDrop={true}
         visible={openModalNext}

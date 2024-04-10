@@ -8,14 +8,21 @@ import {navigationRef} from '@navigation';
 type TBottomButton = {
   onNext?: () => void;
   onPrev?: () => void;
+  maxValue?: number;
+  currentValue?: number;
 };
-const BottomButton = ({onNext, onPrev}: TBottomButton) => {
+const BottomButton = ({
+  onNext,
+  onPrev,
+  maxValue = 1,
+  currentValue = 0,
+}: TBottomButton) => {
   return (
     <View style={styles.container}>
       <AppRoundedButton type="fill" onPress={onPrev}>
         <Entypo name="chevron-left" size={s(20)} color={COLORS.white} />
       </AppRoundedButton>
-      <AppProgressBar />
+      <AppProgressBar maxValue={maxValue} progress={currentValue} />
       <AppRoundedButton
         type="fill"
         //onPress={() => navigationRef.navigate('Result')}

@@ -42,4 +42,8 @@ export const styles = StyleSheet.create({
     gap: s(10),
     justifyContent: 'center',
   },
+  error: {
+    ...FONT.content.M.semiBold,
+    color: COLORS.red,
+  },
 });

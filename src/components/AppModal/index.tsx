@@ -10,7 +10,7 @@ import {COLORS, FONT, s, vs, width} from '@utils/config';
 import AppImage from '@components/AppImage';
 import {Source} from 'react-native-fast-image';
 import AppButton from '@components/AppButton';
-import Animated, {ZoomIn} from 'react-native-reanimated';
+import Animated, {SlideInDown} from 'react-native-reanimated';
 type TAppModal = {
   title?: string;
   visible?: boolean;
@@ -37,7 +37,7 @@ const AppModal = ({
         style={styles.backdrop}
         onPress={() => setVisible(false)}
       />
-      <Animated.View style={styles.card} entering={ZoomIn.delay(200)}>
+      <Animated.View style={styles.card} entering={SlideInDown.delay(100)}>
         {title && <Text style={styles.title}>{title}</Text>}
         <AppImage source={image} style={styles.image} resizeMode="contain" />
         <View style={styles.buttonContainer}>

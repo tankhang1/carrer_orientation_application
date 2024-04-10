@@ -9,7 +9,6 @@ export type TExam =
   | 'C'
   | 'IQ'
   | 'EQ'
-  | 'Holland'
   | 'SchoolScore';
 export interface IOption {
   image?: string;
@@ -20,6 +19,7 @@ export interface IQuestion {
   questionTitle: string;
   image?: string;
   options?: IOption[];
+  answer?: number | number[];
 }
 export interface IExam {
   type: TExam;
@@ -27,4 +27,9 @@ export interface IExam {
 }
 export interface IExamResponse extends IResponse {
   data: IExam[];
+}
+
+export interface ISchoolScore {
+  name: string;
+  value: string;
 }
