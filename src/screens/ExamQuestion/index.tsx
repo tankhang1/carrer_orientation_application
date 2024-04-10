@@ -132,7 +132,7 @@ const ExamQuestion = () => {
           <ActivityIndicator size={'large'} />
         ) : (
           <View style={styles.container}>
-            {/* {questionNumber < totalExams ? (
+            {questionNumber < totalExams ? (
               <Question
                 question={
                   questionNumber < HOLLAND?.length
@@ -149,8 +149,8 @@ const ExamQuestion = () => {
               />
             ) : (
               <SchoolScore />
-            )} */}
-            <SchoolScore />
+            )}
+            {/* <SchoolScore /> */}
           </View>
         )}
       </AppView>

@@ -15,6 +15,11 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
+import {QUERY_KEY} from '@utils/constants';
+import {DefaultError, useQuery} from '@tanstack/react-query';
+import {INew} from '@interfaces/DTO';
+import {ENDPOINTS_URL} from '@service';
+import useAPI from '@service/api';
 const data = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXCm4MjY9Hr8BBGrOMaDjZGCru4ge0Se0OAw&usqp=CAU',
   'https://cdythadong.edu.vn/uploads/files/tuyen%20sinh/2024/thong%20bao%20ts/thumbnail%20hdmc.png',
@@ -28,6 +33,18 @@ const Carousel = () => {
   const listWidth = useMemo(() => data.length * width, [data.length]);
   const indicatorValue = useSharedValue(0);
   const indicatorRef = useRef<TIndicatorRef>(null);
+  const {
+    isLoading,
+    data: news,
+    isError,
+  } = useQuery<unknown, DefaultError, INew[]>({
+    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
+    queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
+  });
+  const banners = useMemo(
+    () => news?.map(item => item.image.longImage),
+    [news],
+  );
   useEffect(() => {
     if (data?.length > 0) {
       interval.current = setInterval(() => {
@@ -74,13 +91,13 @@ const Carousel = () => {
     indicatorValue.value = e.contentOffset.x;
   }, []);
   const renderItem = useCallback(
-    ({item, index}: {item: string; index: number}) => {
+    ({item, index}: {item?: string; index: number}) => {
       return (
         <View style={styles.cardContainer} key={index}>
           <AppImage
-            source={{uri: item}}
+            source={{uri: item ?? ''}}
             style={styles.image}
-            resizeMode="cover"
+            resizeMode="stretch"
           />
         </View>
       );
@@ -93,7 +110,7 @@ const Carousel = () => {
       //onLayout={e => console.log(e.nativeEvent.layout.height)}
     >
       <Animated.FlatList
-        data={data}
+        data={banners as any}
         ref={listRef}
         renderItem={renderItem}
         horizontal
