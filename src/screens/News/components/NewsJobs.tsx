@@ -17,7 +17,7 @@ type TNewsJobsProps = {
 };
 const NewsJobs = ({deferSearchInfo, id}: TNewsJobsProps) => {
   const {isLoading, data, isError} = useQuery<unknown, DefaultError, INew[]>({
-    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS],
+    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS, id],
     queryFn: () =>
       useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {params: {id: id}}),
     enabled: !!id,
