@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import React, {lazy, useDeferredValue, useState} from 'react';
+import React, {lazy, useDeferredValue, useEffect, useState} from 'react';
 import AppView from '@components/AppView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLORS, FONT, s, vs} from '@utils/config';
@@ -16,8 +16,21 @@ import NewsJobs from './components/NewsJobs';
 import Admissions from './components/Admissions';
 import {navigationRef} from '@navigation';
 import AppHeader from '@components/AppHeader';
+import {DefaultError, useQueries, useQuery} from '@tanstack/react-query';
+import {QUERY_KEY} from '@utils/constants';
+import useAPI from '@service/api';
+import {ENDPOINTS_URL} from '@service';
 const News = () => {
-  const [categoryId, setCategoryId] = useState(NewsCategory[0].id);
+  const {data: Categories, isLoading} = useQuery<
+    unknown,
+    DefaultError,
+    {_id: string; categoryName: string}[]
+  >({
+    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_CATEGORIES],
+    queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_ALL_CATEGORIES, 'GET', {}),
+  });
+
+  const [categoryId, setCategoryId] = useState(Categories?.[0]._id);
   const [searchInfo, setSearchInfo] = useState('');
   const deferSearchInfo = useDeferredValue(searchInfo);
   const onCategoryPress = (id: string) => {
@@ -26,6 +39,9 @@ const News = () => {
       setSearchInfo('');
     }
   };
+  useEffect(() => {
+    setCategoryId(Categories?.[0]._id);
+  }, [Categories]);
   return (
     <AppView style={styles.overall}>
       <AppHeader
@@ -56,34 +72,30 @@ const News = () => {
           style={{
             marginVertical: vs(10),
           }}>
-          {NewsCategory.map((category, index) => (
+          {Categories?.map((category, index) => (
             <AppButton
               key={index}
-              label={category.title}
+              label={category.categoryName}
               labelStyle={[
                 FONT.content.M.semiBold,
                 {
                   marginHorizontal: 0,
                 },
-                categoryId === category.id
+                categoryId === category._id
                   ? {color: COLORS.white}
                   : {color: COLORS.black},
               ]}
               buttonStyle={[
                 styles.categoryBtn,
-                categoryId === category.id && {
+                categoryId === category._id && {
                   backgroundColor: COLORS.green,
                 },
               ]}
-              onPress={() => onCategoryPress(category.id)}
+              onPress={() => onCategoryPress(category._id)}
             />
           ))}
         </ScrollView>
-        {categoryId === NewsCategory[0].id ? (
-          <Admissions />
-        ) : (
-          <NewsJobs deferSearchInfo={deferSearchInfo} />
-        )}
+        <NewsJobs deferSearchInfo={deferSearchInfo} id={categoryId} />
       </View>
     </AppView>
   );

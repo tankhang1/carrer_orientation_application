@@ -10,8 +10,6 @@ export type TRootStackNav = {
   NewsDetail1: {
     content: string;
   };
-  NewsDetail2: {
-    title: string;
-  };
+
   ChatBox: undefined;
 };

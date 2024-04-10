@@ -11,7 +11,6 @@ import Chatbox from '@screens/Chatbox';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import News from '@screens/News';
 import HomeScreen from '@screens/HomeScreen';
-import NewsDetail2 from '@screens/NewsDetail2';
 import {createNavigationContainerRef} from '@react-navigation/native';
 import SplashScreen from '@screens/SplashScreen';
 const Stack = createNativeStackNavigator<TRootStackNav>();
@@ -39,7 +38,6 @@ const AppNavigation = () => {
         <Stack.Screen name="Result" component={Result}></Stack.Screen>
         <Stack.Screen name="News" component={News}></Stack.Screen>
         <Stack.Screen name="NewsDetail1" component={NewsDetail1}></Stack.Screen>
-        <Stack.Screen name="NewsDetail2" component={NewsDetail2}></Stack.Screen>
 
         <Stack.Screen name="ChatBox" component={Chatbox}></Stack.Screen>
       </Stack.Navigator>

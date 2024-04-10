@@ -13,15 +13,18 @@ import {ENDPOINTS_URL} from '@service';
 const AppCard = lazy(() => import('@components/AppCard'));
 type TNewsJobsProps = {
   deferSearchInfo: string;
+  id?: string;
 };
-const NewsJobs = ({deferSearchInfo}: TNewsJobsProps) => {
+const NewsJobs = ({deferSearchInfo, id}: TNewsJobsProps) => {
   const {isLoading, data, isError} = useQuery<unknown, DefaultError, INew[]>({
-    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWS],
-    queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_ALL_NEWS_DETAIL, 'GET', {}),
+    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS],
+    queryFn: () =>
+      useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {params: {id: id}}),
+    enabled: !!id,
   });
   const renderCard = ({item, index}: ListRenderItemInfo<INew>) => {
-    const searchPattern = new RegExp(deferSearchInfo, 'i');
-    if (searchPattern.test(item.content))
+    const searchPattern = new RegExp(deferSearchInfo.toLowerCase(), 'i');
+    if (searchPattern.test(item.title.toLowerCase()))
       return (
         <Suspense fallback={<AppSkeleton width={'100%'} height={200} />}>
           <AppCard
@@ -44,6 +47,7 @@ const NewsJobs = ({deferSearchInfo}: TNewsJobsProps) => {
       scrollEnabled={false}
       data={data}
       renderItem={renderCard}
+      extraData={id}
       contentContainerStyle={{gap: vs(10)}}
     />
   );

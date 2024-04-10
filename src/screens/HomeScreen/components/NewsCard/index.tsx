@@ -34,7 +34,7 @@ const CARDS: TCard[] = new Array(6).fill(card);
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const NewsCard = () => {
   const {isLoading, data, isError} = useQuery<unknown, DefaultError, INew[]>({
-    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWS],
+    queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
     queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
   });
   console.log(data);
@@ -52,6 +52,10 @@ const NewsCard = () => {
               imageUrl={item.image.shortImage}
               title={item.title}
               subTitle={''}
+              containerStyle={{
+                width: s(100),
+                height: s(160),
+              }}
               onPress={() =>
                 navigationRef.navigate('NewsDetail1', {content: item.content})
               }

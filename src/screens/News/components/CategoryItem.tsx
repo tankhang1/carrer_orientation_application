@@ -9,11 +9,7 @@ type TCategoryItem = {
 };
 const CategoryItem = ({item}: TCategoryItem) => {
   return (
-    <TouchableOpacity
-      style={styles.categoryItem}
-      onPress={() =>
-        navigationRef.navigate('NewsDetail2', {title: item.title})
-      }>
+    <TouchableOpacity style={styles.categoryItem}>
       <AppImage source={item.image} style={styles.image} />
       <Text style={FONT.title.M}>{item.title}</Text>
     </TouchableOpacity>
