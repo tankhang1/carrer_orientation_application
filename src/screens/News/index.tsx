@@ -34,59 +34,64 @@ const News = () => {
           marginBottom: 10,
         }}
       />
-      <AppTextInput
-        width={'100%'}
-        value={searchInfo}
-        onChangeText={setSearchInfo}
-        containerStyle={{backgroundColor: COLORS.white, borderWidth: 0}}
-        placeholder="Tìm kiếm tin tức"
-        placeholderTextColor={COLORS.grey}
-        trailing={<AntDesign name="search1" size={s(25)} color={COLORS.grey} />}
-      />
-      <ScrollView
-        horizontal
-        contentContainerStyle={{gap: s(10)}}
-        showsHorizontalScrollIndicator={false}
+      <View
         style={{
-          marginVertical: vs(10),
+          paddingHorizontal: s(15),
         }}>
-        {NewsCategory.map((category, index) => (
-          <AppButton
-            key={index}
-            label={category.title}
-            labelStyle={[
-              FONT.content.M.semiBold,
-              {
-                marginHorizontal: 0,
-              },
-              categoryId === category.id
-                ? {color: COLORS.white}
-                : {color: COLORS.black},
-            ]}
-            buttonStyle={[
-              styles.categoryBtn,
-              categoryId === category.id && {
-                backgroundColor: COLORS.green,
-              },
-            ]}
-            onPress={() => onCategoryPress(category.id)}
-          />
-        ))}
-      </ScrollView>
-      {categoryId === NewsCategory[0].id ? (
-        <Admissions />
-      ) : (
-        <NewsJobs deferSearchInfo={deferSearchInfo} />
-      )}
+        <AppTextInput
+          width={'100%'}
+          value={searchInfo}
+          onChangeText={setSearchInfo}
+          containerStyle={{backgroundColor: COLORS.white, borderWidth: 0}}
+          placeholder="Tìm kiếm tin tức"
+          placeholderTextColor={COLORS.grey}
+          trailing={
+            <AntDesign name="search1" size={s(25)} color={COLORS.grey} />
+          }
+        />
+        <ScrollView
+          horizontal
+          contentContainerStyle={{gap: s(10)}}
+          showsHorizontalScrollIndicator={false}
+          style={{
+            marginVertical: vs(10),
+          }}>
+          {NewsCategory.map((category, index) => (
+            <AppButton
+              key={index}
+              label={category.title}
+              labelStyle={[
+                FONT.content.M.semiBold,
+                {
+                  marginHorizontal: 0,
+                },
+                categoryId === category.id
+                  ? {color: COLORS.white}
+                  : {color: COLORS.black},
+              ]}
+              buttonStyle={[
+                styles.categoryBtn,
+                categoryId === category.id && {
+                  backgroundColor: COLORS.green,
+                },
+              ]}
+              onPress={() => onCategoryPress(category.id)}
+            />
+          ))}
+        </ScrollView>
+        {categoryId === NewsCategory[0].id ? (
+          <Admissions />
+        ) : (
+          <NewsJobs deferSearchInfo={deferSearchInfo} />
+        )}
+      </View>
     </AppView>
   );
 };
 
 export default News;
 const styles = StyleSheet.create({
-  overall: {
-    paddingHorizontal: s(15),
-  },
+  overall: {},
   header: {
     flexDirection: 'row',
     alignItems: 'center',

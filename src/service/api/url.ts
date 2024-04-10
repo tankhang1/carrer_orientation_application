@@ -6,5 +6,10 @@ const ENDPOINTS_URL = {
     DELETE_EXAM: '/exams/deleteExam',
     UPDATE_EXAM: '/exams/updateExam',
   },
+  NEWS: {
+    GET_NEWS: '/news',
+    GET_NEWEST_NEWS: '/news/newest',
+    GET_ALL_NEWS_DETAIL: '/news/all',
+  },
 };
 export {BASE_URL, ENDPOINTS_URL};

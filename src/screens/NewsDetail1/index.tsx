@@ -9,11 +9,18 @@ import React, {Suspense} from 'react';
 import RenderHTML from 'react-native-render-html';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {COLORS, s, vs} from '@utils/config';
+import {COLORS, height, s, vs} from '@utils/config';
 import AppView from '@components/AppView';
 import {navigationRef} from '@navigation';
 import AppHeader from '@components/AppHeader';
 import AppSkeleton from '@components/AppSkeleton';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+import {TRootStackNav} from '@utils/types/RootStackNav';
+import {DefaultError, useQuery} from '@tanstack/react-query';
+import WebView from 'react-native-webview';
 const source = {
   html: `   <article>
   <h2>Phó Trưởng Ban Nội chính Trung ương làm quyền Bí thư Lâm Đồng</h2>
@@ -48,44 +55,36 @@ const renderersProps = {
   },
 };
 
-const NewsDetail1 = () => {
+type Props = NativeStackScreenProps<TRootStackNav, 'NewsDetail1'>;
+const NewsDetail1 = ({route}: Props) => {
   const {width} = useWindowDimensions();
+
+  const content = route.params.content;
+  console.log(content);
   return (
-    <ScrollView>
-      <SafeAreaView>
-        <AppHeader />
-        <View style={{paddingHorizontal: s(27)}}>
-          <Suspense
-            fallback={
-              <View style={{gap: vs(5), marginTop: 10}}>
-                <AppSkeleton width={'100%'} height={20} radius={10} />
-                <AppSkeleton width={'92%'} height={20} radius={10} />
-                <AppSkeleton width={'67%'} height={20} radius={10} />
-                <AppSkeleton width={'80%'} height={20} radius={10} />
-                <AppSkeleton width={'10%'} height={20} radius={10} />
-              </View>
-            }>
-            <RenderHTML
-              source={source}
-              contentWidth={width}
-              renderersProps={renderersProps}
-              enableExperimentalMarginCollapsing={true}
-              tagsStyles={{
-                header: {
-                  color: 'black',
-                },
-                main: {
-                  color: 'black',
-                },
-                footer: {
-                  color: 'black',
-                },
-              }}
-            />
-          </Suspense>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+    <View
+      style={{
+        flex: 1,
+      }}>
+      <View style={{flex: 1}}>
+        <Suspense
+          fallback={
+            <View style={{gap: vs(5), marginTop: 10}}>
+              <AppSkeleton width={'100%'} height={20} radius={10} />
+              <AppSkeleton width={'92%'} height={20} radius={10} />
+              <AppSkeleton width={'67%'} height={20} radius={10} />
+              <AppSkeleton width={'80%'} height={20} radius={10} />
+              <AppSkeleton width={'10%'} height={20} radius={10} />
+            </View>
+          }>
+          <WebView
+            source={{uri: content}}
+            style={{width: width, height: height}}
+          />
+        </Suspense>
+        <AppHeader style={{position: 'absolute', marginTop: s(40)}} />
+      </View>
+    </View>
   );
 };
 
