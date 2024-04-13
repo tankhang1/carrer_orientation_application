@@ -5,8 +5,9 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   Button,
+  Text,
 } from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {Suspense, useCallback, useEffect, useMemo, useRef} from 'react';
 import {COLORS, s, width} from '@utils/config';
 import AppImage from '@components/AppImage';
 import Indicator, {TIndicatorRef} from './Indicator';
@@ -20,17 +21,13 @@ import {DefaultError, useQuery} from '@tanstack/react-query';
 import {INew} from '@interfaces/DTO';
 import {ENDPOINTS_URL} from '@service';
 import useAPI from '@service/api';
-const data = [
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXCm4MjY9Hr8BBGrOMaDjZGCru4ge0Se0OAw&usqp=CAU',
-  'https://cdythadong.edu.vn/uploads/files/tuyen%20sinh/2024/thong%20bao%20ts/thumbnail%20hdmc.png',
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGn6vq0C1-MRqFGbUcBJ7M9pn20QAp4JYQnw&usqp=CAU',
-];
+
 const Carousel = () => {
   const currentPosition = useRef<number>(0);
   const interval = React.useRef<NodeJS.Timeout>();
   const listRef = useRef<FlatList>(null);
   const autoScroll = useRef<boolean>(true);
-  const listWidth = useMemo(() => data.length * width, [data.length]);
+
   const indicatorValue = useSharedValue(0);
   const indicatorRef = useRef<TIndicatorRef>(null);
   const {
@@ -42,15 +39,22 @@ const Carousel = () => {
     queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
   });
   const banners = useMemo(
-    () => news?.map(item => item.image.longImage),
+    () =>
+      !news
+        ? [
+            'https://cdythadong.edu.vn/uploads/files/tuyen%20sinh/2024/thong%20bao%20ts/thumbnail%20hdmc.png',
+          ]
+        : news?.map(item => item.image.longImage),
     [news],
   );
+  const newsLength = useMemo(() => news?.length ?? 1, [news?.length]);
+  const listWidth = useMemo(() => newsLength * width, [newsLength]);
   useEffect(() => {
-    if (data?.length > 0) {
+    if (newsLength > 0 && !isLoading) {
       interval.current = setInterval(() => {
         if (autoScroll.current) {
           currentPosition.current += 1;
-          if (currentPosition.current > data.length - 1) {
+          if (currentPosition.current > newsLength - 1) {
             currentPosition.current = 0;
           }
           listRef?.current?.scrollToIndex({
@@ -68,24 +72,24 @@ const Carousel = () => {
         interval.current = undefined;
       }
     };
-  }, []);
+  }, [newsLength]);
   const onScrollBeginDrag = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (data?.length <= 0) return;
+      if (newsLength <= 0) return;
       //autoScroll.current = false;
     },
-    [],
+    [newsLength],
   );
   const onScrollEndDrag = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (data?.length <= 0) return;
+      if (newsLength <= 0) return;
       autoScroll.current = true;
       currentPosition.current = Math.round(
         e.nativeEvent.contentOffset.x / listWidth,
       );
       indicatorRef?.current?.scrollToIndicator(currentPosition.current);
     },
-    [listWidth],
+    [listWidth, newsLength],
   );
   const onScroll = useAnimatedScrollHandler(e => {
     indicatorValue.value = e.contentOffset.x;
@@ -102,8 +106,9 @@ const Carousel = () => {
         </View>
       );
     },
-    [data],
+    [news],
   );
+
   return (
     <View
       style={styles.container}
@@ -126,7 +131,7 @@ const Carousel = () => {
       />
       <Indicator
         animatedValue={indicatorValue}
-        length={data.length}
+        length={news?.length ?? 1}
         ref={indicatorRef}
       />
     </View>

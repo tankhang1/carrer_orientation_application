@@ -78,6 +78,7 @@ const ExamQuestion = () => {
     setAnswers(currentAnswer);
   };
   const onNext = useCallback(() => {
+    if (questionNumber === totalExams) navigationRef.navigate('Result');
     if (selections?.length === 0 || selections[0] === -1) {
       setErrorNotAnswer(true);
       return;
@@ -85,13 +86,13 @@ const ExamQuestion = () => {
     if (errorNotAnswer) {
       setErrorNotAnswer(false);
     }
-    if (questionNumber <= totalExams) {
+    if (questionNumber < totalExams) {
       setQuestionNumber(questionNumber + 1);
       onUpdateAnswer();
     }
-    if (questionNumber > totalExams) navigationRef.navigate('Result');
   }, [data?.data, questionNumber, totalExams, selections]);
 
+  //console.log('totalExams', totalExams);
   const onPrev = useCallback(() => {
     if (questionNumber > 0) {
       setQuestionNumber(questionNumber - 1);
@@ -167,7 +168,8 @@ const ExamQuestion = () => {
         title={`Bạn có muốn tiếp tục làm bài kiểm tra trí tuệ và cảm xúc ?\n\nBài kiểm tra có thể mất 30 phút nhưng sẽ giúp định hướng nghề nghiệp chính xác hơn.`}
         onAccept={() => setOpenModalNext(false)}
         onCancel={() => {
-          navigationRef.navigate('Result');
+          setQuestionNumber(totalExams);
+          //navigationRef.navigate('Result');
           setOpenModalNext(false);
         }}
       />

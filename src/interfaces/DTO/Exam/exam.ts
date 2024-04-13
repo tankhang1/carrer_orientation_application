@@ -28,8 +28,3 @@ export interface IExam {
 export interface IExamResponse extends IResponse {
   data: IExam[];
 }
-
-export interface ISchoolScore {
-  name: string;
-  value: string;
-}

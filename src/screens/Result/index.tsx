@@ -21,10 +21,10 @@ const Result = ({navigation}: Props) => {
           </Text>
           <Text style={FONT.content.M.regular}>Số bài thực hiện: 5</Text>
         </View>
-        <View style={{gap: vs(10), padding: s(10)}}>
+        {/* <View style={{gap: vs(10), padding: s(10)}}>
           <Text style={FONT.content.M.regular}>Kết quả</Text>
           <Text style={FONT.content.M.bold}>Nhóm thân thiện</Text>
-        </View>
+        </View> */}
       </ImageBackground>
       <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
         <Text style={FONT.content.M.bold}>Tổng kết:</Text> Bạn thuộc tiếp người

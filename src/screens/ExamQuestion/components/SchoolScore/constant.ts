@@ -1,5 +1,3 @@
-import {ISchoolScore} from '@interfaces/DTO';
-
 export type TSubject = {
   vnName: string;
   value: string;

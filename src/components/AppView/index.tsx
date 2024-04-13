@@ -36,7 +36,10 @@ const AppView = <TData,>({
       style={styles.wrapper}>
       <SafeAreaView style={[styles.container, style]}>
         {data?.length === 0 ? (
-          <ScrollView removeClippedSubviews renderToHardwareTextureAndroid>
+          <ScrollView
+            removeClippedSubviews
+            renderToHardwareTextureAndroid
+            automaticallyAdjustKeyboardInsets>
             <View>{children && children}</View>
           </ScrollView>
         ) : (
