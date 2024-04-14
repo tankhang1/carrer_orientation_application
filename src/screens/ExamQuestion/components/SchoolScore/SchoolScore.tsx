@@ -16,18 +16,18 @@ import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 
 const SchoolScore = () => {
-  const queryCache = new QueryCache({
-    onError: error => {
-      console.log(error);
-    },
-    onSuccess: data => {
-      console.log('data', data);
-    },
-    onSettled: (data, error) => {
-      console.log(data, error);
-    },
-  });
-  // const query = queryCache.findAll(QUERY_KEY.EXAMS);
+  // const queryCache = new QueryCache({
+  //   onError: error => {
+  //     console.log(error);
+  //   },
+  //   onSuccess: data => {
+  //     console.log('data', data);
+  //   },
+  //   onSettled: (data, error) => {
+  //     console.log(data, error);
+  //   },
+  // });
+  // const query = queryCache.find([QUERY_KEY.EXAMS]);
   // console.log('query', query);
   const {isLoading, data, isError} = useQuery<
     unknown,

@@ -1,14 +1,40 @@
 import {View, StyleSheet, ImageBackground, Text} from 'react-native';
-import React from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import AppView from '@components/AppView';
 import AppHeader from '@components/AppHeader';
-import {Chart, HollandResult} from './components';
+import {Chart, HollandResult, IQ_EQ_Result, Title} from './components';
 import {FONT, s, vs} from '@utils/config';
 import {navigationRef} from '@navigation';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
+import {TAnswer} from '@utils/types/metaTypes';
+import AppImage from '@components/AppImage';
+import {QueryClient} from '@tanstack/query-core';
+import {QUERY_KEY, queryClient} from '@utils/constants';
+import {IExamResponse, IResult, TExam} from '@interfaces/DTO';
+
 type Props = NativeStackScreenProps<TRootStackNav, 'Result'>;
-const Result = ({navigation}: Props) => {
+
+export type TUserAnswers = Record<TExam, string>;
+const Result = ({navigation, route}: Props) => {
+  const [answers, setAnswers] = useState<TUserAnswers>();
+  useEffect(() => {
+    if (route?.params?.userAnswers) {
+      setAnswers(route?.params?.userAnswers as TUserAnswers);
+    }
+  }, []);
+
+  const data: IExamResponse | undefined = queryClient.getQueryData([
+    QUERY_KEY.EXAMS,
+  ]);
+  const results = useMemo(() => {
+    return data?.data?.map(item => ({
+      type: item.type,
+      resultContents: item.results ?? [],
+    }));
+  }, [data]);
+
+  //console.log(evaluations);
   return (
     <AppView>
       <AppHeader title="Kết quả" onPress={() => navigation.pop(2)} />
@@ -21,20 +47,27 @@ const Result = ({navigation}: Props) => {
           </Text>
           <Text style={FONT.content.M.regular}>Số bài thực hiện: 5</Text>
         </View>
-        {/* <View style={{gap: vs(10), padding: s(10)}}>
+        <View style={{gap: vs(10), padding: s(10)}}>
           <Text style={FONT.content.M.regular}>Kết quả</Text>
           <Text style={FONT.content.M.bold}>Nhóm thân thiện</Text>
-        </View> */}
+        </View>
       </ImageBackground>
-      <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
+      {answers && (
+        <View style={{gap: vs(20)}}>
+          <HollandResult answers={answers!} results={results!} />
+          <IQ_EQ_Result answers={answers!} results={results!} />
+        </View>
+      )}
+
+      {/* <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
         <Text style={FONT.content.M.bold}>Tổng kết:</Text> Bạn thuộc tiếp người
         thông minh nhất thế giới. Trong đó có một vài ví dụ cụ thể như: Elon
         musk. Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài
         ví dụ cụ thể như: Elon musk. Bạn thuộc tiếp người thông minh nhất thế
         giới. Trong đó có một vài ví dụ cụ thể như: Elon musk.
-      </Text>
+      </Text> */}
 
-      <ImageBackground
+      {/* <ImageBackground
         source={require('@assets/images/IQImage.png')}
         style={styles.imageIQContainer}>
         <Text style={[FONT.content.L, {top: 100, left: s(20)}]}>IQ: 106</Text>
@@ -42,25 +75,19 @@ const Result = ({navigation}: Props) => {
       <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
         Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài ví dụ
         cụ thể như: Elon musk
-      </Text>
-      <ImageBackground
+      </Text> */}
+      {/* <ImageBackground
         source={require('@assets/images/EQResult.png')}
         style={styles.imageIQContainer}
         resizeMode="contain">
         <View style={styles.eqQuestionContainer}>
           <Text style={FONT.content.L}>999</Text>
         </View>
-      </ImageBackground>
-      <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
+      </ImageBackground> */}
+      {/* <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
         Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài ví dụ
         cụ thể như: Elon musk
-      </Text>
-      <View style={styles.container}>
-        <View style={{overflow: 'hidden'}}>
-          <Chart />
-        </View>
-        <HollandResult />
-      </View>
+      </Text> */}
     </AppView>
   );
 };

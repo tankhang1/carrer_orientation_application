@@ -19,6 +19,7 @@ export const HOLLAND_RESULT = [
     image: require('@assets/images/Investigative.png'),
     source: {
       html: `<article>
+       <h3>R - Realistic - Kỹ thuật</h3>
         <p>Người có sở thích nổi trội ở nhóm Nghiên cứu thường thích phân tích, nghiên cứu sâu mọi vấn đề. Họ cũng hay tò mò, thích quan sát, học hỏi, điều tra, đánh giá và giải quyết các vấn đề.</p>
         <p>
             <strong>Năng lực nổi trội: </strong>khoa học, toán học, tư duy phản biện, phân tích,…

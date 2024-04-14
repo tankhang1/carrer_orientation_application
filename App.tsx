@@ -1,8 +1,7 @@
 import React from 'react';
 import AppNavigation from '@navigation';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
-const queryClient = new QueryClient();
-
+import {queryClient} from '@utils/constants';
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>

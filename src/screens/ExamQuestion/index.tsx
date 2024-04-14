@@ -12,7 +12,8 @@ import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
-export type TAnswer = Map<TExam, number[]>;
+import {TAnswer} from '@utils/types/metaTypes';
+
 type TExamInfo = {
   headerTitle: string;
   examType: TExam;
@@ -78,7 +79,11 @@ const ExamQuestion = () => {
     setAnswers(currentAnswer);
   };
   const onNext = useCallback(() => {
-    if (questionNumber === totalExams) navigationRef.navigate('Result');
+    if (questionNumber === totalExams) {
+      const userAnswers = calculateUserAnswer();
+      navigationRef.navigate('Result', {userAnswers});
+    }
+
     if (selections?.length === 0 || selections[0] === -1) {
       setErrorNotAnswer(true);
       return;
@@ -125,6 +130,33 @@ const ExamQuestion = () => {
     }
   }, [questionNumber, isContinue?.current, data]);
 
+  const calculateUserAnswer = () => {
+    const userAnswers = {};
+    let IQ_Score = 0;
+    answers.get('IQ')?.forEach((answer, index) => {
+      if (IQ[index]?.options[answer]?.isResult) {
+        IQ_Score += 1;
+      }
+    });
+    let EQ_Score = 0;
+    answers.get('EQ')?.forEach((answer, index) => {
+      if (EQ[index]?.options[answer]?.isResult) {
+        EQ_Score += 1;
+      }
+    });
+    answers?.forEach((value, key) => {
+      if (key !== 'EQ' && key !== 'IQ') {
+        Object.assign(userAnswers, {
+          [key]: `${value.length}/10`,
+        });
+      }
+    });
+    Object.assign(userAnswers, {
+      IQ: `${IQ_Score}/${IQ?.length}`,
+      EQ: `${EQ_Score}/${EQ?.length}`,
+    });
+    return userAnswers;
+  };
   return (
     <>
       <AppView>

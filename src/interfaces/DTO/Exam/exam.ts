@@ -18,12 +18,18 @@ export interface IOption {
 export interface IQuestion {
   questionTitle: string;
   image?: string;
-  options?: IOption[];
+  options: IOption[];
   answer?: number | number[];
+}
+export interface IResult {
+  score?: null | number[];
+  content: string;
+  image?: string;
 }
 export interface IExam {
   type: TExam;
   questions: IQuestion[];
+  results: IResult[];
 }
 export interface IExamResponse extends IResponse {
   data: IExam[];

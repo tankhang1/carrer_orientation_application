@@ -1,46 +1,38 @@
 import {View, Text} from 'react-native';
-import React from 'react';
-import {BarChart} from 'react-native-gifted-charts';
+import React, {useMemo} from 'react';
+import {BarChart, barDataItem} from 'react-native-gifted-charts';
 import {COLORS, FONT, width} from '@utils/config';
-
-const Chart = () => {
-  const data = [
-    {
-      value: 6,
-      label: 'R',
-      frontColor: COLORS.red,
-    },
-    {
-      value: 9,
-      label: 'I',
-      frontColor: COLORS.orange,
-    },
-    {
-      value: 7,
-      label: 'A',
-      frontColor: COLORS.yellow,
-    },
-    {
-      value: 8,
-      label: 'S',
-      frontColor: COLORS.green,
-    },
-    {
-      value: 6,
-      label: 'I',
-      frontColor: COLORS.blue,
-    },
-    {
-      value: 5,
-      label: 'C',
-      frontColor: COLORS.purple,
-    },
-  ];
+import {TExam} from '@interfaces/DTO';
+const COLOR_CHART: Partial<Record<TExam, string>> = {
+  R: COLORS.red,
+  I: COLORS.orange,
+  A: COLORS.yellow,
+  S: COLORS.green,
+  E: COLORS.blue,
+  C: COLORS.purple,
+};
+type TChart = {
+  answes: Record<TExam, string>;
+};
+const Chart = ({answes}: TChart) => {
+  const scores = useMemo(() => {
+    const tmp = Object.entries(answes)?.map(([key, item]) => {
+      if (key !== 'EQ' && key !== 'IQ') {
+        return {
+          value: parseInt(item?.split('/')[0]),
+          label: key,
+          frontColor: COLOR_CHART[key as TExam],
+        };
+      }
+      return null;
+    });
+    return tmp?.filter(item => item !== null) ?? [];
+  }, [answes]);
   return (
     <View>
       <BarChart
         width={width - 54}
-        data={data}
+        data={scores as barDataItem[]}
         frontColor="#177AD5"
         horizontalRulesStyle={{
           strokeWidth: 2,
