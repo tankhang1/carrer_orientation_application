@@ -58,36 +58,6 @@ const Result = ({navigation, route}: Props) => {
           <IQ_EQ_Result answers={answers!} results={results!} />
         </View>
       )}
-
-      {/* <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
-        <Text style={FONT.content.M.bold}>Tổng kết:</Text> Bạn thuộc tiếp người
-        thông minh nhất thế giới. Trong đó có một vài ví dụ cụ thể như: Elon
-        musk. Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài
-        ví dụ cụ thể như: Elon musk. Bạn thuộc tiếp người thông minh nhất thế
-        giới. Trong đó có một vài ví dụ cụ thể như: Elon musk.
-      </Text> */}
-
-      {/* <ImageBackground
-        source={require('@assets/images/IQImage.png')}
-        style={styles.imageIQContainer}>
-        <Text style={[FONT.content.L, {top: 100, left: s(20)}]}>IQ: 106</Text>
-      </ImageBackground>
-      <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
-        Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài ví dụ
-        cụ thể như: Elon musk
-      </Text> */}
-      {/* <ImageBackground
-        source={require('@assets/images/EQResult.png')}
-        style={styles.imageIQContainer}
-        resizeMode="contain">
-        <View style={styles.eqQuestionContainer}>
-          <Text style={FONT.content.L}>999</Text>
-        </View>
-      </ImageBackground> */}
-      {/* <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
-        Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài ví dụ
-        cụ thể như: Elon musk
-      </Text> */}
     </AppView>
   );
 };

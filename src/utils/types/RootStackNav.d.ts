@@ -18,4 +18,7 @@ export type TRootStackNav = {
   };
 
   ChatBox: undefined;
+  ResultDetail: {
+    url: string;
+  };
 };
