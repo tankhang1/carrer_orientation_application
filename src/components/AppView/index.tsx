@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
 type TAppView<TData> = {
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -36,10 +37,7 @@ const AppView = <TData,>({
       style={styles.wrapper}>
       <SafeAreaView style={[styles.container, style]}>
         {data?.length === 0 ? (
-          <ScrollView
-            removeClippedSubviews
-            renderToHardwareTextureAndroid
-            automaticallyAdjustKeyboardInsets>
+          <ScrollView removeClippedSubviews renderToHardwareTextureAndroid>
             <View>{children && children}</View>
           </ScrollView>
         ) : (

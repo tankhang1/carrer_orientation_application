@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.4:3000';
+const BASE_URL = 'http://192.168.2.3:3000';
 const ENDPOINTS_URL = {
   EXAM: {
     GET_EXAM: '/exams',
@@ -14,6 +14,7 @@ const ENDPOINTS_URL = {
   },
   SCHOOL_SUBJECTS: {
     GET_SUBJECTS: '/schoolSubjects/getSubjects',
+    CACULATE_SCHOOL_SCORE: '/schoolSubjects/caculateScore',
   },
 };
 export {BASE_URL, ENDPOINTS_URL};

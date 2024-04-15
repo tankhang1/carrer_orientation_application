@@ -17,12 +17,8 @@ type Props = NativeStackScreenProps<TRootStackNav, 'Result'>;
 
 export type TUserAnswers = Record<TExam, string>;
 const Result = ({navigation, route}: Props) => {
-  const [answers, setAnswers] = useState<TUserAnswers>();
-  useEffect(() => {
-    if (route?.params?.userAnswers) {
-      setAnswers(route?.params?.userAnswers as TUserAnswers);
-    }
-  }, []);
+  const answers = route?.params?.userAnswers;
+  const scoreResults = route?.params?.schoolScoreResults;
 
   const data: IExamResponse | undefined = queryClient.getQueryData([
     QUERY_KEY.EXAMS,
@@ -52,12 +48,36 @@ const Result = ({navigation, route}: Props) => {
           <Text style={FONT.content.M.bold}>Nhóm thân thiện</Text>
         </View>
       </ImageBackground>
-      {answers && (
-        <View style={{gap: vs(20)}}>
-          <HollandResult answers={answers!} results={results!} />
-          <IQ_EQ_Result answers={answers!} results={results!} />
-        </View>
-      )}
+
+      <View style={{gap: vs(20)}}>
+        {answers && <HollandResult answers={answers!} results={results!} />}
+        {scoreResults && (
+          <View
+            style={{
+              paddingHorizontal: s(20),
+            }}>
+            <Text style={FONT.content.M.bold}>
+              Với số điểm mà bạn cung cấp. Bạn có thể phù hợp với các khối
+              nghành như:
+            </Text>
+            <View
+              style={{
+                paddingHorizontal: 12,
+                gap: vs(20),
+              }}>
+              {scoreResults.map((result, index) => (
+                <View key={index}>
+                  <Text style={FONT.content.M.bold}>- Khối {result.title}</Text>
+                  <Text style={FONT.content.M.regular}>
+                    {result.description}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+        {answers && <IQ_EQ_Result answers={answers!} results={results!} />}
+      </View>
 
       {/* <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
         <Text style={FONT.content.M.bold}>Tổng kết:</Text> Bạn thuộc tiếp người

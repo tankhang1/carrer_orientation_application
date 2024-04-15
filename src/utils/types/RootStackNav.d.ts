@@ -1,5 +1,5 @@
 import {TExam} from '@interfaces/DTO';
-import {TAnswer} from './metaTypes';
+import {TAnswer, TSchoolScoreResult} from './metaTypes';
 
 export type TRootStackNav = {
   SplashScreen: undefined;
@@ -11,6 +11,7 @@ export type TRootStackNav = {
   //Result: undefined;
   Result: {
     userAnswers: Record<string, string>;
+    schoolScoreResults: TSchoolScoreResult[];
   };
   News: undefined;
   NewsDetail1: {

@@ -1,6 +1,6 @@
 export type TSubject = {
   vnName: string;
-  value: string;
+  value: string | number;
 };
 export const initialSubjects = {
   math: {
