@@ -6,13 +6,14 @@ import {navigationRef} from '@navigation';
 import {AppHeader, AppModal, AppView} from '@components';
 import {vs} from '@utils/config';
 import {Question, SchoolScore, BottomButton} from './components';
-import {DefaultError, useQuery} from '@tanstack/react-query';
+import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
 type Props = NativeStackScreenProps<TRootStackNav, 'ExamQuestion'>;
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
-import {TAnswer} from '@utils/types/metaTypes';
+import {TAnswer, TSchoolScoreResult} from '@utils/types/metaTypes';
+import {initialSubjects, TSubject} from './components/SchoolScore/constant';
 import {KEY_STORE, storage} from '@store';
 
 type TExamInfo = {
@@ -38,11 +39,44 @@ const ExamQuestion = () => {
     queryKey: [QUERY_KEY.EXAMS],
     queryFn: () => useAPI(ENDPOINTS_URL.EXAM.GET_EXAM, 'GET', {}),
   });
+  const postSchoolScore = useMutation({
+    mutationKey: [QUERY_KEY.CACULATE_SCHOOL_SCORE],
+    mutationFn: (variables: Record<string, TSubject>) => {
+      console.log('convert', variables);
+      return useAPI(
+        ENDPOINTS_URL.SCHOOL_SUBJECTS.CACULATE_SCHOOL_SCORE,
+        'POST',
+        {
+          data: {
+            scores: variables,
+          },
+        },
+      );
+    },
+    onSuccess: (data: any, variables, context) => {
+      const userAnswers = calculateUserAnswer();
+      const storedUserAnswers = {
+        date: new Date().getTime(),
+        userAnswers,
+      };
+      const currentListResult = storage.getString(KEY_STORE.LIST_RESULT) ?? [];
+      storage.set(
+        KEY_STORE.LIST_RESULT,
+        JSON.stringify([storedUserAnswers, ...currentListResult]),
+      );
+      navigationRef.navigate('Result', {
+        userAnswers,
+        schoolScoreResults: data.data,
+      });
+    },
+  });
   const [questionNumber, setQuestionNumber] = useState(0);
   const [openModalNext, setOpenModalNext] = useState(false);
   const [answers, setAnswers] = useState<TAnswer>(initialAnswers);
   const [selections, setSelections] = useState<number[]>([]);
   const [errorNotAnswer, setErrorNotAnswer] = useState(false);
+  const [subjects, setSubjects] =
+    useState<Record<string, TSubject>>(initialSubjects);
   const isContinue = useRef(false);
   const IQ = useMemo(
     () => data?.data?.find(exam => exam.type === 'IQ')?.questions || [],
@@ -79,19 +113,69 @@ const ExamQuestion = () => {
     currentAnswer.set(examInfo.examType, selections);
     setAnswers(currentAnswer);
   };
+  const caculateSchoolScore = async () => {
+    const data: Record<string, TSubject> = {
+      Biology: {
+        ...subjects['Biology'],
+        value: !!subjects['Biology']?.value ? +subjects['Biology'].value : 0,
+      },
+      Chemistry: {
+        ...subjects['Chemistry'],
+        value: !!subjects['Chemistry']?.value
+          ? +subjects['Chemistry'].value
+          : 0,
+      },
+      English: {
+        ...subjects['English'],
+        value: !!subjects['English']?.value ? +subjects['English'].value : 0,
+      },
+      Geography: {
+        ...subjects['Geography'],
+        value: !!subjects['Geography']?.value
+          ? +subjects['Geography'].value
+          : 0,
+      },
+      History: {
+        ...subjects['History'],
+        value: !!subjects['History']?.value ? +subjects['History'].value : 0,
+      },
+      Informatics: {
+        ...subjects['Informatics'],
+        value: !!subjects['Informatics']?.value
+          ? +subjects['Informatics'].value
+          : 0,
+      },
+      Literature: {
+        ...subjects['Literature'],
+        value: !!subjects['Literature']?.value
+          ? +subjects['Literature'].value
+          : 0,
+      },
+      Math: {
+        ...subjects['Math'],
+        value: !!subjects['Math']?.value ? +subjects['Math'].value : 0,
+      },
+      Physics: {
+        ...subjects['Physics'],
+        value: !!subjects['Physics']?.value ? +subjects['Physics'].value : 0,
+      },
+      CivicEducation: {
+        ...subjects['CivicEducation'],
+        value: !!subjects['CivicEducation']?.value
+          ? +subjects['CivicEducation'].value
+          : 0,
+      },
+    };
+    postSchoolScore.mutate(data);
+  };
   const onNext = useCallback(() => {
     if (questionNumber === totalExams) {
-      const userAnswers = calculateUserAnswer();
-      const storedUserAnswers = {
-        date: new Date().getTime(),
-        userAnswers,
-      };
-      const currentListResult = storage.getString(KEY_STORE.LIST_RESULT) ?? [];
-      storage.set(
-        KEY_STORE.LIST_RESULT,
-        JSON.stringify([storedUserAnswers, ...currentListResult]),
-      );
-      navigationRef.navigate('Result', {userAnswers});
+      // const userAnswers = calculateUserAnswer();
+
+      // const schoolScoreResult =
+      caculateSchoolScore();
+      // console.log('schoolScoreResult', schoolScoreResult);
+      // navigationRef.navigate('Result', {userAnswers});
     }
 
     if (selections?.length === 0 || selections[0] === -1) {
@@ -191,7 +275,7 @@ const ExamQuestion = () => {
                 error={errorNotAnswer}
               />
             ) : (
-              <SchoolScore />
+              <SchoolScore subjects={subjects} setSubjects={setSubjects} />
             )}
             {/* <SchoolScore /> */}
           </View>

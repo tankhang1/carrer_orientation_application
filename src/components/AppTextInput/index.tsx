@@ -86,7 +86,7 @@ const AppTextInput = ({
           </AppButton>
         )}
         <TextInput
-          defaultValue={value}
+          value={value}
           onChangeText={onChangeText}
           style={styles.textInput}
           placeholderTextColor={COLORS.grey}
