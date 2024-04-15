@@ -14,6 +14,7 @@ import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
 import {TAnswer, TSchoolScoreResult} from '@utils/types/metaTypes';
 import {initialSubjects, TSubject} from './components/SchoolScore/constant';
+import {KEY_STORE, storage} from '@store';
 
 type TExamInfo = {
   headerTitle: string;
@@ -161,6 +162,15 @@ const ExamQuestion = () => {
   const onNext = useCallback(() => {
     if (questionNumber === totalExams) {
       // const userAnswers = calculateUserAnswer();
+      const storedUserAnswers = {
+        date: new Date().getTime(),
+        userAnswers,
+      };
+      const currentListResult = storage.getString(KEY_STORE.LIST_RESULT) ?? [];
+      storage.set(
+        KEY_STORE.LIST_RESULT,
+        JSON.stringify([storedUserAnswers, ...currentListResult]),
+      );
       // const schoolScoreResult =
       caculateSchoolScore();
       // console.log('schoolScoreResult', schoolScoreResult);

@@ -13,6 +13,7 @@ import News from '@screens/News';
 import HomeScreen from '@screens/HomeScreen';
 import {createNavigationContainerRef} from '@react-navigation/native';
 import SplashScreen from '@screens/SplashScreen';
+import ResultDetail from '@screens/ResultDetail/ResultDetail';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
@@ -36,6 +37,9 @@ const AppNavigation = () => {
           name="UploadResult"
           component={UploadResult}></Stack.Screen>
         <Stack.Screen name="Result" component={Result}></Stack.Screen>
+        <Stack.Screen
+          name="ResultDetail"
+          component={ResultDetail}></Stack.Screen>
         <Stack.Screen name="News" component={News}></Stack.Screen>
         <Stack.Screen name="NewsDetail1" component={NewsDetail1}></Stack.Screen>
 

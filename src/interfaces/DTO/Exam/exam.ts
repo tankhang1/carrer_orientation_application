@@ -25,6 +25,7 @@ export interface IResult {
   score?: null | number[];
   content: string;
   image?: string;
+  detail?: string;
 }
 export interface IExam {
   type: TExam;

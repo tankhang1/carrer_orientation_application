@@ -1,4 +1,4 @@
-import {View, StyleSheet, ImageBackground, Text} from 'react-native';
+import {View, StyleSheet, ImageBackground, Text, Button} from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import AppView from '@components/AppView';
 import AppHeader from '@components/AppHeader';
@@ -12,6 +12,7 @@ import AppImage from '@components/AppImage';
 import {QueryClient} from '@tanstack/query-core';
 import {QUERY_KEY, queryClient} from '@utils/constants';
 import {IExamResponse, IResult, TExam} from '@interfaces/DTO';
+import {KEY_STORE, storage} from '@store';
 
 type Props = NativeStackScreenProps<TRootStackNav, 'Result'>;
 
@@ -30,7 +31,6 @@ const Result = ({navigation, route}: Props) => {
     }));
   }, [data]);
 
-  //console.log(evaluations);
   return (
     <AppView>
       <AppHeader title="Kết quả" onPress={() => navigation.pop(2)} />
