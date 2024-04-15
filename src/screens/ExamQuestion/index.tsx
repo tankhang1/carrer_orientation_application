@@ -55,6 +55,15 @@ const ExamQuestion = () => {
     },
     onSuccess: (data: any, variables, context) => {
       const userAnswers = calculateUserAnswer();
+      const storedUserAnswers = {
+        date: new Date().getTime(),
+        userAnswers,
+      };
+      const currentListResult = storage.getString(KEY_STORE.LIST_RESULT) ?? [];
+      storage.set(
+        KEY_STORE.LIST_RESULT,
+        JSON.stringify([storedUserAnswers, ...currentListResult]),
+      );
       navigationRef.navigate('Result', {
         userAnswers,
         schoolScoreResults: data.data,
@@ -162,15 +171,7 @@ const ExamQuestion = () => {
   const onNext = useCallback(() => {
     if (questionNumber === totalExams) {
       // const userAnswers = calculateUserAnswer();
-      const storedUserAnswers = {
-        date: new Date().getTime(),
-        userAnswers,
-      };
-      const currentListResult = storage.getString(KEY_STORE.LIST_RESULT) ?? [];
-      storage.set(
-        KEY_STORE.LIST_RESULT,
-        JSON.stringify([storedUserAnswers, ...currentListResult]),
-      );
+
       // const schoolScoreResult =
       caculateSchoolScore();
       // console.log('schoolScoreResult', schoolScoreResult);
