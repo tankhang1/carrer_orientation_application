@@ -7,7 +7,7 @@ import ExamQuestion from '@screens/ExamQuestion';
 import UploadResult from '@screens/UploadResult';
 import Result from '@screens/Result';
 import NewsDetail1 from '@screens/NewsDetail1';
-import Chatbox from '@screens/Chatbox';
+import Chatbot from '@screens/Chatbot';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import News from '@screens/News';
 import HomeScreen from '@screens/HomeScreen';
@@ -43,7 +43,7 @@ const AppNavigation = () => {
         <Stack.Screen name="News" component={News}></Stack.Screen>
         <Stack.Screen name="NewsDetail1" component={NewsDetail1}></Stack.Screen>
 
-        <Stack.Screen name="ChatBox" component={Chatbox}></Stack.Screen>
+        <Stack.Screen name="ChatBot" component={Chatbot}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

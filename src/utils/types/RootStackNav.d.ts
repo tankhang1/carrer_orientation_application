@@ -8,7 +8,6 @@ export type TRootStackNav = {
   ListExam: undefined;
   ExamQuestion: undefined;
   UploadResult: undefined;
-  //Result: undefined;
   Result: {
     userAnswers: Record<string, string>;
   };
@@ -17,7 +16,7 @@ export type TRootStackNav = {
     content: string;
   };
 
-  ChatBox: undefined;
+  ChatBot: undefined;
   ResultDetail: {
     url: string;
   };

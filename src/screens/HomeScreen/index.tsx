@@ -55,7 +55,7 @@ const HomeScreen = () => {
           type="fill"
           style={styles.floatingBtn}
           shadow={true}
-          onPress={() => navigationRef.navigate('ChatBox')}>
+          onPress={() => navigationRef.navigate('ChatBot')}>
           <Ionicons
             name="chatbubble-ellipses-outline"
             color={COLORS.white}

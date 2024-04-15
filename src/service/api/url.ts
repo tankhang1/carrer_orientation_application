@@ -15,5 +15,8 @@ const ENDPOINTS_URL = {
   SCHOOL_SUBJECTS: {
     GET_SUBJECTS: '/schoolSubjects/getSubjects',
   },
+  CHAT_BOT: {
+    GET_CHAT: '/geminiAI/generateChat',
+  },
 };
 export {BASE_URL, ENDPOINTS_URL};
