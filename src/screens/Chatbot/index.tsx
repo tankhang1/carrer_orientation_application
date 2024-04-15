@@ -30,6 +30,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import {KEY_STORE, storage} from '@store';
 const Chatbot = () => {
   const [chats, setChats] = useState<IChat[]>([]);
   const [message, setMessage] = useState('');
@@ -67,6 +69,12 @@ const Chatbot = () => {
       {rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg`},
     ],
   }));
+  useEffect(() => {
+    const listCharts = storage.getString(KEY_STORE.LIST_CHAT);
+    if (listCharts) {
+      setChats(JSON.parse(listCharts));
+    }
+  }, []);
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (chats?.length !== 0) {
@@ -124,6 +132,10 @@ const Chatbot = () => {
     }
   }, [getChat.isPending]);
 
+  const onBack = () => {
+    storage.set(KEY_STORE.LIST_CHAT, JSON.stringify(chats));
+    navigationRef.goBack();
+  };
   return (
     <ImageBackground
       source={require('@assets/images/background.png')}
@@ -133,22 +145,48 @@ const Chatbot = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
         <SafeAreaView style={[styles.container, styles.wrapper]}>
-          <TouchableOpacity onPress={() => navigationRef.goBack()}>
-            <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
-          </TouchableOpacity>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={onBack}>
+              <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
+            </TouchableOpacity>
+            {chats?.length !== 0 && (
+              <TouchableOpacity
+                onPress={() => {
+                  if (chats?.length !== 0) {
+                    setChats([]);
+                  }
+                }}
+                disabled={getChat.isPending}>
+                <EvilIcons name="trash" size={30} color={COLORS.black} />
+              </TouchableOpacity>
+            )}
+          </View>
+
           <View style={styles.container}>
-            <FlatList
-              data={chats}
-              renderItem={renderChat}
-              contentContainerStyle={{gap: vs(10)}}
-              showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={() => {
-                if (Keyboard.isVisible()) {
-                  Keyboard.dismiss();
-                }
-              }}
-              ref={scrollRef}
-            />
+            {chats?.length !== 0 ? (
+              <FlatList
+                data={chats}
+                renderItem={renderChat}
+                contentContainerStyle={{gap: vs(10)}}
+                showsVerticalScrollIndicator={false}
+                onMomentumScrollEnd={() => {
+                  if (Keyboard.isVisible()) {
+                    Keyboard.dismiss();
+                  }
+                }}
+                ref={scrollRef}
+              />
+            ) : (
+              <View style={styles.fallbackContainer}>
+                <AppImage
+                  source={require('@assets/images/clover.png')}
+                  style={styles.fallback}
+                />
+                <Text style={[FONT.content.M.medium, {color: COLORS.grey}]}>
+                  Chúc một ngày tốt lành!
+                </Text>
+              </View>
+            )}
           </View>
           <AppTextInput
             outStyle={styles.chatInput}
@@ -157,6 +195,7 @@ const Chatbot = () => {
             }}
             value={message}
             onChangeText={setMessage}
+            onSubmitEditing={onSubmit}
             placeholder="Nhập câu hỏi..."
             trailing={
               !getChat?.isPending ? (
@@ -165,10 +204,6 @@ const Chatbot = () => {
                   size={s(25)}
                   color={COLORS.grey}
                   onPress={onSubmit}
-                  //   onPress={() => {
-                  //     scrollRef?.current?.scrollToEnd();
-                  //   }}
-                  //onPress={() => getChat.mutate('hello')}
                 />
               ) : (
                 <Animated.View style={animatedStyle}>
@@ -207,7 +242,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: s(30),
     height: s(30),
-    //borderRadius: s(45),
   },
   chatRowWrapper: {
     alignItems: 'flex-end',
@@ -223,5 +257,22 @@ const styles = StyleSheet.create({
   trailing: {
     width: s(20),
     height: s(20),
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  fallbackContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    gap: vs(20),
+  },
+  fallback: {
+    width: s(100),
+    height: s(100),
+    opacity: 0.7,
+    alignSelf: 'center',
   },
 });
