@@ -7,6 +7,7 @@ import AppView from './AppView';
 import AppHistoryCard from './AppHistoryCard/AppHistoryCard';
 import AppRoundedButton from './AppRoundedButton';
 import AppModal from './AppModal';
+import AppImagePicker from './AppImagePicker';
 export {
   AppButton,
   AppTextInput,
@@ -17,4 +18,5 @@ export {
   AppHistoryCard,
   AppRoundedButton,
   AppModal,
+  AppImagePicker,
 };
