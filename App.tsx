@@ -3,7 +3,12 @@ import AppNavigation from '@navigation';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 import {queryClient} from '@utils/constants';
 import {Host} from 'react-native-portalize';
+import {initializeMMKVFlipper} from 'react-native-mmkv-flipper-plugin';
+import {storage} from '@store';
 const App = () => {
+  if (__DEV__) {
+    initializeMMKVFlipper({default: storage});
+  }
   return (
     <QueryClientProvider client={queryClient}>
       <Host>

@@ -14,19 +14,27 @@ const AppHistoryCard = lazy(
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
 import AppHeader from '@components/AppHeader';
+import {storage} from '@store';
 
 const ListResult = () => {
+  const results = JSON.parse(storage.getString('LIST_RESULT') ?? '') as any[];
+
   const renderCard = ({item, index}: ListRenderItemInfo<any>) => {
     return (
       <Suspense
         fallback={<AppSkeleton width={width * 0.9} height={300} radius={10} />}>
-        <AppHistoryCard key={index} isExpand={true} index={index} />
+        <AppHistoryCard
+          result={item}
+          key={index}
+          isExpand={true}
+          index={index}
+        />
       </Suspense>
     );
   };
   return (
     <AppView
-      data={Array.from({length: 10})}
+      data={results ?? []}
       renderItem={renderCard}
       contentContainerStyle={styles.containerStyle}
       ListHeaderComponent={<AppHeader title="Kết quả kiểm tra" />}

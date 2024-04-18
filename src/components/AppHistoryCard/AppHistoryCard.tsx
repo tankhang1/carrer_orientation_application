@@ -48,8 +48,26 @@ const GeneralItem = ({url, score, name}: TGeneral) => {
 type TCard = {
   isExpand?: boolean;
   index?: number;
+  result: any;
 };
-const AppHistoryCard = ({isExpand, index = 0}: TCard) => {
+const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
+  const averageScore = useMemo(() => {
+    const scores = result?.schoolScore?.scores;
+    if (scores)
+      return (
+        (scores['Biology']?.value +
+          scores['Chemistry']?.value +
+          scores['CivicEducation']?.value +
+          scores['English']?.value +
+          scores['Geography']?.value +
+          scores['History']?.value +
+          scores['Informatics']?.value +
+          scores['Literature']?.value +
+          scores['Math']?.value +
+          scores['Physics']?.value) /
+        10
+      );
+  }, [result]);
   return (
     <Animated.View entering={FadeIn.delay(index * 150)} style={styles.wrapper}>
       <Text style={styles.date}>17/2/2024</Text>
@@ -57,38 +75,39 @@ const AppHistoryCard = ({isExpand, index = 0}: TCard) => {
         <GeneralItem
           url={require('@assets/images/IQ.png')}
           name="IQ"
-          score="120/300"
+          score={result?.userAnswers['IQ']}
         />
         <GeneralItem
           url={require('@assets/images/EQ.png')}
           name="EQ"
-          score="120/300"
+          score={result?.userAnswers['EQ']}
         />
         <GeneralItem
           url={require('@assets/images/score.png')}
           name="Điểm TB"
-          score="120/300"
+          score={averageScore?.toString() ?? ''}
         />
       </View>
       <View style={styles.row}>
-        {Object.entries(HOLLAND).map(([key, value]) => {
-          return (
-            <View key={key}>
-              <View
-                style={[
-                  styles.hollandContainer,
-                  {
-                    backgroundColor: HOLLAND_COLOR[key] as string,
-                  },
-                ]}>
-                <Text
-                  style={[FONT.content.XXS.semiBold, {color: COLORS.white}]}>
-                  {key}
-                </Text>
+        {Object.entries(result?.userAnswers ?? {}).map(([key, value]) => {
+          if (key !== 'IQ' && key !== 'EQ')
+            return (
+              <View key={key}>
+                <View
+                  style={[
+                    styles.hollandContainer,
+                    {
+                      backgroundColor: HOLLAND_COLOR[key] as string,
+                    },
+                  ]}>
+                  <Text
+                    style={[FONT.content.XXS.semiBold, {color: COLORS.white}]}>
+                    {key}
+                  </Text>
+                </View>
+                <Text style={FONT.content.XXS.medium}>{value ?? ''}</Text>
               </View>
-              <Text style={FONT.content.XXS.medium}>{value}</Text>
-            </View>
-          );
+            );
         })}
       </View>
       {isExpand && (
@@ -108,11 +127,7 @@ const AppHistoryCard = ({isExpand, index = 0}: TCard) => {
             }}
           />
           <Text style={[FONT.content.M.regular, {width: '80%'}]}>
-            Người yêu thích Kỹ thuật thường thực tế, thích khám phá, thao tác
-            một cách trật tự và có hệ thống, thích làm việc với những vật cụ thể
-            như máy móc, công cụ dụng cụ, con vật,… Năng lực nổi trội: thủ công,
-            cơ khí, nông nghiệp, điện, kỹ thuật,… Năng lượng thiếu hụt: Xã hội
-            và Giáo dục.
+            {result?.schoolScore?.result?.[0].description}
           </Text>
         </View>
       )}

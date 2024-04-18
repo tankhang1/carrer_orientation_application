@@ -58,12 +58,20 @@ const ExamQuestion = () => {
       const storedUserAnswers = {
         date: new Date().getTime(),
         userAnswers,
+        schoolScore: {
+          scores: variables,
+          result: data.data,
+        },
       };
-      const currentListResult = storage.getString(KEY_STORE.LIST_RESULT) ?? [];
-      storage.set(
-        KEY_STORE.LIST_RESULT,
-        JSON.stringify([storedUserAnswers, ...currentListResult]),
-      );
+      const currentListResult = storage.getString(KEY_STORE.LIST_RESULT);
+      if (currentListResult)
+        storage.set(
+          KEY_STORE.LIST_RESULT,
+          JSON.stringify([storedUserAnswers, ...JSON.parse(currentListResult)]),
+        );
+      else {
+        storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers]));
+      }
       navigationRef.navigate('Result', {
         userAnswers,
         schoolScoreResults: data.data,

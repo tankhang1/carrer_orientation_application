@@ -73,7 +73,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       cropping: true,
     })
       .then(image => {
-        console.log(image);
+        setImageUrl(image.path);
       })
       .catch((e: any) => {
         console.log(e);

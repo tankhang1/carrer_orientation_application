@@ -17,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppRoundedButton from '@components/AppRoundedButton';
 import AppSkeleton from '@components/AppSkeleton';
 import ImagePicker from 'react-native-image-crop-picker';
+import {storage} from '@store';
 const {TextRecognitionModule} = NativeModules;
 const Carousel = lazy(() => import('./components/Carousel/Carousel'));
 type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;

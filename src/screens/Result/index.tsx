@@ -1,9 +1,16 @@
-import {View, StyleSheet, ImageBackground, Text, Button} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Text,
+  Button,
+  ScrollView,
+} from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import AppView from '@components/AppView';
 import AppHeader from '@components/AppHeader';
 import {Chart, HollandResult, IQ_EQ_Result, Title} from './components';
-import {FONT, s, vs} from '@utils/config';
+import {FONT, s, vs, width} from '@utils/config';
 import {navigationRef} from '@navigation';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
@@ -13,6 +20,7 @@ import {QueryClient} from '@tanstack/query-core';
 import {QUERY_KEY, queryClient} from '@utils/constants';
 import {IExamResponse, IResult, TExam} from '@interfaces/DTO';
 import {KEY_STORE, storage} from '@store';
+import ScoreResult from './components/ScoreResult';
 
 type Props = NativeStackScreenProps<TRootStackNav, 'Result'>;
 
@@ -51,63 +59,9 @@ const Result = ({navigation, route}: Props) => {
 
       <View style={{gap: vs(20)}}>
         {answers && <HollandResult answers={answers!} results={results!} />}
-        {scoreResults && (
-          <View
-            style={{
-              paddingHorizontal: s(20),
-            }}>
-            <Text style={FONT.content.M.bold}>
-              Với số điểm mà bạn cung cấp. Bạn có thể phù hợp với các khối
-              nghành như:
-            </Text>
-            <View
-              style={{
-                paddingHorizontal: 12,
-                gap: vs(20),
-              }}>
-              {scoreResults.map((result, index) => (
-                <View key={index}>
-                  <Text style={FONT.content.M.bold}>- Khối {result.title}</Text>
-                  <Text style={FONT.content.M.regular}>
-                    {result.description}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
+        {scoreResults && <ScoreResult scoreResults={scoreResults} />}
         {answers && <IQ_EQ_Result answers={answers!} results={results!} />}
       </View>
-
-      {/* <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
-        <Text style={FONT.content.M.bold}>Tổng kết:</Text> Bạn thuộc tiếp người
-        thông minh nhất thế giới. Trong đó có một vài ví dụ cụ thể như: Elon
-        musk. Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài
-        ví dụ cụ thể như: Elon musk. Bạn thuộc tiếp người thông minh nhất thế
-        giới. Trong đó có một vài ví dụ cụ thể như: Elon musk.
-      </Text> */}
-
-      {/* <ImageBackground
-        source={require('@assets/images/IQImage.png')}
-        style={styles.imageIQContainer}>
-        <Text style={[FONT.content.L, {top: 100, left: s(20)}]}>IQ: 106</Text>
-      </ImageBackground>
-      <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
-        Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài ví dụ
-        cụ thể như: Elon musk
-      </Text> */}
-      {/* <ImageBackground
-        source={require('@assets/images/EQResult.png')}
-        style={styles.imageIQContainer}
-        resizeMode="contain">
-        <View style={styles.eqQuestionContainer}>
-          <Text style={FONT.content.L}>999</Text>
-        </View>
-      </ImageBackground> */}
-      {/* <Text style={[FONT.content.M.regular, {paddingHorizontal: s(10)}]}>
-        Bạn thuộc tiếp người thông minh nhất thế giới. Trong đó có một vài ví dụ
-        cụ thể như: Elon musk
-      </Text> */}
     </AppView>
   );
 };

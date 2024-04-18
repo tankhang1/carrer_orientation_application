@@ -3,11 +3,15 @@ import React, {lazy, Suspense} from 'react';
 import {FONT, s, vs} from '@utils/config';
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
+import {storage} from '@store';
+import {TSubject} from '@screens/ExamQuestion/components/SchoolScore/constant';
 const AppHistoryCard = lazy(
   () => import('@components/AppHistoryCard/AppHistoryCard'),
 );
 
 const HistoryCard = () => {
+  const results = JSON.parse(storage.getString('LIST_RESULT') ?? '') as any[];
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -16,14 +20,13 @@ const HistoryCard = () => {
           <Text style={FONT.link}>Xem thêm</Text>
         </TouchableOpacity>
       </View>
-      <Suspense
-        fallback={<AppSkeleton width={'100%'} height={200} radius={10} />}>
-        <AppHistoryCard />
-      </Suspense>
-      <Suspense
-        fallback={<AppSkeleton width={'100%'} height={200} radius={10} />}>
-        <AppHistoryCard />
-      </Suspense>
+      {results?.map((result, index) => (
+        <Suspense
+          fallback={<AppSkeleton width={'100%'} height={200} radius={10} />}
+          key={index}>
+          <AppHistoryCard result={result} />
+        </Suspense>
+      ))}
     </View>
   );
 };
