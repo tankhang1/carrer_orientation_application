@@ -17,7 +17,7 @@ import AppHeader from '@components/AppHeader';
 import {storage} from '@store';
 
 const ListResult = () => {
-  const results = JSON.parse(storage.getString('LIST_RESULT') ?? '') as any[];
+  const results = JSON.parse(storage.getString('LIST_RESULT') ?? '[]') as any[];
 
   const renderCard = ({item, index}: ListRenderItemInfo<any>) => {
     return (
