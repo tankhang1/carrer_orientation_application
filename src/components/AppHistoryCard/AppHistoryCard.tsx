@@ -134,7 +134,7 @@ const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
             }}
           />
           <Text style={[FONT.content.M.regular, {width: '80%'}]}>
-            {result?.schoolScore?.result?.[0].description}
+            {result?.schoolScore?.result?.[0]?.description}
           </Text>
         </View>
       )}

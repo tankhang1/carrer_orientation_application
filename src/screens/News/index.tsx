@@ -1,5 +1,11 @@
 import {View, StyleSheet, ScrollView} from 'react-native';
-import React, {lazy, useDeferredValue, useEffect, useState} from 'react';
+import React, {
+  lazy,
+  startTransition,
+  useDeferredValue,
+  useEffect,
+  useState,
+} from 'react';
 import AppView from '@components/AppView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLORS, FONT, height, s, vs} from '@utils/config';
@@ -33,29 +39,27 @@ const News = () => {
   const deferSearchInfo = useDeferredValue(searchInfo);
   const onCategoryPress = (id: string) => {
     if (categoryId !== id) {
-      setCategoryId(id);
-      setSearchInfo('');
+      startTransition(() => {
+        setCategoryId(id);
+        setSearchInfo('');
+      });
     }
   };
   useEffect(() => {
     setCategoryId(Categories?.[0]._id);
   }, [Categories]);
 
-  const onGetMoreNews = async (pageParam: number) => {
-    return await useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
-      params: {id: categoryId, page: pageParam ?? 1},
-    });
-  };
   const {data, isFetchingNextPage, fetchNextPage, hasNextPage} =
-    useInfiniteQuery<INewsResponse, DefaultError, InfiniteData<INewsResponse>>({
+    useInfiniteQuery<unknown, DefaultError, InfiniteData<INewsResponse>>({
       queryKey: [QUERY_KEY.NEWS, categoryId],
-      queryFn: async ({pageParam}) => {
-        return onGetMoreNews(pageParam as number);
-      },
+      queryFn: async ({pageParam}) =>
+        useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
+          params: {id: categoryId, page: pageParam ?? 1},
+        } as const) as Promise<INewsResponse>,
       initialPageParam: 1,
       getNextPageParam: (
         lastPage: INewsResponse,
-        allPages,
+        allPages: INewsResponse[],
         lastPageParam: number,
       ) => {
         if (lastPage?.data?.length === 0) {
@@ -63,10 +67,11 @@ const News = () => {
         }
         return lastPageParam + 1;
       },
+      staleTime: 5 * 60 * 1000,
     });
   const onRefresh = () => {
     if (isFetchingNextPage) return;
-    queryClient.prefetchInfiniteQuery({
+    queryClient.fetchInfiniteQuery({
       queryKey: [QUERY_KEY.NEWS, categoryId],
       initialPageParam: 1,
     });
