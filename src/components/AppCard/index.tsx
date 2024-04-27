@@ -10,13 +10,7 @@ import {
 import React, {memo} from 'react';
 import {COLORS, FONT, s, width} from '@utils/config';
 import AppImage from '@components/AppImage';
-import Animated, {
-  FadeIn,
-  FadeOut,
-  SlideInDown,
-  SlideOutDown,
-  SlideOutLeft,
-} from 'react-native-reanimated';
+import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 type TAppCard = {
   index?: number;
   imageUrl: string;

@@ -10,7 +10,7 @@ const AppHistoryCard = lazy(
 );
 
 const HistoryCard = () => {
-  const results = JSON.parse(storage.getString('LIST_RESULT') ?? '') as any[];
+  const results = JSON.parse(storage.getString('LIST_RESULT') ?? null) as any[];
 
   return (
     <View style={styles.container}>

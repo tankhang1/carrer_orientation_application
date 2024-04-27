@@ -17,5 +17,6 @@ export interface INewCategory {
   listNews: INew[];
 }
 export interface INewsResponse extends IResponse {
-  data: INewCategory[];
+  data: INew[];
+  totalCount?: number;
 }

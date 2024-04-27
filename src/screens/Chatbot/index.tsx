@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import AppImage from '@components/AppImage';
-import {COLORS, FONT, s, vs} from '@utils/config';
+import {COLORS, FONT, height, s, vs} from '@utils/config';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {AppTextInput} from '@components';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -38,6 +38,7 @@ const Chatbot = () => {
   const scrollRef = useRef<FlatList>(null);
   const animatedValue = useSharedValue(0);
   const getChat = useMutation({
+    mutationKey: [KEY_STORE.CHAT_BOT],
     mutationFn: async (message: string) => {
       if (!message) return;
       return await useAPI(ENDPOINTS_URL.CHAT_BOT.GET_CHAT, 'POST', {
@@ -142,7 +143,9 @@ const Chatbot = () => {
       resizeMode="cover"
       style={styles.container}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        //behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        //behavior="height"
+        //keyboardVerticalOffset={200}
         style={styles.container}>
         <SafeAreaView style={[styles.container, styles.wrapper]}>
           <View style={styles.header}>
@@ -163,30 +166,26 @@ const Chatbot = () => {
           </View>
 
           <View style={styles.container}>
-            {chats?.length !== 0 ? (
-              <FlatList
-                data={chats}
-                renderItem={renderChat}
-                contentContainerStyle={{gap: vs(10)}}
-                showsVerticalScrollIndicator={false}
-                onMomentumScrollEnd={() => {
-                  if (Keyboard.isVisible()) {
-                    Keyboard.dismiss();
-                  }
-                }}
-                ref={scrollRef}
-              />
-            ) : (
-              <View style={styles.fallbackContainer}>
-                <AppImage
-                  source={require('@assets/images/clover.png')}
-                  style={styles.fallback}
-                />
-                <Text style={[FONT.content.M.medium, {color: COLORS.grey}]}>
-                  Chúc một ngày tốt lành!
-                </Text>
-              </View>
-            )}
+            <FlatList
+              data={chats}
+              renderItem={renderChat}
+              contentContainerStyle={{gap: vs(10)}}
+              showsVerticalScrollIndicator={false}
+              ref={scrollRef}
+              automaticallyAdjustKeyboardInsets
+              keyboardDismissMode="interactive"
+              ListEmptyComponent={
+                <View style={styles.fallbackContainer}>
+                  <AppImage
+                    source={require('@assets/images/clover.png')}
+                    style={styles.fallback}
+                  />
+                  <Text style={[FONT.content.M.medium, {color: COLORS.grey}]}>
+                    Chúc một ngày tốt lành!
+                  </Text>
+                </View>
+              }
+            />
           </View>
           <AppTextInput
             outStyle={styles.chatInput}
@@ -265,9 +264,9 @@ const styles = StyleSheet.create({
   },
   fallbackContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
+    justifyContent: 'flex-end',
     gap: vs(20),
+    height: height * 0.5,
   },
   fallback: {
     width: s(100),

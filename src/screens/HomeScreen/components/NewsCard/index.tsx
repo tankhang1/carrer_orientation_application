@@ -33,19 +33,20 @@ type TCard = {
 const CARDS: TCard[] = new Array(6).fill(card);
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const NewsCard = () => {
-  const {isLoading, data, isError} = useQuery<unknown, DefaultError, INew[]>({
+  const {isLoading, data, isError, status} = useQuery<
+    unknown,
+    DefaultError,
+    INew[]
+  >({
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
     queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
   });
-  console.log(data);
   const renderCard = useCallback(
     ({item, index}: {item: INew; index: number}) => {
       return (
         <Suspense
           fallback={<AppSkeleton width={100} height={150} radius={10} />}>
-          <Animated.View
-            entering={FadeIn.delay((index ?? 0) * 100)}
-            exiting={FadeOut}>
+          <Animated.View>
             <AppCard
               key={index}
               index={index}

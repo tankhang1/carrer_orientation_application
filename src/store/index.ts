@@ -6,4 +6,5 @@ export const storage = new MMKV();
 export const KEY_STORE = {
   LIST_RESULT: 'LIST_RESULT',
   LIST_CHAT: 'LIST_CHAT',
+  CHAT_BOT: 'CHAT_BOT',
 };

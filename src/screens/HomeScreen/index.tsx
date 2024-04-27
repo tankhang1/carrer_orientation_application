@@ -64,21 +64,7 @@ const HomeScreen = () => {
           type="fill"
           style={styles.floatingBtn}
           shadow={true}
-          onPress={() => navigationRef.navigate('ChatBot')}
-          // onPress={async () => {
-          //   console.log('aa');
-          //   try {
-          //     if (!imageUrl) return;
-          //     const response = await TextRecognitionModule.regconizeImage(
-          //       imageUrl,
-          //     );
-          //     console.log(response);
-          //     console.log(TextRecognitionModule);
-          //   } catch (e) {
-          //     console.log(e);
-          //   }
-          // }}
-        >
+          onPress={() => navigationRef.navigate('ChatBot')}>
           <Ionicons
             name="chatbubble-ellipses-outline"
             color={COLORS.white}
