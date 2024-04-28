@@ -75,12 +75,14 @@ const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
         <GeneralItem
           url={require('@assets/images/IQ.png')}
           name="IQ"
-          score={result?.userAnswers['IQ']}
+          //score={result?.userAnswers['IQ']}
+          score="0"
         />
         <GeneralItem
           url={require('@assets/images/EQ.png')}
           name="EQ"
-          score={result?.userAnswers['EQ']}
+          //score={result?.userAnswers['EQ']}
+          score="0"
         />
         <GeneralItem
           url={require('@assets/images/score.png')}

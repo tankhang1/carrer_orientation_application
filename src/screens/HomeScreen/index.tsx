@@ -17,7 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppRoundedButton from '@components/AppRoundedButton';
 import AppSkeleton from '@components/AppSkeleton';
 import ImagePicker from 'react-native-image-crop-picker';
-import {storage} from '@store';
+import {KEY_STORE, storage} from '@store';
 const {TextRecognitionModule} = NativeModules;
 const Carousel = lazy(() => import('./components/Carousel/Carousel'));
 type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
@@ -64,21 +64,7 @@ const HomeScreen = () => {
           type="fill"
           style={styles.floatingBtn}
           shadow={true}
-          onPress={() => navigationRef.navigate('ChatBot')}
-          // onPress={async () => {
-          //   console.log('aa');
-          //   try {
-          //     if (!imageUrl) return;
-          //     const response = await TextRecognitionModule.regconizeImage(
-          //       imageUrl,
-          //     );
-          //     console.log(response);
-          //     console.log(TextRecognitionModule);
-          //   } catch (e) {
-          //     console.log(e);
-          //   }
-          // }}
-        >
+          onPress={() => navigationRef.navigate('ChatBot')}>
           <Ionicons
             name="chatbubble-ellipses-outline"
             color={COLORS.white}
