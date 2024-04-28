@@ -67,7 +67,7 @@ const News = () => {
         }
         return lastPageParam + 1;
       },
-      staleTime: 5 * 60 * 1000,
+      //staleTime: 5 * 60 * 1000,
     });
   const onRefresh = () => {
     if (isFetchingNextPage) return;
@@ -83,17 +83,18 @@ const News = () => {
         <RefreshControl refreshing={isFetchingNextPage} onRefresh={onRefresh} />
       }
       onScroll={e => {
+        //console.log(e.nativeEvent);
         if (
           e.nativeEvent.layoutMeasurement.height +
             e.nativeEvent.contentOffset.y >=
             e.nativeEvent.contentSize.height - vs(100) &&
-          e.nativeEvent.velocity?.y &&
-          e.nativeEvent.velocity.y > 0
+          e.nativeEvent.contentOffset.y > 0
         ) {
           if (!hasNextPage || isFetchingNextPage) return;
           fetchNextPage();
         }
-      }}>
+      }}
+      scrollEventThrottle={16}>
       <AppHeader
         title="Tin tức"
         style={{
@@ -148,7 +149,9 @@ const News = () => {
         <NewsJobs
           deferSearchInfo={deferSearchInfo}
           id={categoryId}
-          news={data?.pages.flatMap(page => page?.data) as unknown as INew[]}
+          news={
+            (data?.pages.flatMap(page => page?.data) as unknown as INew[]) || []
+          }
         />
       </View>
     </AppView>

@@ -28,18 +28,18 @@ const NewsJobs = ({deferSearchInfo, id, news}: TNewsJobsProps) => {
 
   const renderCard = ({item, index}: ListRenderItemInfo<INew>) => {
     const searchPattern = new RegExp(deferSearchInfo.toLowerCase(), 'i');
-    if (searchPattern.test(item.title?.toLowerCase()))
+    if (searchPattern.test(item?.title?.toLowerCase()))
       return (
         <Suspense fallback={<AppSkeleton width={'100%'} height={200} />}>
           <AppCard
             index={index}
             key={index}
-            imageUrl={item.image.shortImage}
-            subTitle={dayjs(item.createdAt).format('DD/MM/YYYY')}
-            title={item.title}
+            imageUrl={item?.image?.shortImage}
+            subTitle={dayjs(item?.createdAt).format('DD/MM/YYYY')}
+            title={item?.title}
             type="large"
             onPress={() =>
-              navigationRef.navigate('NewsDetail1', {content: item.content})
+              navigationRef.navigate('NewsDetail1', {content: item?.content})
             }
             containerStyle={{marginVertical: vs(5)}}
           />
