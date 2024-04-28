@@ -44,10 +44,10 @@ const Carousel = () => {
         ? [
             'https://cdythadong.edu.vn/uploads/files/tuyen%20sinh/2024/thong%20bao%20ts/thumbnail%20hdmc.png',
           ]
-        : news?.map(item => item.image.longImage),
+        : news?.map(item => item.image.longImage)?.slice(0, 5),
     [news],
   );
-  const newsLength = useMemo(() => news?.length ?? 1, [news?.length]);
+  const newsLength = useMemo(() => banners?.length ?? 1, [news?.length]);
   const listWidth = useMemo(() => newsLength * width, [newsLength]);
   useEffect(() => {
     if (newsLength > 0 && !isLoading) {
@@ -131,7 +131,7 @@ const Carousel = () => {
       />
       <Indicator
         animatedValue={indicatorValue}
-        length={news?.length ?? 1}
+        length={banners?.length ?? 1}
         ref={indicatorRef}
       />
     </View>

@@ -72,23 +72,28 @@ const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
     <Animated.View entering={FadeIn.delay(index * 150)} style={styles.wrapper}>
       <Text style={styles.date}>17/2/2024</Text>
       <View style={styles.row}>
-        <GeneralItem
-          url={require('@assets/images/IQ.png')}
-          name="IQ"
-          //score={result?.userAnswers['IQ']}
-          score="0"
-        />
-        <GeneralItem
-          url={require('@assets/images/EQ.png')}
-          name="EQ"
-          //score={result?.userAnswers['EQ']}
-          score="0"
-        />
-        <GeneralItem
-          url={require('@assets/images/score.png')}
-          name="Điểm TB"
-          score={averageScore?.toString() ?? ''}
-        />
+        {!!result?.userAnswers['IQ'] && (
+          <GeneralItem
+            url={require('@assets/images/IQ.png')}
+            name="IQ"
+            score={result.userAnswers['IQ']}
+          />
+        )}
+
+        {!!result?.userAnswers['EQ'] && (
+          <GeneralItem
+            url={require('@assets/images/EQ.png')}
+            name="EQ"
+            score={result.userAnswers['EQ']}
+          />
+        )}
+        {!!averageScore && (
+          <GeneralItem
+            url={require('@assets/images/score.png')}
+            name="Điểm TB"
+            score={averageScore.toString() ?? ''}
+          />
+        )}
       </View>
       <View style={styles.row}>
         {Object.entries(result?.userAnswers ?? {}).map(([key, value]) => {
@@ -129,7 +134,7 @@ const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
             }}
           />
           <Text style={[FONT.content.M.regular, {width: '80%'}]}>
-            {result?.schoolScore?.result?.[0].description}
+            {result?.schoolScore?.result?.[0]?.description}
           </Text>
         </View>
       )}

@@ -9,9 +9,8 @@ const AppHistoryCard = lazy(
   () => import('@components/AppHistoryCard/AppHistoryCard'),
 );
 const HistoryCard = () => {
-  const results = JSON.parse(storage.getString('LIST_RESULT') ?? '[]') as any[];
-  //const results = [];
-  //console.log('results', results);
+  const results = JSON.parse(storage.getString('LIST_RESULT') ?? null) as any[];
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>

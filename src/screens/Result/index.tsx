@@ -59,7 +59,7 @@ const Result = ({navigation, route}: Props) => {
 
       <View style={{gap: vs(20)}}>
         {answers && <HollandResult answers={answers!} results={results!} />}
-        {scoreResults && <ScoreResult scoreResults={scoreResults} />}
+        {scoreResults.length > 0 && <ScoreResult scoreResults={scoreResults} />}
         {answers && <IQ_EQ_Result answers={answers!} results={results!} />}
       </View>
     </AppView>

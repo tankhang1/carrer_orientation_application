@@ -1,25 +1,29 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import React, {lazy, useDeferredValue, useEffect, useState} from 'react';
+import {View, StyleSheet, ScrollView} from 'react-native';
+import React, {
+  lazy,
+  startTransition,
+  useDeferredValue,
+  useEffect,
+  useState,
+} from 'react';
 import AppView from '@components/AppView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {COLORS, FONT, s, vs} from '@utils/config';
+import {COLORS, FONT, height, s, vs} from '@utils/config';
 import {AppTextInput, AppButton} from '@components';
-import {NewsCategory} from './mock';
-
 import NewsJobs from './components/NewsJobs';
-import Admissions from './components/Admissions';
-import {navigationRef} from '@navigation';
 import AppHeader from '@components/AppHeader';
-import {DefaultError, useQueries, useQuery} from '@tanstack/react-query';
+import {
+  DefaultError,
+  InfiniteData,
+  useInfiniteQuery,
+  useQuery,
+} from '@tanstack/react-query';
 import {QUERY_KEY} from '@utils/constants';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
+import {INew, INewsResponse} from '@interfaces/DTO';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {queryClient} from '@utils/constants';
 const News = () => {
   const {data: Categories, isLoading} = useQuery<
     unknown,
@@ -35,15 +39,61 @@ const News = () => {
   const deferSearchInfo = useDeferredValue(searchInfo);
   const onCategoryPress = (id: string) => {
     if (categoryId !== id) {
-      setCategoryId(id);
-      setSearchInfo('');
+      startTransition(() => {
+        setCategoryId(id);
+        setSearchInfo('');
+      });
     }
   };
   useEffect(() => {
     setCategoryId(Categories?.[0]._id);
   }, [Categories]);
+
+  const {data, isFetchingNextPage, fetchNextPage, hasNextPage} =
+    useInfiniteQuery<unknown, DefaultError, InfiniteData<INewsResponse>>({
+      queryKey: [QUERY_KEY.NEWS, categoryId],
+      queryFn: async ({pageParam}) =>
+        useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
+          params: {id: categoryId, page: pageParam ?? 1},
+        } as const) as Promise<INewsResponse>,
+      initialPageParam: 1,
+      getNextPageParam: (
+        lastPage: INewsResponse,
+        allPages: INewsResponse[],
+        lastPageParam: number,
+      ) => {
+        if (lastPage?.data?.length === 0) {
+          return undefined;
+        }
+        return lastPageParam + 1;
+      },
+      staleTime: 5 * 60 * 1000,
+    });
+  const onRefresh = () => {
+    if (isFetchingNextPage) return;
+    queryClient.fetchInfiniteQuery({
+      queryKey: [QUERY_KEY.NEWS, categoryId],
+      initialPageParam: 1,
+    });
+  };
   return (
-    <AppView style={styles.overall}>
+    <AppView
+      style={styles.overall}
+      refreshControl={
+        <RefreshControl refreshing={isFetchingNextPage} onRefresh={onRefresh} />
+      }
+      onScroll={e => {
+        if (
+          e.nativeEvent.layoutMeasurement.height +
+            e.nativeEvent.contentOffset.y >=
+            e.nativeEvent.contentSize.height - vs(100) &&
+          e.nativeEvent.velocity?.y &&
+          e.nativeEvent.velocity.y > 0
+        ) {
+          if (!hasNextPage || isFetchingNextPage) return;
+          fetchNextPage();
+        }
+      }}>
       <AppHeader
         title="Tin tức"
         style={{
@@ -95,7 +145,11 @@ const News = () => {
             />
           ))}
         </ScrollView>
-        <NewsJobs deferSearchInfo={deferSearchInfo} id={categoryId} />
+        <NewsJobs
+          deferSearchInfo={deferSearchInfo}
+          id={categoryId}
+          news={data?.pages.flatMap(page => page?.data) as unknown as INew[]}
+        />
       </View>
     </AppView>
   );

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 type TAppView<TData> = {
   children?: React.ReactNode;
@@ -36,13 +37,18 @@ const AppView = <TData,>({
       resizeMode="cover"
       style={styles.wrapper}>
       <SafeAreaView style={[styles.container, style]}>
-        {data?.length === 0 ? (
-          <ScrollView removeClippedSubviews renderToHardwareTextureAndroid>
-            <View>{children && children}</View>
-          </ScrollView>
-        ) : (
-          <FlatList data={data} renderItem={renderItem} {...FlatlistProps} />
-        )}
+        <GestureHandlerRootView>
+          {data?.length === 0 ? (
+            <ScrollView
+              removeClippedSubviews
+              renderToHardwareTextureAndroid
+              {...FlatlistProps}>
+              <View>{children && children}</View>
+            </ScrollView>
+          ) : (
+            <FlatList data={data} renderItem={renderItem} {...FlatlistProps} />
+          )}
+        </GestureHandlerRootView>
       </SafeAreaView>
     </ImageBackground>
   );
