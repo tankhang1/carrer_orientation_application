@@ -1,12 +1,10 @@
 import {FlatList, ListRenderItemInfo} from 'react-native';
-import React, {lazy, memo, Suspense, useState} from 'react';
+import React, {lazy, memo, Suspense} from 'react';
 import {vs} from '@utils/config';
 import dayjs from 'dayjs';
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
-import {INew, INewsResponse} from '@interfaces/DTO';
-import useAPI from '@service/api';
-import {ENDPOINTS_URL} from '@service';
+import {INew} from '@interfaces/DTO';
 const AppCard = lazy(() => import('@components/AppCard'));
 type TNewsJobsProps = {
   deferSearchInfo: string;
@@ -14,18 +12,6 @@ type TNewsJobsProps = {
   news: INew[];
 };
 const NewsJobs = ({deferSearchInfo, id, news}: TNewsJobsProps) => {
-  // const {isLoading, data, isError, status} = useQuery<
-  //   unknown,
-  //   DefaultError,
-  //   INewsResponse
-  // >({
-  //   queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS, id, page],
-  //   queryFn: () =>
-  //     useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {params: {id: id, page}}),
-  //   enabled: !!id,
-  //   //placeholderData: keepPreviousData,
-  // });
-
   const renderCard = ({item, index}: ListRenderItemInfo<INew>) => {
     const searchPattern = new RegExp(deferSearchInfo.toLowerCase(), 'i');
     if (searchPattern.test(item?.title?.toLowerCase()))

@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.23:3000';
+const BASE_URL = 'http://192.168.1.4:3000';
 const ENDPOINTS_URL = {
   EXAM: {
     GET_EXAM: '/exams',
@@ -18,6 +18,9 @@ const ENDPOINTS_URL = {
   },
   CHAT_BOT: {
     GET_CHAT: '/geminiAI/generateChat',
+  },
+  CONCLUSION: {
+    GET_CONCLUSION: '/exams/getConclusion',
   },
 };
 export {BASE_URL, ENDPOINTS_URL};

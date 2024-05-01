@@ -2,7 +2,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect, useMemo} from 'react';
 import Title from './Title';
 import {COLORS, FONT, s, vs, width} from '@utils/config';
-import AppImage from '@components/AppImage';
 import {IResult, TExam} from '@interfaces/DTO';
 import {
   Circle,
@@ -19,6 +18,7 @@ import Animated, {
   interpolate,
   useAnimatedProps,
   useSharedValue,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 type Props = {
@@ -31,8 +31,10 @@ type Props = {
 const RectAnimated = Animated.createAnimatedComponent(Rect);
 const PathAnimated = Animated.createAnimatedComponent(Path);
 const SvgAnimated = Animated.createAnimatedComponent(Svg);
+const CircleAnimated = Animated.createAnimatedComponent(Circle);
 const IQ_EQ_Result = ({answers, results}: Props) => {
   const iqTransitionX = useSharedValue(0);
+  const eqTransitionX = useSharedValue(0);
   const resultIQ = useMemo(() => {
     let newBenmark: any[] = [];
     results
@@ -49,12 +51,10 @@ const IQ_EQ_Result = ({answers, results}: Props) => {
     const score = answers?.IQ?.split('/')[0];
     const evaluation = resultContents?.find(
       item =>
-        item?.score &&
-        parseInt(score) * 6 >= item!.score[0]! &&
-        parseInt(score) * 6 <= item?.score[1]!,
+        item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!,
     );
     return {
-      score: +score * 6,
+      score: +score,
       content: evaluation?.content,
     };
   }, [results, answers]);
@@ -65,12 +65,10 @@ const IQ_EQ_Result = ({answers, results}: Props) => {
     const score = answers?.EQ?.split('/')[0];
     const evaluation = resultContents?.find(
       item =>
-        item?.score &&
-        parseInt(score) * 10 >= item!.score[0]! &&
-        parseInt(score) * 10 <= item?.score[1]!,
+        item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!,
     );
     return {
-      score: +score * 10,
+      score: +score,
       content: evaluation?.content,
     };
   }, [results, answers]);
@@ -78,6 +76,7 @@ const IQ_EQ_Result = ({answers, results}: Props) => {
     if (resultIQ) {
       setTimeout(() => {
         iqTransitionX.value = withTiming(1);
+        eqTransitionX.value = withSpring(EQ_Result.score);
       }, 2000);
     }
   }, [resultIQ]);
@@ -100,6 +99,12 @@ const IQ_EQ_Result = ({answers, results}: Props) => {
         2.5 +
         width * 0.05
       } 7 h 8 l -4 8 z`,
+    };
+  });
+  const animatedCircleProps = useAnimatedProps(() => {
+    return {
+      strokeDashoffset:
+        Math.PI * 2 * interpolate(eqTransitionX.value, [0, 200], [135, 45]),
     };
   });
   return (
@@ -173,6 +178,22 @@ const IQ_EQ_Result = ({answers, results}: Props) => {
       <Title title="Kiểm tra cảm xúc" />
       <View>
         <Svg width={width} height={220}>
+          <CircleAnimated
+            animatedProps={animatedCircleProps}
+            cx={width / 2}
+            cy={140}
+            r={130}
+            strokeWidth={10}
+            stroke={COLORS.green}
+            fill={'transparent'}
+            strokeDasharray={Math.PI * 2 * 135}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            originX={width / 2}
+            originY={140}
+            rotation={145}
+          />
+
           <Circle
             cx={width / 2}
             cy={140}
@@ -282,7 +303,7 @@ const IQ_EQ_Result = ({answers, results}: Props) => {
             alignItems: 'center',
           }}>
           <Text style={FONT.content.M.medium}>Số điểm</Text>
-          <Text style={[styles.score]}>{EQ_Result.score}</Text>
+          <Text style={[styles.score]}>{answers?.EQ}</Text>
         </View>
       </View>
 

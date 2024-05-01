@@ -143,9 +143,9 @@ const Chatbot = () => {
       resizeMode="cover"
       style={styles.container}>
       <KeyboardAvoidingView
-        //behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        //behavior="height"
-        //keyboardVerticalOffset={200}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        //behavior="padding"
+        keyboardVerticalOffset={0}
         style={styles.container}>
         <SafeAreaView style={[styles.container, styles.wrapper]}>
           <View style={styles.header}>
@@ -188,7 +188,10 @@ const Chatbot = () => {
             />
           </View>
           <AppTextInput
-            outStyle={styles.chatInput}
+            outStyle={[
+              styles.chatInput,
+              {marginBottom: Platform.OS === 'ios' ? 0 : vs(20)},
+            ]}
             containerStyle={{
               borderWidth: 0,
             }}
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: s(10),
     elevation: 4,
-    marginBottom: vs(20),
+    //marginBottom: vs(20),
     marginTop: vs(10),
   },
   avatar: {

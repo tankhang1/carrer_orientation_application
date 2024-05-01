@@ -14,6 +14,7 @@ export interface IOption {
   image?: string;
   content: string;
   isResult?: boolean;
+  standardScore?: number;
 }
 export interface IQuestion {
   questionTitle: string;

@@ -6,7 +6,7 @@ import {
   NativeModules,
   Button,
 } from 'react-native';
-import React, {lazy, Suspense, useState} from 'react';
+import React, {lazy, Suspense, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import {navigationRef} from '@navigation';
@@ -16,9 +16,7 @@ import AppView from '@components/AppView';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppRoundedButton from '@components/AppRoundedButton';
 import AppSkeleton from '@components/AppSkeleton';
-import ImagePicker from 'react-native-image-crop-picker';
-import {KEY_STORE, storage} from '@store';
-const {TextRecognitionModule} = NativeModules;
+import {useFocusEffect} from '@react-navigation/native';
 const Carousel = lazy(() => import('./components/Carousel/Carousel'));
 type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
 const BUTTONS = [
@@ -42,6 +40,7 @@ const BUTTONS = [
     onPress: () => navigationRef.navigate('News'),
   },
 ];
+
 const HomeScreen = () => {
   return (
     <>

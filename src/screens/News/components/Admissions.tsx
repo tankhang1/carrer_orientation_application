@@ -1,16 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ListRenderItemInfo,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, FlatList, ListRenderItemInfo} from 'react-native';
 import React, {lazy, memo, Suspense} from 'react';
-import {COLORS, FONT, s, vs} from '@utils/config';
+import {COLORS, s, vs} from '@utils/config';
 import {NewsDataCategories, TNewsCategory} from '../mock';
-import AppImage from '@components/AppImage';
-import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
 const CategoryItem = lazy(() => import('./CategoryItem'));
 const Admissions = () => {

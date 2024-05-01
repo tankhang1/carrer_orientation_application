@@ -1,15 +1,30 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {lazy, Suspense} from 'react';
+import React, {lazy, Suspense, useMemo} from 'react';
 import {FONT, s, vs} from '@utils/config';
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
-import {storage} from '@store';
-import {TSubject} from '@screens/ExamQuestion/components/SchoolScore/constant';
+import {KEY_STORE, storage} from '@store';
 const AppHistoryCard = lazy(
   () => import('@components/AppHistoryCard/AppHistoryCard'),
 );
 const HistoryCard = () => {
-  const results = JSON.parse(storage.getString('LIST_RESULT') ?? null) as any[];
+  // useFocusEffect(() => {
+  //   console.log('focus screen');
+  //   React.useCallback(() => {
+  //     const unsubscribe ={
+  //       const results = JSON.parse(
+  //         storage.getString(KEY_STORE.LIST_RESULT) ?? 'null',
+  //       ) as any[];
+  //     };
+
+  //     return () => unsubscribe();
+  //   }, [])
+  // });
+  const results = useMemo(
+    () =>
+      JSON.parse(storage.getString(KEY_STORE.LIST_RESULT) ?? 'null') as any[],
+    [],
+  );
 
   return (
     <View style={styles.container}>

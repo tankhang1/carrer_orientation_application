@@ -1,18 +1,26 @@
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TRootStackNav} from '@utils/types/RootStackNav';
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+} from 'react-native';
+import React, {
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {navigationRef} from '@navigation';
 import {AppHeader, AppModal, AppView} from '@components';
 import {vs} from '@utils/config';
 import {Question, SchoolScore, BottomButton} from './components';
 import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
-type Props = NativeStackScreenProps<TRootStackNav, 'ExamQuestion'>;
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
-import {TAnswer, TSchoolScoreResult} from '@utils/types/metaTypes';
+import {TAnswer} from '@utils/types/metaTypes';
 import {initialSubjects, TSubject} from './components/SchoolScore/constant';
 import {KEY_STORE, storage} from '@store';
 
@@ -31,6 +39,7 @@ const initialAnswers: TAnswer = new Map([
   ['EQ', []],
 ]);
 const ExamQuestion = () => {
+  const [answers, setAnswers] = useState<TAnswer>(initialAnswers);
   const {isPending, error, data, isLoading} = useQuery<
     unknown,
     DefaultError,
@@ -42,7 +51,7 @@ const ExamQuestion = () => {
   const postSchoolScore = useMutation({
     mutationKey: [QUERY_KEY.CACULATE_SCHOOL_SCORE],
     mutationFn: (variables: Record<string, TSubject>) => {
-      console.log('convert', variables);
+      console.log('variables', variables);
       return useAPI(
         ENDPOINTS_URL.SCHOOL_SUBJECTS.CACULATE_SCHOOL_SCORE,
         'POST',
@@ -72,15 +81,17 @@ const ExamQuestion = () => {
       else {
         storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers]));
       }
-      navigationRef.navigate('Result', {
-        userAnswers,
-        schoolScoreResults: data.data,
-      });
+      setAnswers(initialAnswers);
+      setQuestionNumber(totalExams + 1);
+      // navigationRef.navigate('Result', {
+      //   userAnswers,
+      //   schoolScoreResults: data.data,
+      // });
     },
   });
   const [questionNumber, setQuestionNumber] = useState(0);
   const [openModalNext, setOpenModalNext] = useState(false);
-  const [answers, setAnswers] = useState<TAnswer>(initialAnswers);
+
   const [selections, setSelections] = useState<number[]>([]);
   const [errorNotAnswer, setErrorNotAnswer] = useState(false);
   const [subjects, setSubjects] =
@@ -113,7 +124,9 @@ const ExamQuestion = () => {
     const currentAnswer = answers;
     if (examInfo.examType === 'EQ' || examInfo.examType === 'IQ') {
       let tmp = currentAnswer.get(examInfo.examType)!;
-      tmp[questionIndex] = selections[0];
+      const index =
+        examInfo.examType === 'IQ' ? questionIndex : questionIndex - IQ?.length;
+      tmp[index] = selections[0];
       currentAnswer.set(examInfo.examType, tmp);
       setAnswers(currentAnswer);
       return;
@@ -178,12 +191,7 @@ const ExamQuestion = () => {
   };
   const onNext = useCallback(() => {
     if (questionNumber === totalExams) {
-      // const userAnswers = calculateUserAnswer();
-
-      // const schoolScoreResult =
       caculateSchoolScore();
-      // console.log('schoolScoreResult', schoolScoreResult);
-      // navigationRef.navigate('Result', {userAnswers});
     }
 
     if (selections?.length === 0 || selections[0] === -1) {
@@ -197,15 +205,15 @@ const ExamQuestion = () => {
       setQuestionNumber(questionNumber + 1);
       onUpdateAnswer();
     }
-  }, [data?.data, questionNumber, totalExams, selections]);
+  }, [data?.data, questionNumber, totalExams, selections, questionIndex]);
 
-  //console.log('totalExams', totalExams);
   const onPrev = useCallback(() => {
     if (questionNumber > 0) {
       setQuestionNumber(questionNumber - 1);
       onUpdateAnswer();
     }
-  }, [data?.data, questionNumber, selections]);
+    setErrorNotAnswer(false);
+  }, [data?.data, questionNumber, selections, questionIndex]);
   const examInfo: TExamInfo = useMemo(() => {
     if (questionNumber < HOLLAND?.length || questionNumber === 0) {
       return {
@@ -221,7 +229,7 @@ const ExamQuestion = () => {
     }
     return {headerTitle: 'Điểm trung bình', examType: 'SchoolScore'};
   }, [questionNumber]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (
       questionNumber === HOLLAND?.length &&
       !isContinue?.current &&
@@ -237,14 +245,12 @@ const ExamQuestion = () => {
     let IQ_Score = 0;
     answers.get('IQ')?.forEach((answer, index) => {
       if (IQ[index]?.options[answer]?.isResult) {
-        IQ_Score += 1;
+        IQ_Score += IQ[index]?.options[answer]?.standardScore || 0;
       }
     });
     let EQ_Score = 0;
     answers.get('EQ')?.forEach((answer, index) => {
-      if (EQ[index]?.options[answer]?.isResult) {
-        EQ_Score += 1;
-      }
+      EQ_Score += EQ[index]?.options[answer]?.standardScore || 0;
     });
     answers?.forEach((value, key) => {
       if (key !== 'EQ' && key !== 'IQ') {
@@ -254,47 +260,60 @@ const ExamQuestion = () => {
       }
     });
     Object.assign(userAnswers, {
-      IQ: `${IQ_Score}/${IQ?.length}`,
-      EQ: `${EQ_Score}/${EQ?.length}`,
+      IQ: `${IQ_Score}/120`,
+      EQ: `${EQ_Score}/200`,
     });
     return userAnswers;
   };
   return (
     <>
       <AppView>
-        <AppHeader title={examInfo.headerTitle} />
-        {isLoading || !data?.data ? (
-          <ActivityIndicator size={'large'} />
-        ) : (
-          <View style={styles.container}>
-            {questionNumber < totalExams ? (
-              <Question
-                question={
-                  questionNumber < HOLLAND?.length
-                    ? HOLLAND[questionNumber].questions[0]
-                    : IQ_EQ_List[questionIndex]
-                }
-                questionNumber={questionNumber}
-                type={examInfo.examType}
-                questionIndex={questionIndex}
-                selections={selections}
-                setSelections={setSelections}
-                answers={answers}
-                error={errorNotAnswer}
-              />
-            ) : (
-              <SchoolScore subjects={subjects} setSubjects={setSubjects} />
-            )}
-            {/* <SchoolScore /> */}
-          </View>
-        )}
+        <KeyboardAvoidingView behavior="padding">
+          <AppHeader
+            title={examInfo.headerTitle}
+            onPress={() => {
+              setAnswers(initialAnswers);
+              navigationRef.goBack();
+            }}
+          />
+          {isLoading || !data?.data ? (
+            <ActivityIndicator size={'large'} />
+          ) : (
+            <View style={styles.container}>
+              {questionNumber < totalExams ? (
+                <Question
+                  question={
+                    questionNumber < HOLLAND?.length
+                      ? HOLLAND[questionNumber].questions[0]
+                      : IQ_EQ_List[questionIndex]
+                  }
+                  questionNumber={questionNumber}
+                  type={examInfo.examType}
+                  questionIndex={
+                    examInfo.examType === 'IQ'
+                      ? questionIndex
+                      : questionIndex - IQ?.length
+                  }
+                  selections={selections}
+                  setSelections={setSelections}
+                  answers={answers}
+                  error={errorNotAnswer}
+                />
+              ) : (
+                <SchoolScore subjects={subjects} setSubjects={setSubjects} />
+              )}
+            </View>
+          )}
+        </KeyboardAvoidingView>
       </AppView>
+
       <BottomButton
         onNext={onNext}
         onPrev={onPrev}
-        maxValue={totalExams}
+        maxValue={totalExams + 1}
         currentValue={questionNumber}
       />
+
       <AppModal
         disableBackDrop={true}
         visible={openModalNext}
@@ -303,7 +322,6 @@ const ExamQuestion = () => {
         onAccept={() => setOpenModalNext(false)}
         onCancel={() => {
           setQuestionNumber(totalExams);
-          //navigationRef.navigate('Result');
           setOpenModalNext(false);
         }}
       />

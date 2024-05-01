@@ -6,7 +6,7 @@ import {IQuestion, TExam} from '@interfaces/DTO';
 import AppImage from '@components/AppImage';
 import {COLORS, width} from '@utils/config';
 import Checkbox from './Checkbox';
-import {TAnswer} from '@screens/ExamQuestion';
+import {TAnswer} from '@utils/types/metaTypes';
 type Props = {
   question: IQuestion;
   questionNumber: number;

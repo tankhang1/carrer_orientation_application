@@ -1,25 +1,13 @@
-import {
-  View,
-  StyleSheet,
-  ImageBackground,
-  Text,
-  Button,
-  ScrollView,
-} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
+import {View, StyleSheet, ImageBackground, Text} from 'react-native';
+import React, {useMemo} from 'react';
 import AppView from '@components/AppView';
 import AppHeader from '@components/AppHeader';
-import {Chart, HollandResult, IQ_EQ_Result, Title} from './components';
-import {FONT, s, vs, width} from '@utils/config';
-import {navigationRef} from '@navigation';
+import {Conclusion, HollandResult, IQ_EQ_Result} from './components';
+import {FONT, s, vs} from '@utils/config';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
-import {TAnswer} from '@utils/types/metaTypes';
-import AppImage from '@components/AppImage';
-import {QueryClient} from '@tanstack/query-core';
 import {QUERY_KEY, queryClient} from '@utils/constants';
 import {IExamResponse, IResult, TExam} from '@interfaces/DTO';
-import {KEY_STORE, storage} from '@store';
 import ScoreResult from './components/ScoreResult';
 
 type Props = NativeStackScreenProps<TRootStackNav, 'Result'>;
@@ -39,9 +27,10 @@ const Result = ({navigation, route}: Props) => {
     }));
   }, [data]);
 
+  console.log('answers', scoreResults);
   return (
-    <AppView>
-      <AppHeader title="Kết quả" onPress={() => navigation.pop(2)} />
+    <AppView showsVerticalScrollIndicator={false}>
+      <AppHeader title="Kết quả" onPress={() => navigation.pop(3)} />
       <ImageBackground
         source={require('@assets/images/background.jpg')}
         style={styles.header}>
@@ -60,7 +49,12 @@ const Result = ({navigation, route}: Props) => {
       <View style={{gap: vs(20)}}>
         {answers && <HollandResult answers={answers!} results={results!} />}
         {scoreResults.length > 0 && <ScoreResult scoreResults={scoreResults} />}
-        {answers && <IQ_EQ_Result answers={answers!} results={results!} />}
+        {answers?.IQ && <IQ_EQ_Result answers={answers!} results={results!} />}
+        <Conclusion
+          answers={answers}
+          results={results!}
+          scoreResults={scoreResults}
+        />
       </View>
     </AppView>
   );

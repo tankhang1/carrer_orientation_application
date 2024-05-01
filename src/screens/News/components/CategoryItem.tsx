@@ -1,6 +1,5 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
-import {navigationRef} from '@navigation';
 import {TNewsCategory} from '../mock';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import AppImage from '@components/AppImage';
