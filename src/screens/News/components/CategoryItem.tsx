@@ -1,8 +1,18 @@
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
-import {TNewsCategory} from '../mock';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import AppImage from '@components/AppImage';
+type TNewsData = {
+  image: string;
+  createdAt: Date;
+  content: string;
+  key: string;
+};
+export type TNewsCategory = {
+  id: string;
+  title: string;
+  image: any;
+};
 type TCategoryItem = {
   item: TNewsCategory;
 };

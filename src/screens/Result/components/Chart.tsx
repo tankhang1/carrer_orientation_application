@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React, {useMemo} from 'react';
 import {BarChart, barDataItem} from 'react-native-gifted-charts';
 import {COLORS, FONT, width} from '@utils/config';
@@ -40,7 +40,6 @@ const Chart = ({answes}: TChart) => {
         }}
         yAxisTextStyle={FONT.content.S}
         xAxisLabelTextStyle={FONT.content.XS.medium}
-        //onPress={() => console.log('press')}
       />
     </View>
   );
