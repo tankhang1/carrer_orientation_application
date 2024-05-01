@@ -83,10 +83,10 @@ const ExamQuestion = () => {
       }
       setAnswers(initialAnswers);
       setQuestionNumber(totalExams + 1);
-      // navigationRef.navigate('Result', {
-      //   userAnswers,
-      //   schoolScoreResults: data.data,
-      // });
+      navigationRef.navigate('Result', {
+        userAnswers,
+        schoolScoreResults: data.data,
+      });
     },
   });
   const [questionNumber, setQuestionNumber] = useState(0);
@@ -138,13 +138,11 @@ const ExamQuestion = () => {
     const data: Record<string, TSubject> = {
       Biology: {
         ...subjects['Biology'],
-        value: !!subjects['Biology']?.value ? +subjects['Biology'].value : 0,
+        value: subjects['Biology']?.value ? +subjects['Biology'].value : 0,
       },
       Chemistry: {
         ...subjects['Chemistry'],
-        value: !!subjects['Chemistry']?.value
-          ? +subjects['Chemistry'].value
-          : 0,
+        value: subjects['Chemistry']?.value ? +subjects['Chemistry'].value : 0,
       },
       English: {
         ...subjects['English'],
@@ -152,37 +150,35 @@ const ExamQuestion = () => {
       },
       Geography: {
         ...subjects['Geography'],
-        value: !!subjects['Geography']?.value
-          ? +subjects['Geography'].value
-          : 0,
+        value: subjects['Geography']?.value ? +subjects['Geography'].value : 0,
       },
       History: {
         ...subjects['History'],
-        value: !!subjects['History']?.value ? +subjects['History'].value : 0,
+        value: subjects['History']?.value ? +subjects['History'].value : 0,
       },
       Informatics: {
         ...subjects['Informatics'],
-        value: !!subjects['Informatics']?.value
+        value: subjects['Informatics']?.value
           ? +subjects['Informatics'].value
           : 0,
       },
       Literature: {
         ...subjects['Literature'],
-        value: !!subjects['Literature']?.value
+        value: subjects['Literature']?.value
           ? +subjects['Literature'].value
           : 0,
       },
       Math: {
         ...subjects['Math'],
-        value: !!subjects['Math']?.value ? +subjects['Math'].value : 0,
+        value: subjects['Math']?.value ? +subjects['Math'].value : 0,
       },
       Physics: {
         ...subjects['Physics'],
-        value: !!subjects['Physics']?.value ? +subjects['Physics'].value : 0,
+        value: subjects['Physics']?.value ? +subjects['Physics'].value : 0,
       },
       CivicEducation: {
         ...subjects['CivicEducation'],
-        value: !!subjects['CivicEducation']?.value
+        value: subjects['CivicEducation']?.value
           ? +subjects['CivicEducation'].value
           : 0,
       },

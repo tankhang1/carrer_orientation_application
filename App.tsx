@@ -15,7 +15,7 @@ const App = () => {
       <Host>
         <AppNavigation />
       </Host>
-      {__DEV__ && <DevToolsBubble />}
+      {/* {__DEV__ && <DevToolsBubble />} */}
     </QueryClientProvider>
   );
 };
