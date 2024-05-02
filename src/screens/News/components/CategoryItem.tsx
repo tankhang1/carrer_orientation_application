@@ -2,6 +2,7 @@ import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import AppImage from '@components/AppImage';
+
 type TNewsData = {
   image: string;
   createdAt: Date;

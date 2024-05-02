@@ -1,22 +1,10 @@
 import {View, Text, StyleSheet, Image, ImageSourcePropType} from 'react-native';
 import React, {useMemo} from 'react';
-import {COLORS, FONT, s, vs, width} from '@utils/config';
+import {COLORS, FONT, s, vs, width} from '@utils';
 import AppImage from '@components/AppImage';
 import Animated, {FadeIn} from 'react-native-reanimated';
+import dayjs from 'dayjs';
 
-const GENERAL = {
-  IQ: '120/300',
-  EQ: '120/300',
-  Score: '120/300',
-};
-const HOLLAND = {
-  R: '8/10',
-  I: '8/10',
-  A: '8/10',
-  S: '8/10',
-  E: '8/10',
-  C: '8/10',
-};
 const HOLLAND_COLOR: Record<string, string> = {
   R: COLORS.red,
   I: COLORS.orange,
@@ -70,7 +58,9 @@ const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
   }, [result]);
   return (
     <Animated.View entering={FadeIn.delay(index * 150)} style={styles.wrapper}>
-      <Text style={styles.date}>17/2/2024</Text>
+      <Text style={styles.date}>
+        {dayjs(result?.date).format('DD/MM/YYYY')}
+      </Text>
       <View style={styles.row}>
         {!!result?.userAnswers['IQ'] && (
           <GeneralItem

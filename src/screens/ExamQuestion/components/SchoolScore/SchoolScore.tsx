@@ -1,10 +1,8 @@
 import {View, Text, StyleSheet, NativeModules} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import {COLORS, FONT, s, vs} from '@utils/config';
+import React, {useEffect, useState} from 'react';
 import {AppImagePicker, AppTextInput} from '@components';
 import {DefaultError, useQuery} from '@tanstack/react-query';
-import {QUERY_KEY} from '@utils/constants';
-import {TSubject, initialSubjects} from './constant';
+import {QUERY_KEY, TSubject, COLORS, FONT, s, vs} from '@utils';
 import {ISchoolSubjectsResponse} from '@interfaces/DTO/SchoolSubject/schoolSubject';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
