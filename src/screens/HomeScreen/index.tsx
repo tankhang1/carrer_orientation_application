@@ -1,14 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  NativeModules,
-  Button,
-} from 'react-native';
-import React, {lazy, Suspense, useEffect, useState} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TRootStackNav} from '@utils/types/RootStackNav';
+import {View, Text, StyleSheet} from 'react-native';
+import React, {lazy, Suspense} from 'react';
 import {navigationRef} from '@navigation';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {ButtonFunction, NewsCard, HistoryCard} from './components';
@@ -16,9 +7,7 @@ import AppView from '@components/AppView';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppRoundedButton from '@components/AppRoundedButton';
 import AppSkeleton from '@components/AppSkeleton';
-import {useFocusEffect} from '@react-navigation/native';
 const Carousel = lazy(() => import('./components/Carousel/Carousel'));
-type Props = NativeStackScreenProps<TRootStackNav, 'HomeScreen'>;
 const BUTTONS = [
   {
     icon: 'pencil',

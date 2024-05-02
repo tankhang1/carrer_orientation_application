@@ -1,11 +1,10 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {lazy, Suspense, useEffect, useMemo, useState} from 'react';
-import {FONT, s, vs} from '@utils/config';
+import React, {lazy, Suspense, useState} from 'react';
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
 import {KEY_STORE, storage} from '@store';
 import {useFocusEffect} from '@react-navigation/native';
-import {TResultInStore} from '@utils';
+import {TResultInStore, FONT, s, vs} from '@utils';
 const AppHistoryCard = lazy(
   () => import('@components/AppHistoryCard/AppHistoryCard'),
 );
@@ -16,7 +15,7 @@ const HistoryCard = () => {
       const storageResult = storage.getString(KEY_STORE.LIST_RESULT);
       const resultsFromStore = JSON.parse(storageResult ?? 'null');
 
-      if (resultsFromStore && Array.isArray(resultsFromStore)) {
+      if (resultsFromStore) {
         setResults(resultsFromStore as unknown as TResultInStore[]); // Adjust the cast as necessary
       }
 

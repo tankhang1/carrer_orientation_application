@@ -11,13 +11,12 @@ import {FONT, s, vs} from '@utils/config';
 
 import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
-import Animated, {FadeInLeft, FadeOut, FadeIn} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import {DefaultError, useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '@utils/constants';
-import {INew, INewCategory, INewsResponse} from '@interfaces/DTO';
+import {INew} from '@interfaces/DTO';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
-import {TNewsData} from '@screens/News/mock';
 const AppCard = lazy(() => import('@components/AppCard'));
 const card = {
   imageUrl:
@@ -77,7 +76,7 @@ const NewsCard = () => {
       </View>
       <FlatList
         horizontal
-        data={data}
+        data={data?.reverse()}
         renderItem={renderCard}
         contentContainerStyle={styles.listContainer}
         showsHorizontalScrollIndicator={false}

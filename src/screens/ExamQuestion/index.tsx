@@ -13,15 +13,14 @@ import React, {
 } from 'react';
 import {navigationRef} from '@navigation';
 import {AppHeader, AppModal, AppView} from '@components';
-import {vs} from '@utils/config';
 import {Question, SchoolScore, BottomButton} from './components';
 import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
-import {TAnswer} from '@utils/types/metaTypes';
-import {initialSubjects, TSubject} from './components/SchoolScore/constant';
+import {initialSubjects} from './components/SchoolScore/constant';
+import {TSubject, TAnswer, vs} from '@utils';
 import {KEY_STORE, storage} from '@store';
 
 type TExamInfo = {
