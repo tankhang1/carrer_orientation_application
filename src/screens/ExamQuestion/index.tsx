@@ -21,7 +21,8 @@ import {ENDPOINTS_URL} from '@service';
 import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
 import {TAnswer} from '@utils/types/metaTypes';
-import {initialSubjects, TSubject} from './components/SchoolScore/constant';
+import {initialSubjects} from './components/SchoolScore/constant';
+import {TSubject} from '@utils/types/metaTypes';
 import {KEY_STORE, storage} from '@store';
 
 type TExamInfo = {
@@ -146,7 +147,7 @@ const ExamQuestion = () => {
       },
       English: {
         ...subjects['English'],
-        value: !!subjects['English']?.value ? +subjects['English'].value : 0,
+        value: subjects['English']?.value ? +subjects['English'].value : 0,
       },
       Geography: {
         ...subjects['Geography'],
