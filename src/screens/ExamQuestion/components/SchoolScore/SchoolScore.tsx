@@ -107,6 +107,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
             key={index}
             label={subject.vnName}
             containerStyle={{backgroundColor: COLORS.white}}
+            value={!!subject.value ? subject.value.toString() : ''}
             onChangeText={text => onValueChange(key, text, subject.vnName)}
             keyboardType="numeric"
           />
