@@ -1,5 +1,5 @@
 import {View, Text, DimensionValue} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useLayoutEffect} from 'react';
 import Animated, {
   interpolate,
   interpolateColor,
@@ -15,7 +15,7 @@ type TAppSkeleton = {
 };
 const AppSkeleton = ({width, height, radius = 0}: TAppSkeleton) => {
   const loading = useSharedValue(0);
-  useEffect(() => {
+  useLayoutEffect(() => {
     loading.value = withRepeat(withTiming(1), -1, true);
   }, []);
   const colorAnimatedStyle = useAnimatedStyle(() => {

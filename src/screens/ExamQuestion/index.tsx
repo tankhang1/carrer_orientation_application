@@ -13,16 +13,19 @@ import React, {
 } from 'react';
 import {navigationRef} from '@navigation';
 import {AppHeader, AppModal, AppView} from '@components';
-import {vs} from '@utils/config';
 import {Question, SchoolScore, BottomButton} from './components';
 import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
-import {IExamResponse, TExam} from '@interfaces/DTO';
+import {
+  IExamResponse,
+  ISchoolSubject,
+  ISchoolSubjectsResponse,
+  TExam,
+} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
-import {TAnswer} from '@utils/types/metaTypes';
 import {initialSubjects} from './components/SchoolScore/constant';
-import {TSubject} from '@utils/types/metaTypes';
+import {TSubject, TAnswer, vs} from '@utils';
 import {KEY_STORE, storage} from '@store';
 
 type TExamInfo = {
@@ -49,6 +52,7 @@ const ExamQuestion = () => {
     queryKey: [QUERY_KEY.EXAMS],
     queryFn: () => useAPI(ENDPOINTS_URL.EXAM.GET_EXAM, 'GET', {}),
   });
+
   const postSchoolScore = useMutation({
     mutationKey: [QUERY_KEY.CACULATE_SCHOOL_SCORE],
     mutationFn: (variables: Record<string, TSubject>) => {
@@ -90,6 +94,7 @@ const ExamQuestion = () => {
       });
     },
   });
+
   const [questionNumber, setQuestionNumber] = useState(0);
   const [openModalNext, setOpenModalNext] = useState(false);
 
@@ -121,6 +126,7 @@ const ExamQuestion = () => {
     () => questionNumber - HOLLAND?.length,
     [questionNumber, HOLLAND?.length],
   );
+
   const onUpdateAnswer = () => {
     const currentAnswer = answers;
     if (examInfo.examType === 'EQ' || examInfo.examType === 'IQ') {
@@ -136,55 +142,7 @@ const ExamQuestion = () => {
     setAnswers(currentAnswer);
   };
   const caculateSchoolScore = async () => {
-    const data: Record<string, TSubject> = {
-      Biology: {
-        ...subjects['Biology'],
-        value: subjects['Biology']?.value ? +subjects['Biology'].value : 0,
-      },
-      Chemistry: {
-        ...subjects['Chemistry'],
-        value: subjects['Chemistry']?.value ? +subjects['Chemistry'].value : 0,
-      },
-      English: {
-        ...subjects['English'],
-        value: subjects['English']?.value ? +subjects['English'].value : 0,
-      },
-      Geography: {
-        ...subjects['Geography'],
-        value: subjects['Geography']?.value ? +subjects['Geography'].value : 0,
-      },
-      History: {
-        ...subjects['History'],
-        value: subjects['History']?.value ? +subjects['History'].value : 0,
-      },
-      Informatics: {
-        ...subjects['Informatics'],
-        value: subjects['Informatics']?.value
-          ? +subjects['Informatics'].value
-          : 0,
-      },
-      Literature: {
-        ...subjects['Literature'],
-        value: subjects['Literature']?.value
-          ? +subjects['Literature'].value
-          : 0,
-      },
-      Math: {
-        ...subjects['Math'],
-        value: subjects['Math']?.value ? +subjects['Math'].value : 0,
-      },
-      Physics: {
-        ...subjects['Physics'],
-        value: subjects['Physics']?.value ? +subjects['Physics'].value : 0,
-      },
-      CivicEducation: {
-        ...subjects['CivicEducation'],
-        value: subjects['CivicEducation']?.value
-          ? +subjects['CivicEducation'].value
-          : 0,
-      },
-    };
-    postSchoolScore.mutate(data);
+    postSchoolScore.mutate(subjects);
   };
   const onNext = useCallback(() => {
     if (questionNumber === totalExams) {
@@ -202,7 +160,14 @@ const ExamQuestion = () => {
       setQuestionNumber(questionNumber + 1);
       onUpdateAnswer();
     }
-  }, [data?.data, questionNumber, totalExams, selections, questionIndex]);
+  }, [
+    data?.data,
+    questionNumber,
+    totalExams,
+    selections,
+    questionIndex,
+    subjects,
+  ]);
 
   const onPrev = useCallback(() => {
     if (questionNumber > 0) {

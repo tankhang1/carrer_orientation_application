@@ -4,10 +4,8 @@ import {
   FlatList,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  Button,
-  Text,
 } from 'react-native';
-import React, {Suspense, useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {COLORS, s, width} from '@utils/config';
 import AppImage from '@components/AppImage';
 import Indicator, {TIndicatorRef} from './Indicator';
@@ -44,7 +42,10 @@ const Carousel = () => {
         ? [
             'https://cdythadong.edu.vn/uploads/files/tuyen%20sinh/2024/thong%20bao%20ts/thumbnail%20hdmc.png',
           ]
-        : news?.map(item => item.image.longImage)?.slice(0, 5),
+        : news
+            ?.map(item => item.image.longImage)
+            ?.reverse()
+            .slice(0, 5),
     [news],
   );
   const newsLength = useMemo(() => banners?.length ?? 1, [news?.length]);

@@ -26,7 +26,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
     if (data) {
       const newData = new Map();
       data?.data?.forEach(d => {
-        newData.set(d.name, {...d, value: ''});
+        newData.set(d.name, {...d, value: 0});
       });
       setSubjects(Object.fromEntries(newData));
     }
@@ -61,12 +61,15 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       });
   };
   const onValueChange = (key: string, value: string, vnName: string) => {
+    console.log(key, value, vnName);
     if (+value >= 0 && +value <= 10) {
+      console.log(key, value, vnName);
+
       setSubjects({
         ...subjects,
         [key]: {
           vnName,
-          value,
+          value: +value,
         },
       });
     }
@@ -104,7 +107,6 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
             key={index}
             label={subject.vnName}
             containerStyle={{backgroundColor: COLORS.white}}
-            value={subject.value.toString()}
             onChangeText={text => onValueChange(key, text, subject.vnName)}
             keyboardType="numeric"
           />

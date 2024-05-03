@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useLayoutEffect} from 'react';
 import RadioButton from './RadioButton';
 import {styles} from './styles';
 import {IQuestion, TExam} from '@interfaces/DTO';
@@ -31,7 +31,7 @@ const Question = ({
   questionIndex,
   error = false,
 }: Props) => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (type === 'IQ' || type === 'EQ') {
       const tmp = answers.get(type)!;
       setSelections([tmp[questionIndex] ?? -1]);
