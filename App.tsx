@@ -6,6 +6,7 @@ import {Host} from 'react-native-portalize';
 import {initializeMMKVFlipper} from 'react-native-mmkv-flipper-plugin';
 import {storage} from '@store';
 import {DevToolsBubble} from 'react-native-react-query-devtools';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 const App = () => {
   if (__DEV__) {
     initializeMMKVFlipper({default: storage});
@@ -13,7 +14,9 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Host>
-        <AppNavigation />
+        <GestureHandlerRootView style={{flex: 1}}>
+          <AppNavigation />
+        </GestureHandlerRootView>
       </Host>
       {/* {__DEV__ && <DevToolsBubble />} */}
     </QueryClientProvider>

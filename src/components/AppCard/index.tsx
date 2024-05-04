@@ -61,8 +61,8 @@ const AppCard = ({
 }: TAppCard) => {
   const initStyle = StyleSheet.flatten([
     styles.container,
-    containerStyle,
     CARD_BASE_TYPE[type],
+    containerStyle,
     shadow && styles.shadow,
   ]) as ViewStyle;
   return (

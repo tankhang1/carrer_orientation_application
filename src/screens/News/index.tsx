@@ -1,6 +1,12 @@
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  ListRenderItemInfo,
+  RefreshControl,
+  KeyboardAvoidingView,
+} from 'react-native';
 import React, {
-  lazy,
   startTransition,
   useDeferredValue,
   useEffect,
@@ -8,7 +14,7 @@ import React, {
 } from 'react';
 import AppView from '@components/AppView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {COLORS, FONT, height, s, vs} from '@utils/config';
+import {COLORS, FONT, s, vs} from '@utils/config';
 import {AppTextInput, AppButton} from '@components';
 import NewsJobs from './components/NewsJobs';
 import AppHeader from '@components/AppHeader';
@@ -22,7 +28,6 @@ import {QUERY_KEY} from '@utils/constants';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {INew, INewsResponse} from '@interfaces/DTO';
-import {RefreshControl} from 'react-native-gesture-handler';
 import {queryClient} from '@utils/constants';
 const News = () => {
   const {data: Categories, isLoading} = useQuery<
@@ -76,95 +81,92 @@ const News = () => {
       initialPageParam: 1,
     });
   };
+  const renderItem = ({item, index}: ListRenderItemInfo<INew>) => (
+    <NewsJobs index={index} item={item} deferSearchInfo={deferSearchInfo} />
+  );
   return (
-    <AppView
-      style={styles.overall}
-      refreshControl={
-        <RefreshControl refreshing={isFetchingNextPage} onRefresh={onRefresh} />
-      }
-      onScroll={e => {
-        //console.log(e.nativeEvent);
-        if (
-          e.nativeEvent.layoutMeasurement.height +
-            e.nativeEvent.contentOffset.y >=
-            e.nativeEvent.contentSize.height - vs(100) &&
-          e.nativeEvent.contentOffset.y > 0
-        ) {
+    <KeyboardAvoidingView style={{flex: 1}}>
+      <AppView
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetchingNextPage}
+            onRefresh={onRefresh}
+          />
+        }
+        scrollEventThrottle={16}
+        data={
+          (data?.pages.flatMap(page => page?.data) as unknown as INew[]) || []
+        }
+        ListHeaderComponent={
+          <View>
+            <AppHeader
+              title="Tin tức"
+              style={{
+                marginBottom: 10,
+              }}
+            />
+            <View style={{paddingHorizontal: s(20)}}>
+              <AppTextInput
+                width={'100%'}
+                value={searchInfo}
+                onChangeText={setSearchInfo}
+                containerStyle={{backgroundColor: COLORS.white, borderWidth: 0}}
+                placeholder="Tìm kiếm tin tức"
+                placeholderTextColor={COLORS.grey}
+                trailing={
+                  <AntDesign name="search1" size={s(25)} color={COLORS.grey} />
+                }
+              />
+              <ScrollView
+                horizontal
+                contentContainerStyle={{gap: s(10)}}
+                showsHorizontalScrollIndicator={false}
+                style={{
+                  marginVertical: vs(10),
+                }}>
+                {Categories?.map((category, index) => (
+                  <AppButton
+                    key={index}
+                    label={category.categoryName}
+                    labelStyle={[
+                      FONT.content.M.semiBold,
+                      {
+                        marginHorizontal: 0,
+                      },
+                      categoryId === category._id
+                        ? {color: COLORS.white}
+                        : {color: COLORS.black},
+                    ]}
+                    buttonStyle={[
+                      styles.categoryBtn,
+                      categoryId === category._id && {
+                        backgroundColor: COLORS.green,
+                      },
+                    ]}
+                    onPress={() => onCategoryPress(category._id)}
+                  />
+                ))}
+              </ScrollView>
+            </View>
+          </View>
+        }
+        renderItem={renderItem}
+        onEndReached={() => {
           if (!hasNextPage || isFetchingNextPage) return;
           fetchNextPage();
-        }
-      }}
-      scrollEventThrottle={16}>
-      <AppHeader
-        title="Tin tức"
-        style={{
-          marginBottom: 10,
         }}
+        onEndReachedThreshold={0.2}
+        keyboardDismissMode="on-drag"
+        renderToHardwareTextureAndroid
+        maxToRenderPerBatch={10}
       />
-      <View
-        style={{
-          paddingHorizontal: s(15),
-        }}>
-        <AppTextInput
-          width={'100%'}
-          value={searchInfo}
-          onChangeText={setSearchInfo}
-          containerStyle={{backgroundColor: COLORS.white, borderWidth: 0}}
-          placeholder="Tìm kiếm tin tức"
-          placeholderTextColor={COLORS.grey}
-          trailing={
-            <AntDesign name="search1" size={s(25)} color={COLORS.grey} />
-          }
-        />
-        <ScrollView
-          horizontal
-          contentContainerStyle={{gap: s(10)}}
-          showsHorizontalScrollIndicator={false}
-          style={{
-            marginVertical: vs(10),
-          }}>
-          {Categories?.map((category, index) => (
-            <AppButton
-              key={index}
-              label={category.categoryName}
-              labelStyle={[
-                FONT.content.M.semiBold,
-                {
-                  marginHorizontal: 0,
-                },
-                categoryId === category._id
-                  ? {color: COLORS.white}
-                  : {color: COLORS.black},
-              ]}
-              buttonStyle={[
-                styles.categoryBtn,
-                categoryId === category._id && {
-                  backgroundColor: COLORS.green,
-                },
-              ]}
-              onPress={() => onCategoryPress(category._id)}
-            />
-          ))}
-        </ScrollView>
-        <NewsJobs
-          deferSearchInfo={deferSearchInfo}
-          id={categoryId}
-          news={
-            (data?.pages.flatMap(page => page?.data) as unknown as INew[]) || []
-          }
-        />
-      </View>
-    </AppView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default News;
 const styles = StyleSheet.create({
-  overall: {},
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: vs(10),
   },
   categoryBtn: {

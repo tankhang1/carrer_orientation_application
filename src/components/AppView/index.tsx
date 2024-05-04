@@ -37,18 +37,18 @@ const AppView = <TData,>({
       resizeMode="cover"
       style={styles.wrapper}>
       <SafeAreaView style={[styles.container, style]}>
-        <GestureHandlerRootView>
-          {data?.length === 0 ? (
-            <ScrollView
-              removeClippedSubviews
-              renderToHardwareTextureAndroid
-              {...FlatlistProps}>
-              <View>{children && children}</View>
-            </ScrollView>
-          ) : (
-            <FlatList data={data} renderItem={renderItem} {...FlatlistProps} />
-          )}
-        </GestureHandlerRootView>
+        {/* <GestureHandlerRootView> */}
+        {data?.length === 0 ? (
+          <ScrollView
+            removeClippedSubviews
+            renderToHardwareTextureAndroid
+            {...FlatlistProps}>
+            <View>{children && children}</View>
+          </ScrollView>
+        ) : (
+          <FlatList data={data} renderItem={renderItem} {...FlatlistProps} />
+        )}
+        {/* </GestureHandlerRootView> */}
       </SafeAreaView>
     </ImageBackground>
   );
