@@ -8,6 +8,7 @@ import AppHistoryCard from './AppHistoryCard/AppHistoryCard';
 import AppRoundedButton from './AppRoundedButton';
 import AppModal from './AppModal';
 import AppImagePicker from './AppImagePicker';
+import AppNoInternet from './AppNoInternet';
 export {
   AppButton,
   AppTextInput,
@@ -19,4 +20,5 @@ export {
   AppRoundedButton,
   AppModal,
   AppImagePicker,
+  AppNoInternet,
 };
