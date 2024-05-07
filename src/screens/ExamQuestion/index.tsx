@@ -17,12 +17,7 @@ import {Question, SchoolScore, BottomButton} from './components';
 import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
-import {
-  IExamResponse,
-  ISchoolSubject,
-  ISchoolSubjectsResponse,
-  TExam,
-} from '@interfaces/DTO';
+import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
 import {initialSubjects} from './components/SchoolScore/constant';
 import {TSubject, TAnswer, vs} from '@utils';
@@ -44,19 +39,15 @@ const initialAnswers: TAnswer = new Map([
 ]);
 const ExamQuestion = () => {
   const [answers, setAnswers] = useState<TAnswer>(initialAnswers);
-  const {isPending, error, data, isLoading} = useQuery<
-    unknown,
-    DefaultError,
-    IExamResponse
-  >({
+  const {data, isLoading} = useQuery<unknown, DefaultError, IExamResponse>({
     queryKey: [QUERY_KEY.EXAMS],
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     queryFn: () => useAPI(ENDPOINTS_URL.EXAM.GET_EXAM, 'GET', {}),
   });
 
   const postSchoolScore = useMutation({
     mutationKey: [QUERY_KEY.CACULATE_SCHOOL_SCORE],
     mutationFn: (variables: Record<string, TSubject>) => {
-      console.log('variables', variables);
       return useAPI(
         ENDPOINTS_URL.SCHOOL_SUBJECTS.CACULATE_SCHOOL_SCORE,
         'POST',
@@ -67,7 +58,7 @@ const ExamQuestion = () => {
         },
       );
     },
-    onSuccess: (data: any, variables, context) => {
+    onSuccess: (data: any, variables) => {
       const userAnswers = calculateUserAnswer();
       const storedUserAnswers = {
         date: new Date().getTime(),

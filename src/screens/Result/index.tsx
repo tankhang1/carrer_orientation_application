@@ -7,7 +7,7 @@ import {FONT, s, vs} from '@utils/config';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
 import {QUERY_KEY, queryClient} from '@utils/constants';
-import {IExamResponse, IResult, TExam} from '@interfaces/DTO';
+import {IExamResponse, TExam} from '@interfaces/DTO';
 import ScoreResult from './components/ScoreResult';
 
 type Props = NativeStackScreenProps<TRootStackNav, 'Result'>;
@@ -27,7 +27,6 @@ const Result = ({navigation, route}: Props) => {
     }));
   }, [data]);
 
-  console.log('answers', scoreResults);
   return (
     <AppView showsVerticalScrollIndicator={false}>
       <AppHeader title="Kết quả" onPress={() => navigation.pop(3)} />
@@ -48,8 +47,12 @@ const Result = ({navigation, route}: Props) => {
 
       <View style={{gap: vs(20)}}>
         {answers && <HollandResult answers={answers!} results={results!} />}
-        {scoreResults.length > 0 && <ScoreResult scoreResults={scoreResults} />}
-        {answers?.IQ && <IQ_EQ_Result answers={answers!} results={results!} />}
+        {scoreResults?.length > 0 && (
+          <ScoreResult scoreResults={scoreResults} />
+        )}
+        {answers?.IQ[0]?.split('/')[0] !== '0' && (
+          <IQ_EQ_Result answers={answers!} results={results!} />
+        )}
         <Conclusion
           answers={answers}
           results={results!}

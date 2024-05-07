@@ -41,14 +41,13 @@ const HollandResultItem = ({index, result, animatedScroll}: Props) => {
   }, []);
   return (
     <Animated.View
-      style={{
-        marginLeft: index === 0 ? SPACING : 0,
-        marginRight: index === 5 ? SPACING : 0,
-        height: 'auto',
-        width: width * 0.8,
-        alignItems: 'center',
-        paddingVertical: vs(30),
-      }}>
+      style={[
+        {
+          marginLeft: index === 0 ? SPACING : 0,
+          marginRight: index === 5 ? SPACING : 0,
+        },
+        styles.container,
+      ]}>
       <Animated.View style={animatedStyle}>
         <AnimatedTouchableOpacity
           style={[styles.card]}
@@ -86,6 +85,12 @@ const HollandResultItem = ({index, result, animatedScroll}: Props) => {
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    height: 'auto',
+    width: width * 0.8,
+    alignItems: 'center',
+    paddingVertical: vs(30),
+  },
   card: {
     backgroundColor: COLORS.white,
     borderRadius: s(10),
