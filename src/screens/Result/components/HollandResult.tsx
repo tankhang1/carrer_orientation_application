@@ -1,15 +1,16 @@
 import {View, StyleSheet} from 'react-native';
 import React from 'react';
-import {vs, width} from '@utils/config';
+import {COLORS, s, vs} from '@utils/config';
 import Chart from './Chart';
 import Title from './Title';
-import {IResult, TExam} from '@interfaces/DTO';
-import Animated, {useSharedValue} from 'react-native-reanimated';
-import HollandResultItem from './HollandResultItem';
-export type TResults = {
-  type: TExam;
-  resultContents: IResult[];
-};
+import {TExam} from '@interfaces/DTO';
+import {useSharedValue} from 'react-native-reanimated';
+import {TResults} from '@utils';
+import AppCardCarousel from '@components/AppCardCarousel';
+import CardCarouseltItem from '@components/AppCardCarousel/components/CardCarouselItem';
+import AppImage from '@components/AppImage';
+import RenderHTML from 'react-native-render-html';
+import {navigationRef} from '@navigation';
 type THollandResult = {
   answers: Record<TExam, string>;
   results: TResults[];
@@ -25,10 +26,42 @@ const HollandResult = ({answers, results}: THollandResult) => {
   }) => {
     if (result?.type !== 'IQ' && result?.type !== 'EQ') {
       return (
-        <HollandResultItem
+        <CardCarouseltItem
           index={index}
-          result={result}
+          key={index}
           animatedScroll={animatedScroll}
+          onItemPress={() => {
+            navigationRef.navigate('ResultDetail', {
+              url: result.resultContents[0].detail!,
+            });
+          }}
+          length={results?.length ?? 1}
+          children={
+            <>
+              <View style={styles.imageContainer}>
+                <AppImage
+                  source={{uri: result.resultContents[0].image}}
+                  style={styles.image}
+                />
+              </View>
+              {result?.resultContents[0] && (
+                <View>
+                  <RenderHTML
+                    source={{
+                      html: result?.resultContents[0]
+                        .content as unknown as string,
+                    }}
+                    contentWidth={200}
+                    enableExperimentalMarginCollapsing={true}
+                    tagsStyles={{
+                      article: {color: COLORS.black},
+                      h3: {alignSelf: 'center'},
+                    }}
+                  />
+                </View>
+              )}
+            </>
+          }
         />
       );
     }
@@ -41,16 +74,10 @@ const HollandResult = ({answers, results}: THollandResult) => {
       <View style={{overflow: 'hidden'}}>
         <Chart answes={answers} />
       </View>
-      <Animated.FlatList
+      <AppCardCarousel
         data={results}
-        horizontal
         renderItem={renderItem}
-        pagingEnabled
-        snapToInterval={width * 0.8}
-        showsHorizontalScrollIndicator={false}
-        onScroll={e => {
-          animatedScroll.value = e.nativeEvent.contentOffset.x;
-        }}
+        animatedScroll={animatedScroll}
       />
     </View>
   );
@@ -59,6 +86,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     gap: vs(10),
+  },
+  imageContainer: {
+    gap: vs(5),
+    alignItems: 'center',
+  },
+  image: {
+    width: s(80),
+    height: s(80),
   },
 });
 export default HollandResult;

@@ -21,4 +21,5 @@ export type TRootStackNav = {
   ResultDetail: {
     url: string;
   };
+  Dictionary: undefined;
 };

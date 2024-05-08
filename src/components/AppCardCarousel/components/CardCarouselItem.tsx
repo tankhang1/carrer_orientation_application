@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 import Animated, {
   Extrapolation,
@@ -7,20 +7,26 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import {COLORS, FONT, height, s, vs, width} from '@utils/config';
-import {navigationRef} from '@navigation';
-import {TResults} from './HollandResult';
-import AppImage from '@components/AppImage';
-import RenderHTML from 'react-native-render-html';
 type Props = {
   index: number;
-  result: TResults;
   animatedScroll: SharedValue<number>;
+  children?: React.ReactNode;
+  onItemPress?: () => void;
+  h?: number;
+  length?: number;
 };
 const ITEM_SIZE = width * 0.8;
 const SPACING = (width - ITEM_SIZE) / 2;
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
-const HollandResultItem = ({index, result, animatedScroll}: Props) => {
+const CardCarouseltItem = ({
+  index,
+  animatedScroll,
+  children,
+  onItemPress,
+  h = height * 0.5,
+  length = 5,
+}: Props) => {
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -44,40 +50,17 @@ const HollandResultItem = ({index, result, animatedScroll}: Props) => {
       style={[
         {
           marginLeft: index === 0 ? SPACING : 0,
-          marginRight: index === 5 ? SPACING : 0,
+          marginRight: index === length - 1 ? SPACING : 0,
         },
         styles.container,
       ]}>
       <Animated.View style={animatedStyle}>
         <AnimatedTouchableOpacity
-          style={[styles.card]}
+          style={[styles.card, {height: h}]}
           key={index}
-          onPress={() => {
-            navigationRef.navigate('ResultDetail', {
-              url: result.resultContents[0].detail!,
-            });
-          }}>
-          <View style={styles.imageContainer}>
-            <AppImage
-              source={{uri: result.resultContents[0].image}}
-              style={styles.image}
-            />
-          </View>
-          {result?.resultContents[0] && (
-            <View>
-              <RenderHTML
-                source={{
-                  html: result?.resultContents[0].content as unknown as string,
-                }}
-                contentWidth={200}
-                enableExperimentalMarginCollapsing={true}
-                tagsStyles={{
-                  article: {color: COLORS.black},
-                  h3: {alignSelf: 'center'},
-                }}
-              />
-            </View>
-          )}
+          onPress={onItemPress && onItemPress}
+          disabled={!onItemPress}>
+          {children && <>{children}</>}
           <Text style={styles.bottomText}>{index}</Text>
         </AnimatedTouchableOpacity>
       </Animated.View>
@@ -98,15 +81,6 @@ const styles = StyleSheet.create({
     gap: s(5),
     alignItems: 'center',
     width: width * 0.72,
-    height: height * 0.5,
-  },
-  imageContainer: {
-    gap: vs(5),
-    alignItems: 'center',
-  },
-  image: {
-    width: s(80),
-    height: s(80),
   },
   bottomText: {
     ...FONT.content.XXS.medium,
@@ -114,4 +88,4 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 });
-export default HollandResultItem;
+export default CardCarouseltItem;

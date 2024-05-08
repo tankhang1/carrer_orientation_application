@@ -1,51 +1,49 @@
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, ListRenderItemInfo} from 'react-native';
 import React from 'react';
-import {FONT, s, vs} from '@utils/config';
+import {FONT, s} from '@utils/config';
 import {TSchoolScoreResult} from '@utils/types/metaTypes';
+import AppCardCarousel from '@components/AppCardCarousel';
+import {useSharedValue} from 'react-native-reanimated';
+import CardCarouseltItem from '@components/AppCardCarousel/components/CardCarouselItem';
 interface TScoreResult {
   scoreResults: TSchoolScoreResult[];
 }
 const ScoreResult = ({scoreResults}: TScoreResult) => {
+  const animatedScroll = useSharedValue(0);
+  const renderItem = ({item: result, index}: ListRenderItemInfo<any>) => {
+    return (
+      <CardCarouseltItem
+        key={index}
+        index={index}
+        animatedScroll={animatedScroll}
+        length={scoreResults?.length}
+        children={
+          <>
+            <Text style={FONT.content.M.bold}>- Khối {result.title}</Text>
+            <Text style={FONT.content.M.regular}>{result.description}</Text>
+          </>
+        }
+      />
+    );
+  };
   return (
-    <View style={styles.overall}>
-      <Text style={FONT.content.M.bold}>
+    <View>
+      <Text style={styles.text}>
         Với số điểm mà bạn cung cấp. Bạn có thể phù hợp với các khối nghành như:
       </Text>
-      <View style={styles.bodyContainer}>
-        <ScrollView
-          horizontal
-          style={{flex: 1}}
-          contentContainerStyle={{gap: s(10)}}>
-          {scoreResults.map((result, index) => (
-            <View key={index} style={styles.item}>
-              <Text style={FONT.content.M.bold}>- Khối {result.title}</Text>
-              <Text style={FONT.content.M.regular}>{result.description}</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
+      <AppCardCarousel
+        data={scoreResults}
+        animatedScroll={animatedScroll}
+        renderItem={renderItem}
+      />
     </View>
   );
 };
 
 export default ScoreResult;
 const styles = StyleSheet.create({
-  overall: {
-    paddingHorizontal: s(20),
-    width: '100%',
-  },
-  bodyContainer: {
-    paddingHorizontal: 12,
-    gap: vs(20),
-    flex: 1,
-  },
-  item: {
-    backgroundColor: 'white',
-    borderRadius: s(10),
-    padding: s(10),
-    width: 300,
-
-    flex: 1,
-    height: 'auto',
+  text: {
+    ...FONT.content.M.bold,
+    paddingHorizontal: s(27),
   },
 });

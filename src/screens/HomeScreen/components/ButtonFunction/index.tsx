@@ -3,19 +3,42 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppRoundedButton from '@components/AppRoundedButton';
 import {COLORS, FONT, s, vs, width} from '@utils/config';
-// clipboard-check,
+import {navigationRef} from '@navigation';
 type TButton = {
   icon?: string;
   title?: string;
   onPress?: () => void;
 };
-type TButtonFunction = {
-  buttons?: TButton[];
-};
-const ButtonFunction = ({buttons}: TButtonFunction) => {
+const BUTTONS: TButton[] = [
+  {
+    icon: 'pencil',
+    title: 'Kiểm tra',
+    onPress: () => {
+      navigationRef.navigate('ListExam');
+    },
+  },
+  {
+    icon: 'history',
+    title: 'Lịch sử',
+    onPress: () => {
+      navigationRef.navigate('ListResult');
+    },
+  },
+  {
+    icon: 'newspaper-o',
+    title: 'Tin tức',
+    onPress: () => navigationRef.navigate('News'),
+  },
+  {
+    icon: 'book',
+    title: 'Từ điển',
+    onPress: () => navigationRef.navigate('Dictionary'),
+  },
+];
+const ButtonFunction = () => {
   return (
     <View style={styles.container}>
-      {buttons?.map((button: TButton, index: number) => {
+      {BUTTONS?.map((button: TButton, index: number) => {
         return (
           <View key={index} style={styles.button}>
             <AppRoundedButton onPress={button.onPress}>

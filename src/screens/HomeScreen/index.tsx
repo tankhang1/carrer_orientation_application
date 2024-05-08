@@ -8,27 +8,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppRoundedButton from '@components/AppRoundedButton';
 import AppSkeleton from '@components/AppSkeleton';
 const Carousel = lazy(() => import('./components/Carousel/Carousel'));
-const BUTTONS = [
-  {
-    icon: 'pencil',
-    title: 'Kiểm tra',
-    onPress: () => {
-      navigationRef.navigate('ListExam');
-    },
-  },
-  {
-    icon: 'history',
-    title: 'Lịch sử',
-    onPress: () => {
-      navigationRef.navigate('ListResult');
-    },
-  },
-  {
-    icon: 'newspaper-o',
-    title: 'Tin tức',
-    onPress: () => navigationRef.navigate('News'),
-  },
-];
 
 const HomeScreen = () => {
   return (
@@ -41,7 +20,7 @@ const HomeScreen = () => {
           <Suspense fallback={<AppSkeleton width={'100%'} height={238} />}>
             <Carousel />
           </Suspense>
-          <ButtonFunction buttons={BUTTONS} />
+          <ButtonFunction />
           <NewsCard />
 
           <HistoryCard />

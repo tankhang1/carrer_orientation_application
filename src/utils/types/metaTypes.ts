@@ -1,4 +1,4 @@
-import {TExam} from '@interfaces/DTO';
+import {IResult, TExam} from '@interfaces/DTO';
 
 export type TAnswer = Map<TExam, number[]>;
 export type TSchoolScoreResult = {title: string; description: string};
@@ -14,4 +14,9 @@ export type TResultInStore = {
   schoolScore: {
     scores: Record<string, TSubject>;
   };
+};
+
+export type TResults = {
+  type: TExam;
+  resultContents: IResult[];
 };

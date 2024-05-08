@@ -14,6 +14,7 @@ import HomeScreen from '@screens/HomeScreen';
 import {createNavigationContainerRef} from '@react-navigation/native';
 import SplashScreen from '@screens/SplashScreen';
 import ResultDetail from '@screens/ResultDetail/ResultDetail';
+import Dictionary from '@screens/Dictionary';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
@@ -42,8 +43,8 @@ const AppNavigation = () => {
           component={ResultDetail}></Stack.Screen>
         <Stack.Screen name="News" component={News}></Stack.Screen>
         <Stack.Screen name="NewsDetail1" component={NewsDetail1}></Stack.Screen>
-
         <Stack.Screen name="ChatBot" component={Chatbot}></Stack.Screen>
+        <Stack.Screen name="Dictionary" component={Dictionary}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

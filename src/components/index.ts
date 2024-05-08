@@ -9,6 +9,7 @@ import AppRoundedButton from './AppRoundedButton';
 import AppModal from './AppModal';
 import AppImagePicker from './AppImagePicker';
 import AppNoInternet from './AppNoInternet';
+import AppCardCarousel from './AppCardCarousel';
 export {
   AppButton,
   AppTextInput,
