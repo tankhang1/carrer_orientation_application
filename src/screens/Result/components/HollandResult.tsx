@@ -1,6 +1,6 @@
 import {View, StyleSheet} from 'react-native';
 import React from 'react';
-import {COLORS, s, vs} from '@utils/config';
+import {COLORS, s, vs, width} from '@utils/config';
 import Chart from './Chart';
 import Title from './Title';
 import {TExam} from '@interfaces/DTO';
@@ -78,6 +78,7 @@ const HollandResult = ({answers, results}: THollandResult) => {
         data={results}
         renderItem={renderItem}
         animatedScroll={animatedScroll}
+        snapToInterval={width * 0.8}
       />
     </View>
   );

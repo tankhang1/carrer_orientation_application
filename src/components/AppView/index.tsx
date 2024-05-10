@@ -5,9 +5,9 @@ import {
   View,
   StyleProp,
   ViewStyle,
-  FlatList,
   ListRenderItemInfo,
   FlatListProps,
+  FlatList,
 } from 'react-native';
 import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -32,20 +32,6 @@ const AppView = forwardRef<TAppViewRef, TAppView<any>>(
     {children, style, data = [], renderItem, ...FlatlistProps}: TAppView<TData>,
     ref: React.ForwardedRef<TAppViewRef>,
   ) => {
-    const flatlistRef = useRef<FlatList>(null);
-    useImperativeHandle(ref, () => {
-      return {
-        scrollToItem(index) {
-          // flatlistRef?.current?.scrollToIndex({
-          //   index,
-          //   animated: true,
-          //   viewPosition: 0.5,
-          // });
-          console.log('aaaa', index);
-          flatlistRef?.current?.scrollToEnd();
-        },
-      };
-    });
     return (
       <ImageBackground
         source={require('@assets/images/background.png')}
@@ -65,7 +51,6 @@ const AppView = forwardRef<TAppViewRef, TAppView<any>>(
                 data={data}
                 renderItem={renderItem}
                 {...FlatlistProps}
-                ref={flatlistRef}
               />
             )}
           </GestureHandlerRootView>

@@ -7,7 +7,7 @@ import {
   UIManager,
   ListRenderItemInfo,
 } from 'react-native';
-import React, {useMemo} from 'react';
+import React from 'react';
 import {COLORS, FONT, height, s, vs, width} from '@utils';
 import Feather from 'react-native-vector-icons/Feather';
 import Animated, {
@@ -23,14 +23,13 @@ import Animated, {
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import AppCardCarousel from '@components/AppCardCarousel';
 import CardFlipltItem from '@components/AppCardCarousel/components/CardFlipItem';
-import {TAppViewRef} from '@components/AppView';
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 ) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-const CARD_HEIGHT = height;
+const CARD_HEIGHT = height * 0.9;
 const data = [
   {
     name: 'Kỹ thuật điện tử',
@@ -93,17 +92,19 @@ const DictionaryItem = ({title, scrollToItem}: TDictionaryItem) => {
     .onEnd(() => {
       if (startY.value === 0) {
         offset.value = withSpring(CARD_HEIGHT);
-        //runOnJS(scrollToItem);
+        runOnJS(scrollToItem!)();
       } else {
         offset.value = withTiming(0);
       }
     });
+
   const renderItem = ({item, index}: ListRenderItemInfo<any>) => {
     return (
       <CardFlipltItem
         index={index}
         key={index}
         animatedScroll={animatedScroll}
+        h={height * 0.55}
         length={data?.length}
         children={
           <View>
