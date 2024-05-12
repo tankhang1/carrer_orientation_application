@@ -8,3 +8,4 @@ export * from './New/new';
 export * from './SchoolSubject/schoolSubject';
 export * from './Chat/chat';
 export * from './Conclusion/conclusion';
+export * from './Dictionary/dictionary';

@@ -8,7 +8,7 @@ import {
   ListRenderItemInfo,
 } from 'react-native';
 import React from 'react';
-import {COLORS, FONT, height, s, vs, width} from '@utils';
+import {COLORS, FONT, TGroup, height, s, vs, width} from '@utils';
 import Feather from 'react-native-vector-icons/Feather';
 import Animated, {
   interpolate,
@@ -23,6 +23,9 @@ import Animated, {
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import AppCardCarousel from '@components/AppCardCarousel';
 import CardFlipltItem from '@components/AppCardCarousel/components/CardFlipItem';
+import AppImage from '@components/AppImage';
+import {IMajor} from '@interfaces/DTO/Dictionary/dictionary';
+import {navigationRef} from '@navigation';
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -30,28 +33,20 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 const CARD_HEIGHT = height * 0.9;
-const data = [
-  {
-    name: 'Kỹ thuật điện tử',
-    pros: `Nhu cầu Cao: Kỹ sư điện tử luôn được tìm kiếm do vai trò quan trọng của điện tử trong mọi lĩnh vực của cuộc sống hiện đại, từ điện tử tiêu dùng đến các hệ thống cơ sở hạ tầng quan trọng.
-    \nCơ hội Sáng tạo: Lĩnh vực này cung cấp nhiều cơ hội lớn cho sự sáng tạo trong việc phát triển các thiết bị và ứng dụng mới, góp phần vào sự tiến bộ công nghệ.
-    \nCơ hội Nghề nghiệp Lương cao: Kỹ sư điện tử thường được trả lương tốt, ngay cả ở các vị trí mới bắt đầu do các kỹ năng và kiến thức chuyên môn đặc biệt cần thiết.
-    \nĐa dạng Lộ trình Nghề nghiệp: Các chuyên gia có thể làm việc trong nhiều lĩnh vực khác nhau, bao gồm viễn thông, robot học, máy tính, hàng không vũ trụ và chăm sóc sức khỏe, cung cấp nhiều lộ trình nghề nghiệp và cơ hội.`,
-    cons: `Thay đổi Công nghệ nhanh chóng: Sự phát triển nhanh chóng của công nghệ đòi hỏi học hỏi và thích nghi liên tục, điều này có thể gây áp lực và căng thẳng cho một số người.
-    \nÁp lực và Thời hạn Công việc cao: Kỹ sư thường phải đối mặt với thời hạn dự án chặt chẽ và kỳ vọng cao về độ chính xác và độ tin cậy, tạo ra môi trường làm việc áp lực cao.
-    \nRủi ro cho Sức khỏe: Tiếp xúc lâu dài với màn hình máy tính, hóa chất trong quá trình sản xuất và nguy cơ từ thiết bị điện có thể gây ra các rủi ro cho sức khỏe.
-    \nVấn đề Bảo mật việc làm: Khi tự động hóa và việc giao việc ra nước ngoài trở nên phổ biến hơn, một số vai trò truyền thống trong lĩnh vực kỹ thuật điện tử có thể gặp nguy cơ, có thể ảnh hưởng đến bảo mật việc làm.`,
-  },
-  {},
-  {},
-  {},
-  {},
-];
 type TDictionaryItem = {
   title?: string;
   scrollToItem?: () => void;
+  children?: React.ReactNode;
+  majors?: IMajor[];
+  group?: TGroup;
 };
-const DictionaryItem = ({title, scrollToItem}: TDictionaryItem) => {
+const DictionaryItem = ({
+  title,
+  scrollToItem,
+  children,
+  majors,
+  group = 'A0',
+}: TDictionaryItem) => {
   const offset = useSharedValue(0);
   const startY = useSharedValue(0);
   const animValue = useDerivedValue(() =>
@@ -98,18 +93,35 @@ const DictionaryItem = ({title, scrollToItem}: TDictionaryItem) => {
       }
     });
 
-  const renderItem = ({item, index}: ListRenderItemInfo<any>) => {
+  const renderItem = ({item, index}: ListRenderItemInfo<IMajor>) => {
     return (
       <CardFlipltItem
         index={index}
         key={index}
         animatedScroll={animatedScroll}
-        h={height * 0.55}
-        length={data?.length}
+        h={height * 0.5}
+        length={majors?.length}
+        onItemPress={() =>
+          navigationRef.navigate('DictionaryDetail', {
+            group: group,
+            name: item?.name,
+            image: item?.image,
+            content: {pros: item?.pros, cons: item.cons},
+          })
+        }
         children={
-          <View>
-            <Text>AA</Text>
-          </View>
+          children ? (
+            children
+          ) : (
+            <View style={styles.contentCard}>
+              <AppImage
+                source={{uri: item?.image}}
+                style={styles.image}
+                resizeMode="cover"
+              />
+              <Text style={styles.jobTitle}>{item?.name}</Text>
+            </View>
+          )
         }
       />
     );
@@ -128,7 +140,7 @@ const DictionaryItem = ({title, scrollToItem}: TDictionaryItem) => {
             <View style={styles.divider} />
             <View style={styles.cardContainer}>
               <AppCardCarousel
-                data={data}
+                data={majors!}
                 renderItem={renderItem}
                 animatedScroll={animatedScroll}
                 snapToInterval={width * 0.7}
@@ -169,6 +181,22 @@ const styles = StyleSheet.create({
     borderRadius: s(10),
     marginVertical: vs(10),
     marginHorizontal: s(20),
+  },
+  contentCard: {
+    padding: s(10),
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: s(200),
+    height: s(200),
+    borderRadius: s(20),
+  },
+  jobTitle: {
+    ...FONT.content.M.medium,
+    marginVertical: vs(10),
+    textAlign: 'center',
   },
 });
 export default DictionaryItem;

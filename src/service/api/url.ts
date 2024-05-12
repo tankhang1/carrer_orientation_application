@@ -22,5 +22,10 @@ const ENDPOINTS_URL = {
   CONCLUSION: {
     GET_CONCLUSION: '/exams/getConclusion',
   },
+  DICTIONARY: {
+    GET_DICTIONARY: '/dictionary',
+    GET_ALL_SCHOOL: '/dictionary/getAllSchool',
+    GET_SCHOOL: '/dictionary/getSchool',
+  },
 };
 export {BASE_URL, ENDPOINTS_URL};

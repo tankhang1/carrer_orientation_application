@@ -1,5 +1,6 @@
 import {TExam} from '@interfaces/DTO';
-import {TAnswer, TSchoolScoreResult} from './metaTypes';
+import {TAnswer, TGroup, TSchoolScoreResult} from './metaTypes';
+import {IMajor} from '@interfaces/DTO/Dictionary/dictionary';
 
 export type TRootStackNav = {
   SplashScreen: undefined;
@@ -22,4 +23,13 @@ export type TRootStackNav = {
     url: string;
   };
   Dictionary: undefined;
+  DictionaryDetail: {
+    group: TGroup;
+    name: string;
+    image: string;
+    content: {
+      pros: string;
+      cons: string;
+    };
+  };
 };

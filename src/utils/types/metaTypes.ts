@@ -20,3 +20,5 @@ export type TResults = {
   type: TExam;
   resultContents: IResult[];
 };
+
+export type TGroup = 'A0' | 'A1' | 'B' | 'C' | 'D1' | 'D7';

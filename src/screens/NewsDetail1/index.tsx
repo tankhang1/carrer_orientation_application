@@ -59,8 +59,7 @@ type Props = NativeStackScreenProps<TRootStackNav, 'NewsDetail1'>;
 const NewsDetail1 = ({route}: Props) => {
   const {width} = useWindowDimensions();
 
-  const content = route.params.content;
-  console.log(content);
+  const content = route?.params?.content;
   return (
     <View
       style={{

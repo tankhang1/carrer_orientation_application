@@ -1,11 +1,12 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StyleProp, TextStyle} from 'react-native';
 import React from 'react';
 import {FONT, s} from '@utils/config';
 import AppImage from '@components/AppImage';
 type Props = {
   title: string;
+  textStyle?: StyleProp<TextStyle>;
 };
-const Title = ({title}: Props) => {
+const Title = ({title, textStyle}: Props) => {
   return (
     <View style={styles.wrapper}>
       <AppImage
@@ -13,7 +14,7 @@ const Title = ({title}: Props) => {
         style={styles.image}
         resizeMode="cover"
       />
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, textStyle]}>{title}</Text>
     </View>
   );
 };
