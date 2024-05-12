@@ -8,7 +8,7 @@ import {
   TextInput,
   TextInputProps,
 } from 'react-native';
-import React, {memo} from 'react';
+import React, {forwardRef, memo} from 'react';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {width} from '@utils/config';
 import AppButton from '@components/AppButton';
@@ -46,62 +46,66 @@ type TAppTextInput = {
  * @augments Partial<import('react-native').TextInputProps>
  */
 
-const AppTextInput = ({
-  width,
-  height,
-  outStyle,
-  label = '',
-  labelStyle,
-  containerStyle,
-  leading,
-  onLeadingPress,
-  trailing,
-  onTrailingPress,
-  value,
-  onChangeText,
-  placeholder = 'Nhập thông tin',
-  ...rest
-}: TAppTextInput) => {
-  const containerInitStyle = StyleSheet.flatten([
-    styles.container,
-    width && {width},
-    height && {height},
-    containerStyle,
-  ]) as ViewStyle;
-  const renderLabel = () => {
-    const labelInitStyle = StyleSheet.flatten([
-      FONT.content.M.regular,
+const AppTextInput = forwardRef<TextInput, TAppTextInput>(
+  (props: TAppTextInput, ref) => {
+    const {
+      width,
+      height,
+      outStyle,
+      label = '',
       labelStyle,
-      {marginBottom: vs(5)},
-    ]) as TextStyle;
-    return <Text style={labelInitStyle}>{label}</Text>;
-  };
-  return (
-    <View style={outStyle}>
-      {label && renderLabel()}
-      <View style={[containerInitStyle]}>
-        {leading && (
-          <AppButton onPress={onLeadingPress} type="transparent" size="S">
-            {leading}
-          </AppButton>
-        )}
-        <TextInput
-          value={value}
-          onChangeText={onChangeText}
-          style={styles.textInput}
-          placeholderTextColor={COLORS.grey}
-          placeholder={placeholder}
-          {...rest}
-        />
-        {trailing && (
-          <AppButton type="transparent" onPress={onTrailingPress} size="S">
-            {trailing}
-          </AppButton>
-        )}
+      containerStyle,
+      leading,
+      onLeadingPress,
+      trailing,
+      onTrailingPress,
+      value,
+      onChangeText,
+      placeholder = 'Nhập thông tin',
+      ...rest
+    } = props;
+    const containerInitStyle = StyleSheet.flatten([
+      styles.container,
+      width && {width},
+      height && {height},
+      containerStyle,
+    ]) as ViewStyle;
+    const renderLabel = () => {
+      const labelInitStyle = StyleSheet.flatten([
+        FONT.content.M.regular,
+        labelStyle,
+        {marginBottom: vs(5)},
+      ]) as TextStyle;
+      return <Text style={labelInitStyle}>{label}</Text>;
+    };
+    return (
+      <View style={outStyle}>
+        {label && renderLabel()}
+        <View style={[containerInitStyle]}>
+          {leading && (
+            <AppButton onPress={onLeadingPress} type="transparent" size="S">
+              {leading}
+            </AppButton>
+          )}
+          <TextInput
+            value={value}
+            onChangeText={onChangeText}
+            style={styles.textInput}
+            placeholderTextColor={COLORS.grey}
+            placeholder={placeholder}
+            {...rest}
+            ref={ref}
+          />
+          {trailing && (
+            <AppButton type="transparent" onPress={onTrailingPress} size="S">
+              {trailing}
+            </AppButton>
+          )}
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  },
+);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
