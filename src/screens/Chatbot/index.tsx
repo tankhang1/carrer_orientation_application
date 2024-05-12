@@ -137,15 +137,16 @@ const Chatbot = () => {
     storage.set(KEY_STORE.LIST_CHAT, JSON.stringify(chats));
     navigationRef.goBack();
   };
+  console.log('platform', Platform);
   return (
     <ImageBackground
       source={require('@assets/images/background.png')}
       resizeMode="cover"
       style={styles.container}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        //behavior="padding"
-        keyboardVerticalOffset={0}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        //behavior="height"
+        //keyboardVerticalOffset={10}
         style={styles.container}>
         <SafeAreaView style={[styles.container, styles.wrapper]}>
           <View style={styles.header}>

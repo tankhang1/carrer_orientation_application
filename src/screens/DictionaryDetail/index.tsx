@@ -34,10 +34,10 @@ const DictonaryDetail = ({route}: Props) => {
           style={styles.image}
           resizeMode="cover"
         />
-        <Title title="Ưu điểm" textStyle={styles.title} />
+        <Title title="Thuận lợi" textStyle={styles.title} />
         <Text style={styles.content}>{route?.params?.content?.pros}</Text>
-        <Title title="Nhược điểm" textStyle={styles.title} />
-        <Text style={styles.content}>{route?.params?.content?.pros}</Text>
+        <Title title="Khó khăn" textStyle={styles.title} />
+        <Text style={styles.content}>{route?.params?.content?.cons}</Text>
         <Title title="Trường đào tạo" textStyle={styles.title} />
         {schoolList?.map((item, index) => {
           return (
