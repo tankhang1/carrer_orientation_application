@@ -27,5 +27,8 @@ const ENDPOINTS_URL = {
     GET_ALL_SCHOOL: '/dictionary/getAllSchool',
     GET_SCHOOL: '/dictionary/getSchool',
   },
+  UPLOAD: {
+    UPLOAD_OCR: '/ocr/ocrGemini',
+  },
 };
 export {BASE_URL, ENDPOINTS_URL};

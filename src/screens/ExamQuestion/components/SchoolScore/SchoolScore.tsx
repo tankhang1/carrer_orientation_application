@@ -4,27 +4,25 @@ import {
   StyleSheet,
   NativeModules,
   ActivityIndicator,
-  Button,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
-import React, {RefObject, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {AppImagePicker, AppTextInput} from '@components';
 import {DefaultError, useQuery} from '@tanstack/react-query';
 import {QUERY_KEY, TSubject, COLORS, FONT, s, vs} from '@utils';
 import {ISchoolSubjectsResponse} from '@interfaces/DTO/SchoolSubject/schoolSubject';
-import useAPI from '@service/api';
+import useAPI, {uploadImage} from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import ImagePicker from 'react-native-image-crop-picker';
 import {TextInput} from 'react-native-gesture-handler';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const {TextRecognitionModule} = NativeModules;
 interface TSchoolScore {
   subjects: Record<string, TSubject>;
   setSubjects: (subjects: Record<string, TSubject>) => void;
 }
 const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
-  // const textInputRefs = useRef(
-  //   Array.from({length: 5}, a => React.createRef<TextInput>()),
-  // );
   const textInputRefs = useRef<React.RefObject<TextInput>[]>([]);
   const {isLoading, data, isError} = useQuery<
     unknown,
@@ -52,7 +50,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       height: 400,
       cropping: true,
     })
-      .then(image => {
+      .then(async image => {
         setImageUrl(image.path);
       })
       .catch((e: any) => {
@@ -66,8 +64,10 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       height: 400,
       cropping: true,
     })
-      .then(image => {
+      .then(async image => {
+        console.log('image', image);
         setImageUrl(image.path);
+        await uploadImage(image?.path, image?.mime);
       })
       .catch((e: any) => {
         console.log(e);
@@ -85,21 +85,20 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       });
     }
   };
-  useEffect(() => {
-    if (imageUrl) {
-      convertImageToText(imageUrl);
-    }
-  }, [imageUrl]);
-  const convertImageToText = async (url: string) => {
-    try {
-      const result = await TextRecognitionModule.regconizeImage(url);
-      console.log(result);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // useEffect(() => {
+  //   if (imageUrl) {
+  //     convertImageToText(imageUrl);
+  //   }
+  // }, [imageUrl]);
+  // const convertImageToText = async (url: string) => {
+  //   try {
+  //     const result = await TextRecognitionModule.regconizeImage(url);
+  //     console.log(result);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
   const onNextFocus = (index: number) => {
-    console.log(index);
     if (
       index >= 0 &&
       index < Object.keys(subjects)?.length - 1 &&
@@ -120,7 +119,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       <Text style={styles.title}>
         Vui lòng nhập điểm trung bình của từng môn nhé!
       </Text>
-      {/* <View style={styles.scanContainer}>
+      <View style={styles.scanContainer}>
         <TouchableOpacity onPress={() => setOpenImagePicker(true)}>
           <AntDesign name="scan1" size={s(33)} color={COLORS.green} />
         </TouchableOpacity>
@@ -128,7 +127,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
           <Text style={FONT.content.M.semiBold}>Tính năng thử nghiệm</Text>
           <Text style={FONT.content.S}>Thử chụp ảnh học bạ của bạn nhé!</Text>
         </View>
-      </View> */}
+      </View>
       {Object.entries(subjects)?.map(([key, subject], index) => {
         textInputRefs.current[index] =
           textInputRefs.current[index] || React.createRef<TextInput>();
