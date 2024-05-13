@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import {AppImagePicker, AppTextInput} from '@components';
-import {DefaultError, useQuery} from '@tanstack/react-query';
+import {AppBackDrop, AppImagePicker, AppTextInput} from '@components';
+import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
 import {QUERY_KEY, TSubject, COLORS, FONT, s, vs} from '@utils';
 import {ISchoolSubjectsResponse} from '@interfaces/DTO/SchoolSubject/schoolSubject';
 import useAPI, {uploadImage} from '@service/api';
@@ -17,6 +17,15 @@ import {ENDPOINTS_URL} from '@service';
 import ImagePicker from 'react-native-image-crop-picker';
 import {TextInput} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import AppImage from '@components/AppImage';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
+import {IResponse} from '@interfaces/DTO';
 const {TextRecognitionModule} = NativeModules;
 interface TSchoolScore {
   subjects: Record<string, TSubject>;
@@ -24,6 +33,12 @@ interface TSchoolScore {
 }
 const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
   const textInputRefs = useRef<React.RefObject<TextInput>[]>([]);
+  const animatedValue = useSharedValue(0);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg`},
+    ],
+  }));
   const {isLoading, data, isError} = useQuery<
     unknown,
     DefaultError,
@@ -32,6 +47,17 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
     queryKey: [QUERY_KEY.SCHOOL_SUBJECTS],
     queryFn: () =>
       useAPI(ENDPOINTS_URL.SCHOOL_SUBJECTS.GET_SUBJECTS, 'GET', {}),
+  });
+  const convertImageToText = useMutation({
+    mutationKey: [QUERY_KEY.OCR],
+    mutationFn: async (image: any) => {
+      console.log('image', image);
+      if (!image) return;
+      return await uploadImage(image?.path, image?.mime);
+    },
+    onSuccess: async (data: IResponse | any) => {
+      console.log('data', data);
+    },
   });
   useEffect(() => {
     if (data) {
@@ -42,6 +68,13 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       setSubjects(Object.fromEntries(newData));
     }
   }, [data]);
+  useEffect(() => {
+    if (convertImageToText.isPending) {
+      animatedValue.value = withRepeat(withTiming(1, {duration: 1000}), -1);
+    } else {
+      animatedValue.value = withTiming(0);
+    }
+  }, [convertImageToText.isPending]);
   const [openImagePicker, setOpenImagePicker] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const onLaunchCamera = async () => {
@@ -51,13 +84,15 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       cropping: true,
     })
       .then(async image => {
+        setOpenImagePicker(false);
         setImageUrl(image.path);
+        convertImageToText.mutate(image);
       })
       .catch((e: any) => {
         console.log(e);
       });
   };
-
+  console.log('subjects', subjects);
   const onLibrary = async () => {
     await ImagePicker.openPicker({
       width: 300,
@@ -65,9 +100,9 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       cropping: true,
     })
       .then(async image => {
-        console.log('image', image);
+        setOpenImagePicker(false);
         setImageUrl(image.path);
-        await uploadImage(image?.path, image?.mime);
+        convertImageToText.mutate(image);
       })
       .catch((e: any) => {
         console.log(e);
@@ -136,12 +171,27 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
           />
         );
       })}
-      <AppImagePicker
-        openImagePicker={openImagePicker}
-        setOpenImagePicker={setOpenImagePicker}
-        onLaunchCamera={onLaunchCamera}
-        onLibrary={onLibrary}
-      />
+      <AppBackDrop
+        open={openImagePicker || convertImageToText.isPending}
+        setOpen={setOpenImagePicker}
+        disabled={convertImageToText.isPending}>
+        {convertImageToText.isPending ? (
+          <Animated.View style={animatedStyle}>
+            <AppImage
+              source={require('@assets/images/bookmark.png')}
+              style={styles.loadingImage}
+              resizeMode="contain"
+            />
+          </Animated.View>
+        ) : (
+          <AppImagePicker
+            openImagePicker={openImagePicker}
+            setOpenImagePicker={setOpenImagePicker}
+            onLaunchCamera={onLaunchCamera}
+            onLibrary={onLibrary}
+          />
+        )}
+      </AppBackDrop>
     </View>
   );
 };
@@ -156,6 +206,11 @@ const styles = StyleSheet.create({
   scanContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  loadingImage: {
+    width: s(50),
+    height: s(50),
+    alignSelf: 'center',
   },
 });
 export default SchoolScore;

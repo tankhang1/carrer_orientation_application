@@ -10,6 +10,7 @@ const QUERY_KEY = {
   CONCLUSION: 'CONCLUSION',
   DICTIONARY: 'DICTIONARY',
   SCHOOL: 'SCHOOL',
+  OCR: 'OCR',
 };
 export const queryClient = new QueryClient();
 export {QUERY_KEY};

@@ -15,7 +15,7 @@ const App = () => {
   if (__DEV__) {
     initializeMMKVFlipper({default: storage});
   }
-  const [isInternet, setIsInternet] = useState<boolean | null>(false);
+  const [isInternet, setIsInternet] = useState<boolean | null>(true);
 
   useEffect(() => {
     // Subscribe
@@ -39,7 +39,7 @@ const App = () => {
       <Host>
         <GestureHandlerRootView style={{flex: 1}}>
           <AppNavigation />
-          {!isInternet && <AppNoInternet />}
+          {isInternet === false && <AppNoInternet />}
         </GestureHandlerRootView>
       </Host>
       {/* {__DEV__ && <DevToolsBubble />} */}

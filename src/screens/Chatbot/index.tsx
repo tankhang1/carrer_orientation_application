@@ -137,7 +137,7 @@ const Chatbot = () => {
     storage.set(KEY_STORE.LIST_CHAT, JSON.stringify(chats));
     navigationRef.goBack();
   };
-  console.log('platform', Platform);
+  //console.log('platform', Platform);
   return (
     <ImageBackground
       source={require('@assets/images/background.png')}

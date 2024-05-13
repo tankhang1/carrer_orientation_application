@@ -10,6 +10,7 @@ import AppModal from './AppModal';
 import AppImagePicker from './AppImagePicker';
 import AppNoInternet from './AppNoInternet';
 import AppCardCarousel from './AppCardCarousel';
+import AppBackDrop from './AppBackDrop';
 export {
   AppButton,
   AppTextInput,
@@ -22,4 +23,5 @@ export {
   AppModal,
   AppImagePicker,
   AppNoInternet,
+  AppBackDrop,
 };

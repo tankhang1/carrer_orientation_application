@@ -16,36 +16,24 @@ const AppImagePicker = ({
 }: Props) => {
   if (openImagePicker)
     return (
-      <Portal>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            justifyContent: 'flex-end',
-            paddingBottom: 10,
-          }}>
+      <>
+        <Animated.View
+          style={styles.container}
+          entering={SlideInDown}
+          exiting={SlideOutDown}>
+          <Pressable style={styles.button} onPress={onLaunchCamera}>
+            <Text style={styles.buttonText}>Chụp ảnh</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={onLibrary}>
+            <Text style={styles.buttonText}>Lấy ảnh từ thư viện</Text>
+          </Pressable>
           <Pressable
-            style={StyleSheet.absoluteFill}
-            onPress={() => setOpenImagePicker(false)}
-          />
-          <Animated.View
-            style={styles.container}
-            entering={SlideInDown}
-            exiting={SlideOutDown}>
-            <Pressable style={styles.button} onPress={onLaunchCamera}>
-              <Text style={styles.buttonText}>Chụp ảnh</Text>
-            </Pressable>
-            <Pressable style={styles.button} onPress={onLibrary}>
-              <Text style={styles.buttonText}>Lấy ảnh từ thư viện</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button}
-              onPress={() => setOpenImagePicker(false)}>
-              <Text style={styles.buttonText}>Hủy</Text>
-            </Pressable>
-          </Animated.View>
-        </View>
-      </Portal>
+            style={styles.button}
+            onPress={() => setOpenImagePicker(false)}>
+            <Text style={styles.buttonText}>Hủy</Text>
+          </Pressable>
+        </Animated.View>
+      </>
     );
 };
 

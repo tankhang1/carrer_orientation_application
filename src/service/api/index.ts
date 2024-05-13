@@ -43,7 +43,9 @@ export const uploadImage = async (url: string, mime: string) => {
       data: formData,
       headers: {'Content-Type': 'multipart/form-data'},
     });
-    console.log(response);
+    //console.log('res', response);
+    const {data} = response;
+    return data;
   } catch (e) {
     console.log(e);
   }
