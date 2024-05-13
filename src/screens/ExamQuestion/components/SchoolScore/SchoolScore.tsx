@@ -85,19 +85,6 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       });
     }
   };
-  // useEffect(() => {
-  //   if (imageUrl) {
-  //     convertImageToText(imageUrl);
-  //   }
-  // }, [imageUrl]);
-  // const convertImageToText = async (url: string) => {
-  //   try {
-  //     const result = await TextRecognitionModule.regconizeImage(url);
-  //     console.log(result);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
   const onNextFocus = (index: number) => {
     if (
       index >= 0 &&

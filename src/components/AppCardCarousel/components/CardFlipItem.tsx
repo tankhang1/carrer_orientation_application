@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, Pressable} from 'react-native';
 import React from 'react';
 import Animated, {
   Extrapolation,
@@ -24,8 +24,7 @@ type Props = {
 };
 const ITEM_SIZE = width * 0.7;
 const SPACING = (width - ITEM_SIZE) / 2;
-const AnimatedTouchableOpacity =
-  Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const OUTPUT_RANGE: Record<TType, TStyle> = {
   float: {
     scale: [0.82, 1, 0.82],
@@ -83,16 +82,17 @@ const CardFlipltItem = ({
           marginRight: index === length - 1 ? SPACING : 0,
         },
         styles.container,
-        animatedStyle,
       ]}>
-      <AnimatedTouchableOpacity
-        style={[styles.card, {height: h}]}
-        key={index}
-        onPress={onItemPress && onItemPress}
-        disabled={!onItemPress}>
-        {children && <>{children}</>}
-        <Text style={styles.bottomText}>{index}</Text>
-      </AnimatedTouchableOpacity>
+      <Animated.View style={animatedStyle}>
+        <AnimatedPressable
+          style={[styles.card, {height: h}]}
+          key={index}
+          onPress={onItemPress && onItemPress}
+          disabled={!onItemPress}>
+          {children && <>{children}</>}
+          <Text style={styles.bottomText}>{index}</Text>
+        </AnimatedPressable>
+      </Animated.View>
     </Animated.View>
   );
 };

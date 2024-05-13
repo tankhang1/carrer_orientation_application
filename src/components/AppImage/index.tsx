@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import FastImage, {FastImageProps} from 'react-native-fast-image';
 import AppNoData from '@components/AppNoData';
 import {COLORS} from '@utils/config';
+import AppSkeleton from '@components/AppSkeleton';
 type TAppImage = {
   style?: StyleProp<ViewStyle>;
   source?: ImageSourcePropType;
@@ -46,7 +47,8 @@ const AppImage = ({
       />
       {isLoading && (
         <View style={styles.fallBack}>
-          <ActivityIndicator size="small" color={COLORS.black} />
+          {/* <ActivityIndicator size="small" color={COLORS.black} /> */}
+          <AppSkeleton width={'100%'} height={'100%'} />
         </View>
       )}
       {isError && (

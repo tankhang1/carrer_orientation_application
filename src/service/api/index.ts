@@ -1,7 +1,5 @@
 import axios from 'axios';
 import {BASE_URL, ENDPOINTS_URL} from './url';
-import RNFetchBlob from 'rn-fetch-blob';
-import {Platform} from 'react-native';
 type TMethod = 'GET' | 'POST';
 const useAPI = <P, D>(
   url: string,
@@ -31,13 +29,7 @@ const useAPI = <P, D>(
 };
 
 export const uploadImage = async (url: string, mime: string) => {
-  console.log('url', url);
   try {
-    // Convert the local image URI to a Blob
-    // const response = await RNFetchBlob.config({
-    //   fileCache: true,
-    // }).fetch('GET', url);
-    // console.log(response);
     const formData = new FormData();
     formData.append('file', {
       uri: url,
