@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableOpacity,
+  InteractionManager,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {AppBackDrop, AppImagePicker, AppTextInput} from '@components';
@@ -57,6 +58,39 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
     },
     onSuccess: async (data: IResponse | any) => {
       console.log('data', data);
+      const subjectsList = Object.values(subjects);
+      console.log('okk', subjectsList);
+      InteractionManager.runAfterInteractions(() => {
+        if (data?.code == 200) {
+          const results = data?.data;
+          results?.map((result: any, index: number) => {
+            const [subject, score] = result
+              .split(':')
+              .map((item: any) => item.trim());
+            const convertedSubject = subjectsList?.find(
+              value => value.vnName === subject,
+            );
+            console.log('okkkkk', convertedSubject);
+            if (convertedSubject) {
+              console.log('alooo');
+
+              // onValueChange(
+              //   convertedSubject?.name!,
+              //   score,
+              //   convertedSubject?.vnName,
+              // );
+              setSubjects({
+                ...subjects,
+                [convertedSubject?.name!]: {
+                  vnName: convertedSubject?.vnName,
+                  value: +score,
+                },
+              });
+            }
+            //onValueChange(keyInSubject.name)
+          });
+        }
+      });
     },
   });
   useEffect(() => {
@@ -92,7 +126,6 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
         console.log(e);
       });
   };
-  console.log('subjects', subjects);
   const onLibrary = async () => {
     await ImagePicker.openPicker({
       width: 300,
@@ -109,8 +142,9 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       });
   };
   const onValueChange = (key: string, value: string, vnName: string) => {
+    console.log('eee', key, value, vnName);
     if (+value >= 0 && +value <= 10) {
-      //console.log(key, value, vnName);
+      console.log(key, value, vnName);
       setSubjects({
         ...subjects,
         [key]: {
