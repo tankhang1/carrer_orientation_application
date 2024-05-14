@@ -57,12 +57,12 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       return await uploadImage(image?.path, image?.mime);
     },
     onSuccess: async (data: IResponse | any) => {
-      console.log('data', data);
       const subjectsList = Object.values(subjects);
-      console.log('okk', subjectsList);
+      console.log('data', data);
       InteractionManager.runAfterInteractions(() => {
         if (data?.code == 200) {
           const results = data?.data;
+          const convertedData = new Map();
           results?.map((result: any, index: number) => {
             const [subject, score] = result
               .split(':')
@@ -70,25 +70,14 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
             const convertedSubject = subjectsList?.find(
               value => value.vnName === subject,
             );
-            console.log('okkkkk', convertedSubject);
             if (convertedSubject) {
-              console.log('alooo');
-
-              // onValueChange(
-              //   convertedSubject?.name!,
-              //   score,
-              //   convertedSubject?.vnName,
-              // );
-              setSubjects({
-                ...subjects,
-                [convertedSubject?.name!]: {
-                  vnName: convertedSubject?.vnName,
-                  value: +score,
-                },
+              convertedData?.set(convertedSubject.name, {
+                vnName: subject,
+                value: score,
               });
             }
-            //onValueChange(keyInSubject.name)
           });
+          setSubjects({subjects, ...Object.fromEntries(convertedData)});
         }
       });
     },
@@ -168,7 +157,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       }
     }
   };
-  if (Object.keys(subjects)?.length < 4)
+  if (Object.keys(subjects)?.length === 0)
     return <ActivityIndicator size="small" color={COLORS.green} />;
   return (
     <View style={styles.container}>
