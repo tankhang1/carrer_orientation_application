@@ -1,6 +1,6 @@
 import {ListRenderItemInfo} from 'react-native';
 import React from 'react';
-import Animated, {SharedValue} from 'react-native-reanimated';
+import {SharedValue} from 'react-native-reanimated';
 import {width} from '@utils';
 import {FlatList} from 'react-native-gesture-handler';
 type TAppCardCarousel<TData> = {
