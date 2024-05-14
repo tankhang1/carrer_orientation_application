@@ -115,17 +115,25 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       });
   };
   const onValueChange = (key: string, value: string, vnName: string) => {
-    console.log('eee', key, value, vnName);
-    //if (+value >= 0 && +value <= 10) {
-    console.log(key, value, vnName);
-    setSubjects({
-      ...subjects,
-      [key]: {
-        vnName,
-        value: +value,
-      },
-    });
-    //}
+    console.log('eee', key, +value, vnName);
+    if (value.length === 2 && value[1] !== '.' && +value[1] > 0) {
+      setSubjects({
+        ...subjects,
+        [key]: {
+          vnName,
+          value: value[1],
+        },
+      });
+      return;
+    }
+    if (+value >= 0 && +value <= 10)
+      setSubjects({
+        ...subjects,
+        [key]: {
+          vnName,
+          value: value,
+        },
+      });
   };
   const onNextFocus = (index: number) => {
     if (
@@ -164,8 +172,8 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
           <AppTextInput
             key={index}
             label={subject.vnName}
+            value={subject.value.toString()}
             containerStyle={{backgroundColor: COLORS.white}}
-            value={!!subject.value ? subject.value.toString() : ''}
             onChangeText={text => onValueChange(key, text, subject.vnName)}
             keyboardType="numeric"
             onSubmitEditing={() => {
