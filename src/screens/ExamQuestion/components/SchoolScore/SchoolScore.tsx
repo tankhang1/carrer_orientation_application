@@ -60,24 +60,8 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       const subjectsList = Object.values(subjects);
       console.log('data', data);
       InteractionManager.runAfterInteractions(() => {
-        if (data?.code == 200) {
-          const results = data?.data;
-          const convertedData = new Map();
-          results?.map((result: any, index: number) => {
-            const [subject, score] = result
-              .split(':')
-              .map((item: any) => item.trim());
-            const convertedSubject = subjectsList?.find(
-              value => value.vnName === subject,
-            );
-            if (convertedSubject) {
-              convertedData?.set(convertedSubject.name, {
-                vnName: subject,
-                value: score,
-              });
-            }
-          });
-          setSubjects({subjects, ...Object.fromEntries(convertedData)});
+        if (data?.code == 200 && data?.data) {
+          setSubjects(data?.data);
         }
       });
     },
@@ -132,16 +116,16 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
   };
   const onValueChange = (key: string, value: string, vnName: string) => {
     console.log('eee', key, value, vnName);
-    if (+value >= 0 && +value <= 10) {
-      console.log(key, value, vnName);
-      setSubjects({
-        ...subjects,
-        [key]: {
-          vnName,
-          value: +value,
-        },
-      });
-    }
+    //if (+value >= 0 && +value <= 10) {
+    console.log(key, value, vnName);
+    setSubjects({
+      ...subjects,
+      [key]: {
+        vnName,
+        value: +value,
+      },
+    });
+    //}
   };
   const onNextFocus = (index: number) => {
     if (
