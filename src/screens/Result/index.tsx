@@ -37,12 +37,12 @@ const Result = ({navigation, route}: Props) => {
           <Text style={FONT.title.M}>
             Trắc nghiệm nghề nghiệp cho học sinh THPT
           </Text>
-          <Text style={FONT.content.M.regular}>Số bài thực hiện: 5</Text>
+          {/* <Text style={FONT.content.M.regular}>Số bài thực hiện: 5</Text> */}
         </View>
-        <View style={{gap: vs(10), padding: s(10)}}>
+        {/* <View style={{gap: vs(10), padding: s(10)}}>
           <Text style={FONT.content.M.regular}>Kết quả</Text>
           <Text style={FONT.content.M.bold}>Nhóm thân thiện</Text>
-        </View>
+        </View> */}
       </ImageBackground>
 
       <View style={{gap: vs(20)}}>
@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
     marginBottom: vs(20),
   },
   header: {
-    height: vs(100),
+    height: vs(80),
     width: '100%',
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 10,
   },

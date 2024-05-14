@@ -76,7 +76,6 @@ const Conclusion = ({answers, results, scoreResults}: TConclusion) => {
   });
 
   const conclusions = data?.data;
-  console.log('conclusion', conclusions);
   if (isLoading)
     return <ActivityIndicator color={COLORS.green} size={'small'} />;
   return (
@@ -90,7 +89,7 @@ const Conclusion = ({answers, results, scoreResults}: TConclusion) => {
         <Text style={styles.subTitle}>● Ngành nghề phù hợp:</Text>
         <Text style={styles.content}>{conclusions?.Jobs}</Text>
         <Text style={styles.subTitle}>● Kết luận chung:</Text>
-        <Text style={styles.content}>{conclusions?.Conclusion}</Text>
+        <Text style={[styles.content]}>{conclusions?.Conclusion}</Text>
       </View>
     </View>
   );

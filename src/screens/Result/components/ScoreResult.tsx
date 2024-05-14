@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, ListRenderItemInfo} from 'react-native';
 import React from 'react';
-import {FONT, s} from '@utils/config';
+import {FONT, height, s} from '@utils/config';
 import {TSchoolScoreResult} from '@utils/types/metaTypes';
 import AppCardCarousel from '@components/AppCardCarousel';
 import {useSharedValue} from 'react-native-reanimated';
@@ -17,6 +17,7 @@ const ScoreResult = ({scoreResults}: TScoreResult) => {
         index={index}
         animatedScroll={animatedScroll}
         length={scoreResults?.length}
+        h={height * 0.7}
         children={
           <>
             <Text style={FONT.content.M.bold}>- Khối {result.title}</Text>

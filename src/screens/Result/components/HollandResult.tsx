@@ -35,7 +35,7 @@ const HollandResult = ({answers, results}: THollandResult) => {
               url: result.resultContents[0].detail!,
             });
           }}
-          length={results?.length ?? 1}
+          length={6}
           children={
             <>
               <View style={styles.imageContainer}>
@@ -68,6 +68,7 @@ const HollandResult = ({answers, results}: THollandResult) => {
 
     return null;
   };
+  console.log('lenghth', results?.length);
   return (
     <View style={styles.container}>
       <Title title="Holland" />
