@@ -1,7 +1,5 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TRootStackNav} from '@utils/types/RootStackNav';
 import {navigationRef} from '@navigation';
 import AppView from '@components/AppView';
 import {COLORS, FONT, s, vs} from '@utils/config';
@@ -9,7 +7,6 @@ import AppHeader from '@components/AppHeader';
 import AppImage from '@components/AppImage';
 import ExamCard from './components/ExamCard';
 import {AppButton} from '@components';
-type Props = NativeStackScreenProps<TRootStackNav, 'ListExam'>;
 
 const ListExam = () => {
   return (

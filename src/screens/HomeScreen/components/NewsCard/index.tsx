@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Pressable,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import React, {lazy, memo, Suspense, useCallback} from 'react';
 import {FONT, s, vs} from '@utils/config';
 

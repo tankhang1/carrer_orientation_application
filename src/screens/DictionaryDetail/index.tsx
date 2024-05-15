@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet} from 'react-native';
-import React, {Suspense, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {AppHeader, AppView} from '@components';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TRootStackNav} from '@utils/types/RootStackNav';
@@ -11,8 +11,6 @@ import {ISchoolByArea, ISchoolResponse} from '@interfaces/School/school';
 import {useQuery} from '@tanstack/react-query';
 import useAPI from '@service/api';
 import {ENDPOINTS_URL} from '@service';
-import Animated from 'react-native-reanimated';
-import {Image} from 'react-native-svg';
 type Props = NativeStackScreenProps<TRootStackNav, 'DictionaryDetail'>;
 const DictonaryDetail = ({route}: Props) => {
   const {isLoading, data} = useQuery<unknown, DefaultError, ISchoolResponse>({

@@ -102,7 +102,9 @@ const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
                     {key}
                   </Text>
                 </View>
-                <Text style={FONT.content.XXS.medium}>{value ?? ''}</Text>
+                <Text style={FONT.content.XXS.medium}>
+                  {(value as string) ?? ''}
+                </Text>
               </View>
             );
         })}

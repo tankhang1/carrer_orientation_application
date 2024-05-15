@@ -30,7 +30,6 @@ type Props = {
 };
 const RectAnimated = Animated.createAnimatedComponent(Rect);
 const PathAnimated = Animated.createAnimatedComponent(Path);
-const SvgAnimated = Animated.createAnimatedComponent(Svg);
 const CircleAnimated = Animated.createAnimatedComponent(Circle);
 const IQ_EQ_Result = ({answers, results}: Props) => {
   const iqTransitionX = useSharedValue(0);

@@ -1,4 +1,4 @@
-import {FlatList, ListRenderItemInfo, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React, {lazy, memo, Suspense} from 'react';
 import {s, vs, width} from '@utils/config';
 import dayjs from 'dayjs';

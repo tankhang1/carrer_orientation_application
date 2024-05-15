@@ -1,7 +1,6 @@
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {Text, Pressable, StyleSheet} from 'react-native';
 import React from 'react';
 import Animated, {SlideInDown, SlideOutDown} from 'react-native-reanimated';
-import {Portal} from 'react-native-portalize';
 type Props = {
   openImagePicker: boolean;
   setOpenImagePicker: (openImagePicker: boolean) => void;

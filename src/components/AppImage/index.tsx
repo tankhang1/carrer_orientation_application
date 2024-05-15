@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ViewStyle,
   View,
-  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import FastImage, {FastImageProps} from 'react-native-fast-image';
@@ -47,7 +46,6 @@ const AppImage = ({
       />
       {isLoading && (
         <View style={styles.fallBack}>
-          {/* <ActivityIndicator size="small" color={COLORS.black} /> */}
           <AppSkeleton width={'100%'} height={'100%'} />
         </View>
       )}

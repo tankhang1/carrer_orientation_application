@@ -1,7 +1,6 @@
-import {View, Text, DimensionValue} from 'react-native';
-import React, {useEffect, useLayoutEffect} from 'react';
+import {DimensionValue} from 'react-native';
+import React, {useLayoutEffect} from 'react';
 import Animated, {
-  interpolate,
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,

@@ -27,7 +27,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {IResponse} from '@interfaces/DTO';
-const {TextRecognitionModule} = NativeModules;
 interface TSchoolScore {
   subjects: Record<string, TSubject>;
   setSubjects: (subjects: Record<string, TSubject>) => void;

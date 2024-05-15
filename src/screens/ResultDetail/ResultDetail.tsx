@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React, {Suspense} from 'react';
 import {WebView} from 'react-native-webview';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';

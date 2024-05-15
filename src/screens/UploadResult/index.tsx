@@ -8,7 +8,7 @@ const UploadResult = () => {
   return (
     <View>
       <TouchableOpacity
-        onPress={() => navigationRef.navigate('Result')}
+        // onPress={() => navigationRef.navigate('Result')}
         style={{
           paddingHorizontal: 40,
           paddingVertical: 20,

@@ -3,12 +3,6 @@ import React from 'react';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import AppImage from '@components/AppImage';
 
-type TNewsData = {
-  image: string;
-  createdAt: Date;
-  content: string;
-  key: string;
-};
 export type TNewsCategory = {
   id: string;
   title: string;

@@ -9,7 +9,7 @@ import {
   FlatListProps,
   FlatList,
 } from 'react-native';
-import React, {forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {forwardRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 

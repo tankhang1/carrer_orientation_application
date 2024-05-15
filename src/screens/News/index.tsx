@@ -55,22 +55,18 @@ const News = () => {
   }, [Categories]);
 
   const {data, isFetchingNextPage, fetchNextPage, hasNextPage} =
-    useInfiniteQuery<unknown, DefaultError, InfiniteData<INewsResponse>>({
+    useInfiniteQuery<INewsResponse, DefaultError, InfiniteData<INewsResponse>>({
       queryKey: [QUERY_KEY.NEWS, categoryId],
       queryFn: async ({pageParam}) =>
         useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
           params: {id: categoryId, page: pageParam ?? 1},
         } as const) as Promise<INewsResponse>,
       initialPageParam: 1,
-      getNextPageParam: (
-        lastPage: INewsResponse,
-        allPages: INewsResponse[],
-        lastPageParam: number,
-      ) => {
+      getNextPageParam: (lastPage, allPages) => {
         if (lastPage?.data?.length === 0) {
           return undefined;
         }
-        return lastPageParam + 1;
+        return allPages.length + 1;
       },
       //staleTime: 5 * 60 * 1000,
     });

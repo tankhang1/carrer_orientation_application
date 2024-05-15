@@ -4,7 +4,6 @@ import {COLORS, s, vs} from '@utils/config';
 import AppRoundedButton from '@components/AppRoundedButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {AppProgressBar} from '@components';
-import {navigationRef} from '@navigation';
 type TBottomButton = {
   onNext?: () => void;
   onPrev?: () => void;
@@ -23,10 +22,7 @@ const BottomButton = ({
         <Entypo name="chevron-left" size={s(20)} color={COLORS.white} />
       </AppRoundedButton>
       <AppProgressBar maxValue={maxValue} progress={currentValue} />
-      <AppRoundedButton
-        type="fill"
-        //onPress={() => navigationRef.navigate('Result')}
-        onPress={onNext}>
+      <AppRoundedButton type="fill" onPress={onNext}>
         <Entypo name="chevron-right" size={s(20)} color={COLORS.white} />
       </AppRoundedButton>
     </View>

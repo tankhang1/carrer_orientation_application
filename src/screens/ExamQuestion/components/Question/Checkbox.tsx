@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {StyleSheet, Pressable} from 'react-native';
 import React, {memo} from 'react';
 import {COLORS, s} from '@utils/config';
 import Entypo from 'react-native-vector-icons/Entypo';
