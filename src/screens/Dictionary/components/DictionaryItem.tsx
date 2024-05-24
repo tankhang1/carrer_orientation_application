@@ -117,7 +117,7 @@ const DictionaryItem = ({
               <AppImage
                 source={{uri: item?.image}}
                 style={styles.image}
-                resizeMode="cover"
+                resizeMode="stretch"
               />
               <Text style={styles.jobTitle}>{item?.name}</Text>
             </View>
