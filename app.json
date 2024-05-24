@@ -1,4 +1,7 @@
 {
   "name": "Career_Orientation_Application",
-  "displayName": "Career_Orientation_Application"
+  "displayName": "Career_Orientation_Application",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-7671392847069245~3433588099"
+  }
 }
