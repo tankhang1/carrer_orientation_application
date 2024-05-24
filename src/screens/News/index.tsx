@@ -53,7 +53,6 @@ const News = () => {
   useEffect(() => {
     setCategoryId(Categories?.[0]._id);
   }, [Categories]);
-
   const {data, isFetchingNextPage, fetchNextPage, hasNextPage} =
     useInfiniteQuery<INewsResponse, DefaultError, InfiniteData<INewsResponse>>({
       queryKey: [QUERY_KEY.NEWS, categoryId],
