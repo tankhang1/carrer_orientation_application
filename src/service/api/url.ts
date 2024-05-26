@@ -1,4 +1,4 @@
-const BASE_URL = 'http://3.80.222.63';
+const BASE_URL = 'https://career-app-ndt9.onrender.com';
 const ENDPOINTS_URL = {
   EXAM: {
     GET_EXAM: '/exams',
