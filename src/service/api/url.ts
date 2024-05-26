@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.4:3000';
+const BASE_URL = 'http://3.80.222.63';
 const ENDPOINTS_URL = {
   EXAM: {
     GET_EXAM: '/exams',
