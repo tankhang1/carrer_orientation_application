@@ -140,7 +140,7 @@ const Chatbot = () => {
   //console.log('platform', Platform);
   return (
     <ImageBackground
-      source={require('@assets/images/background.png')}
+      source={require('@assets/images/background_1.png')}
       resizeMode="cover"
       style={styles.container}>
       <KeyboardAvoidingView

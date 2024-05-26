@@ -34,7 +34,7 @@ const AppView = forwardRef<TAppViewRef, TAppView<any>>(
   ) => {
     return (
       <ImageBackground
-        source={require('@assets/images/background.png')}
+        source={require('@assets/images/background_1.png')}
         resizeMode="cover"
         style={styles.wrapper}>
         <SafeAreaView style={[styles.container, style]}>
