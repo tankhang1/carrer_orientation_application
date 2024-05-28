@@ -10,38 +10,38 @@ import NetInfo, {addEventListener} from '@react-native-community/netinfo';
 import {AppNoInternet} from '@components';
 
 const App = () => {
-    if (__DEV__) {
-        initializeMMKVFlipper({default: storage});
-    }
-    const [isInternet, setIsInternet] = useState<boolean | null>(true);
+  if (__DEV__) {
+    initializeMMKVFlipper({default: storage});
+  }
+  const [isInternet, setIsInternet] = useState<boolean | null>(true);
 
-    useEffect(() => {
-        // Subscribe
-        const unsubscribe = addEventListener(state => {
-            console.log('Connection type', state.type);
-            console.log('Is connected?', state.isConnected);
-            setIsInternet(state.isConnected);
-        });
-        onlineManager.setEventListener(setOnline => {
-            return NetInfo.addEventListener(state => {
-                setOnline(!!state.isConnected);
-            });
-        });
-        return () => {
-            unsubscribe();
-        };
-    }, []);
+  useEffect(() => {
+    // Subscribe
+    const unsubscribe = addEventListener(state => {
+      console.log('Connection type', state.type);
+      console.log('Is connected?', state.isConnected);
+      setIsInternet(state.isConnected);
+    });
+    onlineManager.setEventListener(setOnline => {
+      return NetInfo.addEventListener(state => {
+        setOnline(!!state.isConnected);
+      });
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-    return (
-        <QueryClientProvider client={queryClient}>
-            <Host>
-                <GestureHandlerRootView style={{flex: 1}}>
-                    <AppNavigation/>
-                    {isInternet === false && <AppNoInternet/>}
-                </GestureHandlerRootView>
-            </Host>
-        </QueryClientProvider>
-    );
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Host>
+        <GestureHandlerRootView style={{flex: 1}}>
+          <AppNavigation />
+          {isInternet === false && <AppNoInternet />}
+        </GestureHandlerRootView>
+      </Host>
+    </QueryClientProvider>
+  );
 };
 
 export default App;

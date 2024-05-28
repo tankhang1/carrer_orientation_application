@@ -72,6 +72,9 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
+  - Google-Mobile-Ads-SDK (11.5.0):
+    - GoogleUserMessagingPlatform (>= 1.1)
+  - GoogleUserMessagingPlatform (2.4.0)
   - hermes-engine (0.72.9):
     - hermes-engine/Pre-built (= 0.72.9)
   - hermes-engine/Pre-built (0.72.9)
@@ -528,6 +531,11 @@ PODS:
   - RNGestureHandler (2.15.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
+  - RNGoogleMobileAds (13.6.0):
+    - Google-Mobile-Ads-SDK (= 11.5.0)
+    - GoogleUserMessagingPlatform (= 2.4.0)
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - RNImageCropPicker (0.40.3):
     - React-Core
     - React-RCTImage
@@ -634,6 +642,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -653,6 +662,8 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - FlipperKit
     - fmt
+    - Google-Mobile-Ads-SDK
+    - GoogleUserMessagingPlatform
     - libevent
     - libwebp
     - lottie-ios
@@ -762,6 +773,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleMobileAds:
+    :path: "../node_modules/react-native-google-mobile-ads"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
@@ -792,6 +805,8 @@ SPEC CHECKSUMS:
   FlipperKit: 2efad7007d6745a3f95e4034d547be637f89d3f6
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  Google-Mobile-Ads-SDK: 7db2098033ad3bfcd72a11e7503b49700a93029e
+  GoogleUserMessagingPlatform: f131fa7978d2ba88d7426702b057c2cc318e6595
   hermes-engine: 9b9bb14184a11b8ceb4131b09abf634880f0f46d
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
@@ -840,6 +855,7 @@ SPEC CHECKSUMS:
   ReactCommon: 180205f326d59f52e12fa724f5278fcf8fb6afc3
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: 7909c50383a18f0cb10ce1db7262b9a6da504c03
+  RNGoogleMobileAds: 62e54047b0dbc6781150940441602dce36c2bcb4
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
   RNReanimated: ab1295f59541cb26000d394b4b4aea72cb7ca448
   RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
