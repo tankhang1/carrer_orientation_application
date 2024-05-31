@@ -22,6 +22,7 @@ const HistoryCard = () => {
       return () => {};
     }, []),
   );
+  if (results?.length === 0) return null;
   return (
     <View style={styles.container}>
       <View style={styles.title}>

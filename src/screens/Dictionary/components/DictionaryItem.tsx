@@ -71,7 +71,7 @@ const DictionaryItem = ({
       [-1, 1],
       [COLORS.white, 'rgba(255, 255, 255, 0.2)'],
     ),
-    height: interpolate(animValue.value, [-1, 1], [42, CARD_HEIGHT]),
+    height: interpolate(animValue.value, [-1, 1], [45, CARD_HEIGHT]),
     width: interpolate(animValue.value, [-1, 1], [width * 0.8, width]),
   }));
 
@@ -99,7 +99,7 @@ const DictionaryItem = ({
         index={index}
         key={index}
         animatedScroll={animatedScroll}
-        h={height * 0.5}
+        h={height * 0.45}
         length={majors?.length}
         onItemPress={() =>
           navigationRef.navigate('DictionaryDetail', {
@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: s(10),
-    borderColor: COLORS.green,
     paddingVertical: s(10),
     alignSelf: 'center',
   },

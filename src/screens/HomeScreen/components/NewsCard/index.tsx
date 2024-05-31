@@ -33,6 +33,7 @@ const NewsCard = () => {
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
     queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
   });
+
   const renderCard = useCallback(
     ({item, index}: {item: INew; index: number}) => {
       return (
@@ -59,6 +60,7 @@ const NewsCard = () => {
     },
     [],
   );
+  if (!data) return null;
   return (
     <View style={styles.container}>
       <View style={styles.title}>
