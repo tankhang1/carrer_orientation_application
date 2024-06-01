@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import React, {
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -27,18 +28,20 @@ type TExamInfo = {
   headerTitle: string;
   examType: TExam;
 };
-const initialAnswers: TAnswer = new Map([
-  ['R', []],
-  ['I', []],
-  ['A', []],
-  ['S', []],
-  ['E', []],
-  ['C', []],
-  ['IQ', []],
-  ['EQ', []],
-]);
+
 const ExamQuestion = () => {
-  const [answers, setAnswers] = useState<TAnswer>(initialAnswers);
+  const [answers, setAnswers] = useState<TAnswer>(
+    new Map([
+      ['R', []],
+      ['I', []],
+      ['A', []],
+      ['S', []],
+      ['E', []],
+      ['C', []],
+      ['IQ', []],
+      ['EQ', []],
+    ]),
+  );
   const {data, isLoading} = useQuery<unknown, DefaultError, IExamResponse>({
     queryKey: [QUERY_KEY.EXAMS],
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -77,12 +80,12 @@ const ExamQuestion = () => {
       else {
         storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers]));
       }
-      setAnswers(initialAnswers);
       setQuestionNumber(totalExams + 1);
       navigationRef.navigate('Result', {
         userAnswers,
         schoolScoreResults: data.data,
       });
+      setAnswers;
     },
   });
 
@@ -225,7 +228,6 @@ const ExamQuestion = () => {
           <AppHeader
             title={examInfo.headerTitle}
             onPress={() => {
-              setAnswers(initialAnswers);
               navigationRef.goBack();
             }}
           />

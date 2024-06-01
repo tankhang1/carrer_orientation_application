@@ -14,7 +14,6 @@ const HistoryCard = () => {
     React.useCallback(() => {
       const storageResult = storage.getString(KEY_STORE.LIST_RESULT);
       const resultsFromStore = JSON.parse(storageResult ?? 'null');
-
       if (resultsFromStore) {
         setResults(resultsFromStore as unknown as TResultInStore[]); // Adjust the cast as necessary
       }
