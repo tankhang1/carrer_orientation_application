@@ -53,7 +53,7 @@ const AppHistoryCard = ({isExpand, index = 0, result}: TCard) => {
           +scores['Math']?.value +
           +scores['Physics']?.value) /
         10
-      );
+      ).toFixed(1);
   }, [result]);
   return (
     <Animated.View
