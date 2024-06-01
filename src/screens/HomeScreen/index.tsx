@@ -18,7 +18,9 @@ const HomeScreen = () => {
 
   return (
     <>
-      <AppView style={{gap: vs(10)}}>
+      <AppView
+        style={{gap: vs(10), marginBottom: vs(20)}}
+        showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>
           Tư vấn hướng nghiệp và chọn ngành cho học sinh THPT
         </Text>
@@ -29,7 +31,7 @@ const HomeScreen = () => {
         <NewsCard />
         <HistoryCard />
       </AppView>
-      <View>
+      <View style={styles.footer}>
         <BannerAd
           ref={bannerRef}
           unitId={adUnitId}
@@ -72,6 +74,10 @@ const styles = StyleSheet.create({
   floatingBtn: {
     width: s(60),
     height: s(60),
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
   },
 });
 export default HomeScreen;
