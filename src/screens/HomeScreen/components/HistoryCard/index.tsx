@@ -27,7 +27,7 @@ const HistoryCard = () => {
       <View style={styles.title}>
         <Text style={FONT.content.M.bold}>Kết quả kiểm tra</Text>
         <TouchableOpacity onPress={() => navigationRef.navigate('ListResult')}>
-          <Text style={FONT.link}>Xem thêm</Text>
+          <Text style={FONT.content.M.medium}>Xem thêm</Text>
         </TouchableOpacity>
       </View>
       {results?.map((result, index) => (

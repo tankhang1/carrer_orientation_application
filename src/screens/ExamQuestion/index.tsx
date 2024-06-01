@@ -21,7 +21,7 @@ import {ENDPOINTS_URL} from '@service';
 import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
 import {initialSubjects} from './components/SchoolScore/constant';
-import {TSubject, TAnswer, vs} from '@utils';
+import {TSubject, TAnswer, vs, COLORS} from '@utils';
 import {KEY_STORE, storage} from '@store';
 
 type TExamInfo = {
@@ -232,7 +232,7 @@ const ExamQuestion = () => {
             }}
           />
           {isLoading || !data?.data ? (
-            <ActivityIndicator size={'large'} />
+            <ActivityIndicator size={'large'} color={COLORS.green} />
           ) : (
             <View style={styles.container}>
               {questionNumber < totalExams ? (

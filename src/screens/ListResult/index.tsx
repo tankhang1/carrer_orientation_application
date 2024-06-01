@@ -1,11 +1,12 @@
-import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
+import {ListRenderItemInfo, StyleSheet, Text, View} from 'react-native';
 import React, {lazy, Suspense, useRef} from 'react';
 import AppView from '@components/AppView';
-import {s, vs, width} from '@utils/config';
+import {COLORS, FONT, s, vs, width} from '@utils/config';
 import AppSkeleton from '@components/AppSkeleton';
 import AppHeader from '@components/AppHeader';
 import {storage} from '@store';
 import {BannerAd, BannerAdSize, TestIds} from 'react-native-google-mobile-ads';
+import AppNoData from '@components/AppNoData';
 
 const AppHistoryCard = lazy(
   () => import('@components/AppHistoryCard/AppHistoryCard'),
@@ -38,9 +39,21 @@ const ListResult = () => {
         renderItem={renderCard}
         contentContainerStyle={styles.containerStyle}
         ListHeaderComponent={() => (
-          <AppHeader title="Kết quả kiểm tra" style={{width: width}} />
+          <AppHeader
+            title="Kết quả kiểm tra"
+            style={{paddingHorizontal: s(10)}}
+          />
         )}
         ListFooterComponent={() => <View style={{height: 10}} />}
+        ListEmptyComponent={
+          <View style={styles.placeHolderContainer}>
+            <AppNoData />
+            <Text style={styles.placeHolderText}>
+              Oops! Bạn chưa làm bài kiểm tra nào! Hãy đến mục làm bài kiểm tra
+              nhé!
+            </Text>
+          </View>
+        }
         renderToHardwareTextureAndroid
         removeClippedSubviews
       />
@@ -64,5 +77,14 @@ const styles = StyleSheet.create({
     gap: vs(10),
     alignSelf: 'center',
     width: '90%',
+  },
+  placeHolderContainer: {
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  placeHolderText: {
+    ...FONT.content.L,
+    color: COLORS.grey,
+    textAlign: 'center',
   },
 });
