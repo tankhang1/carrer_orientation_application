@@ -29,24 +29,26 @@ const HomeScreen = () => {
         <NewsCard />
         <HistoryCard />
       </AppView>
-      <View style={styles.floatingBtnContainer}>
-        <AppRoundedButton
-          type="fill"
-          style={styles.floatingBtn}
-          shadow={true}
-          onPress={() => navigationRef.navigate('ChatBot')}>
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            color={COLORS.white}
-            size={s(24)}
-          />
-        </AppRoundedButton>
+      <View>
+        <BannerAd
+          ref={bannerRef}
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        />
+        <View style={styles.floatingBtnContainer}>
+          <AppRoundedButton
+            type="fill"
+            style={styles.floatingBtn}
+            shadow={true}
+            onPress={() => navigationRef.navigate('ChatBot')}>
+            <Ionicons
+              name="chatbubble-ellipses-outline"
+              color={COLORS.white}
+              size={s(24)}
+            />
+          </AppRoundedButton>
+        </View>
       </View>
-      <BannerAd
-        ref={bannerRef}
-        unitId={adUnitId}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      />
     </>
   );
 };
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
   floatingBtnContainer: {
     position: 'absolute',
     zIndex: 999,
-    right: s(30),
+    right: s(16),
     bottom: vs(50),
   },
   floatingBtn: {

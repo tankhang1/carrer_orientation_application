@@ -66,7 +66,7 @@ const NewsCard = () => {
       <View style={styles.title}>
         <Text style={FONT.content.M.bold}>Tin tức mới nhất</Text>
         <TouchableOpacity onPress={() => navigationRef.navigate('News')}>
-          <Text style={FONT.link}>Xem thêm</Text>
+          <Text style={FONT.content.S}>Xem thêm</Text>
         </TouchableOpacity>
       </View>
       <FlatList
