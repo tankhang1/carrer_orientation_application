@@ -1,4 +1,4 @@
-package com.career_orientation_application.mlkit;
+package com.career_app.mlkit;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

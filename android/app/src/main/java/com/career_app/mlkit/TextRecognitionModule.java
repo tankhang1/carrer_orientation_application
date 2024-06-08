@@ -1,6 +1,5 @@
-package com.career_orientation_application.mlkit;
+package com.career_app.mlkit;
 
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.Log;
@@ -16,7 +15,6 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;

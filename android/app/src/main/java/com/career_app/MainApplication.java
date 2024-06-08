@@ -1,8 +1,8 @@
-package com.career_orientation_application;
+package com.career_app;
 
 import android.app.Application;
 
-import com.career_orientation_application.mlkit.TextRegconitionPackage;
+import com.career_app.mlkit.TextRegconitionPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
