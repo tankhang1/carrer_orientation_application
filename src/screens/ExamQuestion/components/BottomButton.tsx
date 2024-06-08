@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.9)',
     borderTopLeftRadius: s(10),
     borderTopRightRadius: s(10),
+    zIndex: 9999,
   },
 });
 export default BottomButton;

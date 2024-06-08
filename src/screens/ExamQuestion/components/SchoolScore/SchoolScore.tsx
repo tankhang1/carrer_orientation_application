@@ -7,11 +7,13 @@ import {
   Keyboard,
   TouchableOpacity,
   InteractionManager,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {startTransition, useEffect, useRef, useState} from 'react';
 import {AppBackDrop, AppImagePicker, AppTextInput} from '@components';
 import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
-import {QUERY_KEY, TSubject, COLORS, FONT, s, vs} from '@utils';
+import {QUERY_KEY, TSubject, COLORS, FONT, s, vs, height} from '@utils';
 import {ISchoolSubjectsResponse} from '@interfaces/DTO/SchoolSubject/schoolSubject';
 import useAPI, {uploadImage} from '@service/api';
 import {ENDPOINTS_URL} from '@service';
@@ -69,7 +71,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
     if (data) {
       const newData = new Map();
       data?.data?.forEach(d => {
-        newData.set(d.name, {...d, value: 0});
+        newData.set(d.name, {...d, value: ''});
       });
       setSubjects(Object.fromEntries(newData));
     }
@@ -150,69 +152,76 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
   };
   if (Object.keys(subjects)?.length === 0)
     return <ActivityIndicator size="small" color={COLORS.green} />;
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Vui lòng nhập điểm trung bình của từng môn nhé!
-      </Text>
-      <View style={styles.scanContainer}>
-        <TouchableOpacity onPress={() => setOpenImagePicker(true)}>
-          <AntDesign name="scan1" size={s(33)} color={COLORS.green} />
-        </TouchableOpacity>
-        <View style={{marginLeft: s(10)}}>
-          <Text style={FONT.content.M.semiBold}>Tính năng thử nghiệm</Text>
-          <Text style={FONT.content.S}>Thử chụp ảnh học bạ của bạn nhé!</Text>
+    <ScrollView>
+      <KeyboardAvoidingView style={styles.container}>
+        <Text style={styles.title}>
+          Vui lòng nhập điểm trung bình của từng môn nhé!
+        </Text>
+        <View style={styles.scanContainer}>
+          <TouchableOpacity onPress={() => setOpenImagePicker(true)}>
+            <AntDesign name="scan1" size={s(33)} color={COLORS.green} />
+          </TouchableOpacity>
+          <View style={{marginLeft: s(10)}}>
+            <Text style={FONT.content.M.semiBold}>Tính năng thử nghiệm</Text>
+            <Text style={FONT.content.S}>Thử chụp ảnh học bạ của bạn nhé!</Text>
+          </View>
         </View>
-      </View>
-      {Object.entries(subjects)?.map(([key, subject], index) => {
-        textInputRefs.current[index] =
-          textInputRefs.current[index] || React.createRef<TextInput>();
-        return (
-          <AppTextInput
-            key={index}
-            label={subject.vnName}
-            value={subject.value.toString()}
-            containerStyle={{backgroundColor: COLORS.white}}
-            onChangeText={text => onValueChange(key, text, subject.vnName)}
-            keyboardType="numeric"
-            onSubmitEditing={() => {
-              onNextFocus(index);
-            }}
-            returnKeyType="done"
-            ref={textInputRefs.current[index]}
-            blurOnSubmit={false}
-            autoFocus={index === 0}
-          />
-        );
-      })}
-      <AppBackDrop
-        open={openImagePicker || convertImageToText.isPending}
-        setOpen={setOpenImagePicker}
-        disabled={convertImageToText.isPending}>
-        {convertImageToText.isPending ? (
-          <Animated.View style={animatedStyle}>
-            <AppImage
-              source={require('@assets/images/bookmark.png')}
-              style={styles.loadingImage}
-              resizeMode="contain"
+        <View style={{flex: 1}}>
+          {Object.entries(subjects)?.map(([key, subject], index) => {
+            textInputRefs.current[index] =
+              textInputRefs.current[index] || React.createRef<TextInput>();
+            return (
+              <AppTextInput
+                key={index}
+                label={subject.vnName}
+                value={subject.value.toString()}
+                containerStyle={{backgroundColor: COLORS.white}}
+                onChangeText={text => onValueChange(key, text, subject.vnName)}
+                keyboardType="numeric"
+                placeholder="0"
+                onSubmitEditing={() => {
+                  onNextFocus(index);
+                }}
+                returnKeyType="done"
+                ref={textInputRefs.current[index]}
+                blurOnSubmit={false}
+                autoFocus={index === 0}
+              />
+            );
+          })}
+        </View>
+        <AppBackDrop
+          open={openImagePicker || convertImageToText.isPending}
+          setOpen={setOpenImagePicker}
+          disabled={convertImageToText.isPending}>
+          {convertImageToText.isPending ? (
+            <Animated.View style={animatedStyle}>
+              <AppImage
+                source={require('@assets/images/bookmark.png')}
+                style={styles.loadingImage}
+                resizeMode="contain"
+              />
+            </Animated.View>
+          ) : (
+            <AppImagePicker
+              openImagePicker={openImagePicker}
+              setOpenImagePicker={setOpenImagePicker}
+              onLaunchCamera={onLaunchCamera}
+              onLibrary={onLibrary}
             />
-          </Animated.View>
-        ) : (
-          <AppImagePicker
-            openImagePicker={openImagePicker}
-            setOpenImagePicker={setOpenImagePicker}
-            onLaunchCamera={onLaunchCamera}
-            onLibrary={onLibrary}
-          />
-        )}
-      </AppBackDrop>
-    </View>
+          )}
+        </AppBackDrop>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: s(27),
     gap: vs(10),
+    flex: 1,
   },
   title: {
     ...FONT.content.M.semiBold,

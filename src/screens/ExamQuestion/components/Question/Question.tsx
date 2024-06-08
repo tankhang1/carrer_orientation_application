@@ -1,4 +1,11 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  ImageBackground,
+} from 'react-native';
 import React, {useLayoutEffect} from 'react';
 import RadioButton from './RadioButton';
 import {styles} from './styles';
@@ -55,56 +62,61 @@ const Question = ({
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.question}>{question?.questionTitle}</Text>
-      {question?.image && (
-        <AppImage
-          source={{uri: question?.image}}
-          style={styles.questionImage}
-          resizeMode="contain"
-        />
-      )}
-      {error && (
-        <Text style={{color: COLORS.red}}>
-          *<Text style={styles.error}> Vui lòng điền đáp án!</Text>
-        </Text>
-      )}
+    <ScrollView style={{flex: 1}}>
+      <KeyboardAvoidingView style={styles.container}>
+        <Text style={styles.question}>{question?.questionTitle}</Text>
+        {question?.image && (
+          <AppImage
+            source={{uri: question?.image}}
+            style={styles.questionImage}
+            resizeMode="contain"
+          />
+        )}
+        {error && (
+          <Text style={{color: COLORS.red}}>
+            *<Text style={styles.error}> Vui lòng điền đáp án!</Text>
+          </Text>
+        )}
 
-      <View style={styles.optionContainer}>
-        {question?.options?.map((option, index) => {
-          const {image, content} = option;
-          return (
-            <TouchableOpacity
-              style={[styles.optionCard, {width: image ? width * 0.4 : 'auto'}]}
-              key={index}
-              onPress={() => onPress(index)}>
-              {option?.image && (
-                <AppImage
-                  source={{uri: image}}
-                  style={styles.optionImage}
-                  resizeMode="contain"
-                />
-              )}
-              <View style={styles.optionTitle}>
-                {type === 'EQ' || type === 'IQ' ? (
-                  <RadioButton
-                    selected={selections.includes(index)}
-                    onPress={() => onPress(index)}
-                  />
-                ) : (
-                  <Checkbox
-                    isCheck={selections?.includes(index)}
-                    onPress={() => onPress(index)}
+        <View style={styles.optionContainer}>
+          {question?.options?.map((option, index) => {
+            const {image, content} = option;
+            return (
+              <TouchableOpacity
+                style={[
+                  styles.optionCard,
+                  {width: image ? width * 0.4 : 'auto'},
+                ]}
+                key={index}
+                onPress={() => onPress(index)}>
+                {option?.image && (
+                  <AppImage
+                    source={{uri: image}}
+                    style={styles.optionImage}
+                    resizeMode="contain"
                   />
                 )}
+                <View style={styles.optionTitle}>
+                  {type === 'EQ' || type === 'IQ' ? (
+                    <RadioButton
+                      selected={selections.includes(index)}
+                      onPress={() => onPress(index)}
+                    />
+                  ) : (
+                    <Checkbox
+                      isCheck={selections?.includes(index)}
+                      onPress={() => onPress(index)}
+                    />
+                  )}
 
-                <Text style={styles.option}>{content}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
+                  <Text style={styles.option}>{content}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
