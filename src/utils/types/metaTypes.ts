@@ -23,3 +23,11 @@ export type TResults = {
 };
 
 export type TGroup = 'A0' | 'A1' | 'B' | 'C' | 'D1' | 'D7';
+
+export type TImage = {
+  uri?: string;
+  name?: string;
+  type?: string;
+  size?: number;
+  originalname?: string;
+};

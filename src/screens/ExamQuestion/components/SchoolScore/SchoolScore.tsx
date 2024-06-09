@@ -51,9 +51,16 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
   const convertImageToText = useMutation({
     mutationKey: [QUERY_KEY.OCR],
     mutationFn: async (image: any) => {
-      console.log('image', image);
+      console.log('image', image.data);
       if (!image) return;
-      return await uploadImage(image?.path, image?.mime);
+      return await useAPI(ENDPOINTS_URL.UPLOAD.UPLOAD_OCR, 'POST', {
+        data: {base64Image: JSON.stringify(image.data), mimeType: image?.mime},
+      });
+      // return await uploadImage({
+      //   uri: image?.path,
+      //   type: image?.mime,
+      //   name: image?.path,
+      // });
     },
     onSuccess: async (data: IResponse | any) => {
       const subjectsList = Object.values(subjects);
@@ -88,6 +95,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       width: 300,
       height: 400,
       cropping: true,
+      includeBase64: true,
     })
       .then(async image => {
         setOpenImagePicker(false);
@@ -103,6 +111,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       width: 300,
       height: 400,
       cropping: true,
+      includeBase64: true,
     })
       .then(async image => {
         setOpenImagePicker(false);

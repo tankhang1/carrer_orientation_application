@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BASE_URL, ENDPOINTS_URL} from './url';
+import {TImage} from '@utils';
 type TMethod = 'GET' | 'POST';
 const useAPI = <P, D>(
   url: string,
@@ -28,14 +29,11 @@ const useAPI = <P, D>(
   });
 };
 
-export const uploadImage = async (url: string, mime: string) => {
+export const uploadImage = async (file: TImage) => {
+  //console.log('file', file);
   try {
     const formData = new FormData();
-    formData.append('file', {
-      uri: url,
-      type: mime,
-      name: url,
-    });
+    formData.append('file', file);
     const response = await axios({
       baseURL: BASE_URL,
       url: ENDPOINTS_URL.UPLOAD.UPLOAD_OCR,
