@@ -3,6 +3,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   KeyboardAvoidingView,
+  ImageBackground,
+  StatusBar,
 } from 'react-native';
 import React, {
   useCallback,
@@ -21,7 +23,7 @@ import {ENDPOINTS_URL} from '@service';
 import {IExamResponse, TExam} from '@interfaces/DTO';
 import {QUERY_KEY} from '@utils/constants';
 import {initialSubjects} from './components/SchoolScore/constant';
-import {TSubject, TAnswer, vs, COLORS} from '@utils';
+import {TSubject, TAnswer, vs, COLORS, height} from '@utils';
 import {KEY_STORE, storage} from '@store';
 
 type TExamInfo = {
@@ -94,8 +96,7 @@ const ExamQuestion = () => {
 
   const [selections, setSelections] = useState<number[]>([]);
   const [errorNotAnswer, setErrorNotAnswer] = useState(false);
-  const [subjects, setSubjects] =
-    useState<Record<string, TSubject>>(initialSubjects);
+  const [subjects, setSubjects] = useState<Record<string, TSubject>>({});
   const isContinue = useRef(false);
   const IQ = useMemo(
     () => data?.data?.find(exam => exam.type === 'IQ')?.questions || [],
@@ -136,7 +137,15 @@ const ExamQuestion = () => {
     setAnswers(currentAnswer);
   };
   const caculateSchoolScore = async () => {
-    postSchoolScore.mutate(subjects);
+    const newSubjects: Record<string, TSubject> = {};
+    for (let index = 0; index < Object.keys(subjects).length; index++) {
+      const element = Object.keys(subjects)[index];
+      newSubjects[element] = {
+        ...subjects[element],
+        value: subjects[element].value === '' ? 0 : +subjects[element].value,
+      };
+    }
+    postSchoolScore.mutate(newSubjects);
   };
   const onNext = useCallback(() => {
     if (questionNumber === totalExams) {
@@ -222,45 +231,43 @@ const ExamQuestion = () => {
     return userAnswers;
   };
   return (
-    <>
-      <AppView>
-        <KeyboardAvoidingView behavior="padding">
-          <AppHeader
-            title={examInfo.headerTitle}
-            onPress={() => {
-              navigationRef.goBack();
-            }}
-          />
-          {isLoading || !data?.data ? (
-            <ActivityIndicator size={'large'} color={COLORS.green} />
+    <ImageBackground
+      source={require('@assets/images/background_1.png')}
+      style={{flex: 1, paddingTop: StatusBar.currentHeight ?? 44}}>
+      <AppHeader
+        title={examInfo.headerTitle}
+        onPress={() => {
+          navigationRef.goBack();
+        }}
+      />
+      {isLoading || !data?.data ? (
+        <ActivityIndicator size={'large'} color={COLORS.green} />
+      ) : (
+        <View style={styles.container}>
+          {questionNumber < totalExams ? (
+            <Question
+              question={
+                questionNumber < HOLLAND?.length
+                  ? HOLLAND[questionNumber].questions[0]
+                  : IQ_EQ_List[questionIndex]
+              }
+              questionNumber={questionNumber}
+              type={examInfo.examType}
+              questionIndex={
+                examInfo.examType === 'IQ'
+                  ? questionIndex
+                  : questionIndex - IQ?.length
+              }
+              selections={selections}
+              setSelections={setSelections}
+              answers={answers}
+              error={errorNotAnswer}
+            />
           ) : (
-            <View style={styles.container}>
-              {questionNumber < totalExams ? (
-                <Question
-                  question={
-                    questionNumber < HOLLAND?.length
-                      ? HOLLAND[questionNumber].questions[0]
-                      : IQ_EQ_List[questionIndex]
-                  }
-                  questionNumber={questionNumber}
-                  type={examInfo.examType}
-                  questionIndex={
-                    examInfo.examType === 'IQ'
-                      ? questionIndex
-                      : questionIndex - IQ?.length
-                  }
-                  selections={selections}
-                  setSelections={setSelections}
-                  answers={answers}
-                  error={errorNotAnswer}
-                />
-              ) : (
-                <SchoolScore subjects={subjects} setSubjects={setSubjects} />
-              )}
-            </View>
+            <SchoolScore subjects={subjects} setSubjects={setSubjects} />
           )}
-        </KeyboardAvoidingView>
-      </AppView>
+        </View>
+      )}
 
       <BottomButton
         onNext={onNext}
@@ -268,7 +275,6 @@ const ExamQuestion = () => {
         maxValue={totalExams + 1}
         currentValue={questionNumber}
       />
-
       <AppModal
         disableBackDrop={true}
         visible={openModalNext}
@@ -280,7 +286,7 @@ const ExamQuestion = () => {
           setOpenModalNext(false);
         }}
       />
-    </>
+    </ImageBackground>
   );
 };
 const styles = StyleSheet.create({
@@ -288,7 +294,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: vs(10),
     marginTop: vs(10),
-    marginBottom: vs(100),
+    marginBottom: vs(80),
+    flex: 1,
   },
 });
 export default ExamQuestion;
