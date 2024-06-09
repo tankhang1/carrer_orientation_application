@@ -163,7 +163,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
     return <ActivityIndicator size="small" color={COLORS.green} />;
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <KeyboardAvoidingView style={styles.container}>
         <Text style={styles.title}>
           Vui lòng nhập điểm trung bình của từng môn nhé!
