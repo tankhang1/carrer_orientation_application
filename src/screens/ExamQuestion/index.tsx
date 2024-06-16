@@ -225,8 +225,8 @@ const ExamQuestion = () => {
       }
     });
     Object.assign(userAnswers, {
-      IQ: `${IQ_Score}/120`,
-      EQ: `${EQ_Score}/200`,
+      IQ: IQ_Score === 0 ? '-' : `${IQ_Score}/120`,
+      EQ: EQ_Score === 0 ? '-' : `${EQ_Score}/200`,
     });
     return userAnswers;
   };

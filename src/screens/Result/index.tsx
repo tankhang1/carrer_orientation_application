@@ -26,7 +26,7 @@ const Result = ({navigation, route}: Props) => {
       resultContents: item.results ?? [],
     }));
   }, [data]);
-
+  console.log(answers, results);
   return (
     <AppView showsVerticalScrollIndicator={false}>
       <AppHeader title="Kết quả" onPress={() => navigation.pop(3)} />
@@ -50,9 +50,9 @@ const Result = ({navigation, route}: Props) => {
         {scoreResults?.length > 0 && (
           <ScoreResult scoreResults={scoreResults} />
         )}
-        {answers?.IQ[0]?.split('/')[0] !== '0' && (
-          <IQ_EQ_Result answers={answers!} results={results!} />
-        )}
+        {/* {answers?.IQ[0]?.split('/')[0] !== '0' && (
+            <IQ_EQ_Result answers={answers!} results={results!} />
+          )} */}
         <Conclusion
           answers={answers}
           results={results!}
