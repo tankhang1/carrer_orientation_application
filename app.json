@@ -4,5 +4,12 @@
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-7671392847069245~3433588099",
     "ios_app_id": "ca-app-pub-7671392847069245~3433588099"
+  },
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "f9995503-ea1c-4cc6-8a95-b000eacdf37d"
+      }
+    }
   }
 }

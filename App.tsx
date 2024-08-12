@@ -8,6 +8,7 @@ import {storage} from '@store';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NetInfo, {addEventListener} from '@react-native-community/netinfo';
 import {AppNoInternet} from '@components';
+import codePush from 'react-native-code-push';
 
 const App = () => {
   if (__DEV__) {
@@ -32,6 +33,13 @@ const App = () => {
     };
   }, []);
 
+  useEffect(() => {
+    codePush.sync({
+      updateDialog: true,
+      installMode: codePush.InstallMode.IMMEDIATE,
+    });
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Host>
@@ -44,4 +52,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default codePush(App);

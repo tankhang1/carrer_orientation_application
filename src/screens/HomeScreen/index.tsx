@@ -22,7 +22,7 @@ const HomeScreen = () => {
         style={{gap: vs(10), marginBottom: vs(20)}}
         showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>
-          Tư vấn hướng nghiệp và chọn ngành cho học sinh THPT
+          Career App - Tư vấn hướng nghiệp và chọn ngành cho học sinh THPT
         </Text>
         <Suspense fallback={<AppSkeleton width={'100%'} height={238} />}>
           <Carousel />
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: s(27),
     ...FONT.content.M.bold,
-    marginTop: s(10),
+    marginVertical: s(10),
   },
   floatingBtnContainer: {
     position: 'absolute',
