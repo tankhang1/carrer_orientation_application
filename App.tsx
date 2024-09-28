@@ -10,6 +10,8 @@ import NetInfo, {addEventListener} from '@react-native-community/netinfo';
 import {AppNoInternet} from '@components';
 import codePush from 'react-native-code-push';
 
+const codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
+
 const App = () => {
   if (__DEV__) {
     initializeMMKVFlipper({default: storage});
@@ -52,4 +54,4 @@ const App = () => {
   );
 };
 
-export default codePush(App);
+export default codePush(codePushOptions)(App);
