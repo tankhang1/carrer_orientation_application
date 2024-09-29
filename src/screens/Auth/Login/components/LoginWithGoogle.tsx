@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...FONT.button.M.semiBold,
-    color: '#4a4653',
+    color: COLORS.dark,
     marginLeft: s(5),
   },
   image: {

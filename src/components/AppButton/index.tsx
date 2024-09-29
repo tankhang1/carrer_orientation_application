@@ -1,19 +1,9 @@
-import {
-  View,
-  Text,
-  ViewStyle,
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  ActivityIndicator,
-  InteractionManager,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, ViewStyle, StyleProp, StyleSheet, TextStyle, ActivityIndicator, InteractionManager, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {COLORS} from '@utils/config/color';
 import {FONT} from '@utils/config/font';
 import {s} from '@utils/config/responsive';
-export type TType = 'fill' | 'outline' | 'transparent';
+export type TType = 'fill' | 'outline' | 'transparent' | 'disable';
 
 const BUTTON_BASE_STYLE = {
   fill: {
@@ -29,6 +19,10 @@ const BUTTON_BASE_STYLE = {
   transparent: {
     backgroundColor: 'transparent',
     color: COLORS.black,
+  },
+  disable: {
+    backgroundColor: COLORS.lightGrey,
+    color: COLORS.grey,
   },
 };
 type TSize = {
@@ -107,12 +101,7 @@ const AppButton = ({
   ]) as ViewStyle;
 
   const renderMiddle = () => {
-    const labelInitStyle = StyleSheet.flatten([
-      styles.middleContainer,
-      FONT.button.XL,
-      {color: styleBaseOnType?.color},
-      labelStyle,
-    ]) as TextStyle;
+    const labelInitStyle = StyleSheet.flatten([styles.middleContainer, FONT.button.XL, {color: styleBaseOnType?.color}, labelStyle]) as TextStyle;
     return (
       <View>
         {!!label && <Text style={[labelInitStyle]}>{label}</Text>}

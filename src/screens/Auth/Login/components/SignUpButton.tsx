@@ -1,13 +1,14 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {COLORS, FONT, s, vs} from '@utils';
+import {navigationRef} from '@navigation';
 
 const SignUpButton = () => {
   return (
     <View style={styles.container}>
       <Text style={FONT.content.M.medium}>Chưa có tài khoản?</Text>
-      <TouchableOpacity>
-        <Text style={styles.signUpBtn}>Đăng ký</Text>
+      <TouchableOpacity onPress={() => navigationRef.navigate('SignUp')}>
+        <Text style={styles.signUpBtn}>Đăng ký là giáo viên</Text>
       </TouchableOpacity>
     </View>
   );

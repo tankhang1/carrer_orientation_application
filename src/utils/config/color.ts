@@ -11,4 +11,6 @@ export const COLORS = {
   darkBlue: 'blue',
   lightGrey: '#D9D9D9',
   backdrop: '#00000099',
+  dark: '#4a4653',
+  darkGrey: '#717274',
 };
