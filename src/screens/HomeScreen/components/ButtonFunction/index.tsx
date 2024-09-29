@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet, ScrollView, Linking} from 'react-native';
+import {View, Text, StyleSheet, Linking} from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppRoundedButton from '@components/AppRoundedButton';
-import {COLORS, FONT, s, vs, width} from '@utils/config';
+import {COLORS, FONT, s, WIDTH, width} from '@utils/config';
 import {navigationRef} from '@navigation';
 type TButton = {
   icon?: string;
@@ -35,6 +35,11 @@ const BUTTONS: TButton[] = [
     onPress: () => navigationRef.navigate('Dictionary'),
   },
   {
+    icon: 'users',
+    title: 'Tài khoản',
+    onPress: () => navigationRef.navigate('Login'),
+  },
+  {
     icon: 'envelope-o',
     title: 'Liên hệ',
     onPress: () => Linking.openURL('mailto:mydaily203@gmail.com'),
@@ -43,7 +48,8 @@ const BUTTONS: TButton[] = [
 const ButtonFunction = () => {
   return (
     <View style={styles.container}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}> */}
+      <View style={styles.buttonCont}>
         {BUTTONS?.map((button: TButton, index: number) => {
           return (
             <View key={index} style={styles.button}>
@@ -58,7 +64,8 @@ const ButtonFunction = () => {
             </View>
           );
         })}
-      </ScrollView>
+      </View>
+      {/* </ScrollView> */}
     </View>
   );
 };
@@ -66,14 +73,18 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     justifyContent: 'space-between',
-    //paddingHorizontal: s(27),
     flexDirection: 'row',
+    marginBottom: 20,
+  },
+  buttonCont: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   button: {
-    gap: vs(5),
     alignItems: 'center',
-    paddingVertical: s(20),
-    paddingHorizontal: s(27),
+    paddingVertical: s(15),
+    width: WIDTH / 3,
+    gap: s(5),
   },
 });
 export default ButtonFunction;

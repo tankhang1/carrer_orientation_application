@@ -3,8 +3,8 @@ export const {width, height, fontScale} = Dimensions.get('screen');
 const FIGMA_WIDTH = 360;
 const FIGMA_HEIGHT = 640;
 
-const WIDTH = width > height ? height : width;
-const HEIGHT = width > height ? width : height;
+export const WIDTH = width > height ? height : width;
+export const HEIGHT = width > height ? width : height;
 
 const scale = (size: number) => {
   return (WIDTH / FIGMA_WIDTH) * size;

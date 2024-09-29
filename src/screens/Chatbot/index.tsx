@@ -20,7 +20,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {navigationRef} from '@navigation';
 import {useMutation} from '@tanstack/react-query';
 import {IChat, IResponse} from '@interfaces/DTO';
-import useAPI from '@service/api';
+import api from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import Animated, {
   interpolate,
@@ -41,7 +41,7 @@ const Chatbot = () => {
     mutationKey: [KEY_STORE.CHAT_BOT],
     mutationFn: async (message: string) => {
       if (!message) return;
-      return await useAPI(ENDPOINTS_URL.CHAT_BOT.GET_CHAT, 'POST', {
+      return await api(ENDPOINTS_URL.CHAT_BOT.GET_CHAT, 'POST', {
         data: {prompt: message},
       });
     },

@@ -13,9 +13,9 @@ type TNewsJobsProps = {
   item: INew;
   index: number;
 };
-const NewsJobs = ({deferSearchInfo, id, item, index}: TNewsJobsProps) => {
+const NewsJobs = ({deferSearchInfo, item, index}: TNewsJobsProps) => {
   const searchPattern = new RegExp(deferSearchInfo.toLowerCase(), 'i');
-  if (searchPattern.test(item?.title?.toLowerCase()))
+  if (searchPattern.test(item?.title?.toLowerCase())) {
     return (
       <Suspense fallback={<AppSkeleton width={'100%'} height={200} />}>
         <AppCard
@@ -32,7 +32,8 @@ const NewsJobs = ({deferSearchInfo, id, item, index}: TNewsJobsProps) => {
         />
       </Suspense>
     );
-  return null;
+  }
+  return <></>;
 };
 const styles = StyleSheet.create({
   container: {

@@ -10,7 +10,7 @@ import NetInfo, {addEventListener} from '@react-native-community/netinfo';
 import {AppNoInternet} from '@components';
 import codePush from 'react-native-code-push';
 
-const codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
+//const codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
 
 const App = () => {
   if (__DEV__) {
@@ -35,12 +35,12 @@ const App = () => {
     };
   }, []);
 
-  useEffect(() => {
-    codePush.sync({
-      updateDialog: true,
-      installMode: codePush.InstallMode.IMMEDIATE,
-    });
-  }, []);
+  // useEffect(() => {
+  //   codePush.sync({
+  //     updateDialog: true,
+  //     installMode: codePush.InstallMode.IMMEDIATE,
+  //   });
+  // }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -54,4 +54,4 @@ const App = () => {
   );
 };
 
-export default codePush(codePushOptions)(App);
+export default App;

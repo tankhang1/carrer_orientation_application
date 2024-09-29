@@ -9,14 +9,14 @@ import {Title} from '@screens/Result/components';
 import {DefaultError} from '@tanstack/query-core';
 import {ISchoolByArea, ISchoolResponse} from '@interfaces/School/school';
 import {useQuery} from '@tanstack/react-query';
-import useAPI from '@service/api';
+import api from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 type Props = NativeStackScreenProps<TRootStackNav, 'DictionaryDetail'>;
 const DictonaryDetail = ({route}: Props) => {
   const {isLoading, data} = useQuery<unknown, DefaultError, ISchoolResponse>({
     queryKey: [QUERY_KEY.SCHOOL, route?.params?.group],
     queryFn: () =>
-      useAPI(ENDPOINTS_URL.DICTIONARY.GET_SCHOOL, 'GET', {
+      api(ENDPOINTS_URL.DICTIONARY.GET_SCHOOL, 'GET', {
         params: {group: route?.params?.group},
       }),
     enabled: !!route?.params?.group,

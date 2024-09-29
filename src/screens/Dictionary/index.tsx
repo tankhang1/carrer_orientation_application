@@ -11,7 +11,7 @@ import DictionaryItem from './components/DictionaryItem';
 import {COLORS, FONT, QUERY_KEY, height, vs} from '@utils';
 import {FlatList} from 'react-native-gesture-handler';
 import {DefaultError, useQuery} from '@tanstack/react-query';
-import useAPI from '@service/api';
+import api from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {
   IDictionary,
@@ -27,7 +27,7 @@ const Dictionary = () => {
     IDictionaryResponse
   >({
     queryKey: [QUERY_KEY.DICTIONARY],
-    queryFn: () => useAPI(ENDPOINTS_URL.DICTIONARY.GET_DICTIONARY, 'GET', {}),
+    queryFn: () => api(ENDPOINTS_URL.DICTIONARY.GET_DICTIONARY, 'GET', {}),
   });
 
   const dictionary = useMemo(() => data?.data, [data?.data]);

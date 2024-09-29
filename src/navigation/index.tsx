@@ -16,6 +16,8 @@ import SplashScreen from '@screens/SplashScreen';
 import ResultDetail from '@screens/ResultDetail/ResultDetail';
 import Dictionary from '@screens/Dictionary';
 import DictonaryDetail from '@screens/DictionaryDetail';
+import SignUp from '@screens/Auth/SignUp';
+import Login from '@screens/Auth/Login';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
@@ -29,26 +31,20 @@ const AppNavigation = () => {
           statusBarTranslucent: true,
         }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen}></Stack.Screen>
-        <Stack.Screen name="ListResult" component={ListResult}></Stack.Screen>
-        <Stack.Screen name="ListExam" component={ListExam}></Stack.Screen>
-        <Stack.Screen
-          name="ExamQuestion"
-          component={ExamQuestion}></Stack.Screen>
-        <Stack.Screen
-          name="UploadResult"
-          component={UploadResult}></Stack.Screen>
-        <Stack.Screen name="Result" component={Result}></Stack.Screen>
-        <Stack.Screen
-          name="ResultDetail"
-          component={ResultDetail}></Stack.Screen>
-        <Stack.Screen name="News" component={News}></Stack.Screen>
-        <Stack.Screen name="NewsDetail1" component={NewsDetail1}></Stack.Screen>
-        <Stack.Screen name="ChatBot" component={Chatbot}></Stack.Screen>
-        <Stack.Screen name="Dictionary" component={Dictionary}></Stack.Screen>
-        <Stack.Screen
-          name="DictionaryDetail"
-          component={DictonaryDetail}></Stack.Screen>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="ListResult" component={ListResult} />
+        <Stack.Screen name="ListExam" component={ListExam} />
+        <Stack.Screen name="ExamQuestion" component={ExamQuestion} />
+        <Stack.Screen name="UploadResult" component={UploadResult} />
+        <Stack.Screen name="Result" component={Result} />
+        <Stack.Screen name="ResultDetail" component={ResultDetail} />
+        <Stack.Screen name="News" component={News} />
+        <Stack.Screen name="NewsDetail1" component={NewsDetail1} />
+        <Stack.Screen name="ChatBot" component={Chatbot} />
+        <Stack.Screen name="Dictionary" component={Dictionary} />
+        <Stack.Screen name="DictionaryDetail" component={DictonaryDetail} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
     </NavigationContainer>
   );

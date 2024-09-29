@@ -2,7 +2,7 @@ import axios from 'axios';
 import {BASE_URL, ENDPOINTS_URL} from './url';
 import {TImage} from '@utils';
 type TMethod = 'GET' | 'POST';
-const useAPI = <P, D>(
+const api = <P, D>(
   url: string,
   method: TMethod,
   options: {data?: D; params?: P},
@@ -48,4 +48,4 @@ export const uploadImage = async (file: TImage) => {
     console.log(e);
   }
 };
-export default useAPI;
+export default api;

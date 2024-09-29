@@ -15,7 +15,7 @@ import {AppBackDrop, AppImagePicker, AppTextInput} from '@components';
 import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
 import {QUERY_KEY, TSubject, COLORS, FONT, s, vs, height} from '@utils';
 import {ISchoolSubjectsResponse} from '@interfaces/DTO/SchoolSubject/schoolSubject';
-import useAPI, {uploadImage} from '@service/api';
+import api, {uploadImage} from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import ImagePicker from 'react-native-image-crop-picker';
 import {TextInput} from 'react-native-gesture-handler';
@@ -47,15 +47,14 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
     ISchoolSubjectsResponse
   >({
     queryKey: [QUERY_KEY.SCHOOL_SUBJECTS],
-    queryFn: () =>
-      useAPI(ENDPOINTS_URL.SCHOOL_SUBJECTS.GET_SUBJECTS, 'GET', {}),
+    queryFn: () => api(ENDPOINTS_URL.SCHOOL_SUBJECTS.GET_SUBJECTS, 'GET', {}),
   });
   const convertImageToText = useMutation({
     mutationKey: [QUERY_KEY.OCR],
     mutationFn: async (image: any) => {
       console.log('image', image.data);
       if (!image) return;
-      return await useAPI(ENDPOINTS_URL.UPLOAD.UPLOAD_OCR, 'POST', {
+      return await api(ENDPOINTS_URL.UPLOAD.UPLOAD_OCR, 'POST', {
         data: {base64Image: JSON.stringify(image.data), mimeType: image?.mime},
       });
       // return await uploadImage({

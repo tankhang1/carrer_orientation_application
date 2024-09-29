@@ -18,7 +18,7 @@ import {QUERY_KEY} from '@utils/constants';
 import {DefaultError, useQuery} from '@tanstack/react-query';
 import {INew} from '@interfaces/DTO';
 import {ENDPOINTS_URL} from '@service';
-import useAPI from '@service/api';
+import api from '@service/api';
 
 const Carousel = () => {
   const currentPosition = useRef<number>(0);
@@ -34,7 +34,7 @@ const Carousel = () => {
     isError,
   } = useQuery<unknown, DefaultError, INew[]>({
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
-    queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
+    queryFn: () => api(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
   });
   const banners = useMemo(
     () =>

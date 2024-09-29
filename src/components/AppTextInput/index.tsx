@@ -8,7 +8,7 @@ import {
   TextInput,
   TextInputProps,
 } from 'react-native';
-import React, {forwardRef, memo} from 'react';
+import React, {forwardRef, useState} from 'react';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {width} from '@utils/config';
 import AppButton from '@components/AppButton';
@@ -26,6 +26,7 @@ type TAppTextInput = {
   value?: string;
   onChangeText?: (value: string) => void;
   placeholder?: string;
+  withAsterisk?: boolean;
 } & Partial<TextInputProps>;
 
 /**
@@ -62,12 +63,15 @@ const AppTextInput = forwardRef<TextInput, TAppTextInput>(
       value,
       onChangeText,
       placeholder = 'Nhập thông tin',
+      withAsterisk = false,
       ...rest
     } = props;
+    const [isFocus, setIsFocus] = useState(false);
     const containerInitStyle = StyleSheet.flatten([
       styles.container,
       width && {width},
       height && {height},
+      {borderColor: isFocus ? COLORS.green : COLORS.grey},
       containerStyle,
     ]) as ViewStyle;
     const renderLabel = () => {
@@ -76,7 +80,12 @@ const AppTextInput = forwardRef<TextInput, TAppTextInput>(
         labelStyle,
         {marginBottom: vs(5)},
       ]) as TextStyle;
-      return <Text style={labelInitStyle}>{label}</Text>;
+      return (
+        <View style={styles.labelCont}>
+          <Text style={labelInitStyle}>{label}</Text>
+          {withAsterisk && <Text style={styles.asterisk}>*</Text>}
+        </View>
+      );
     };
     return (
       <View style={outStyle}>
@@ -93,6 +102,8 @@ const AppTextInput = forwardRef<TextInput, TAppTextInput>(
             style={styles.textInput}
             placeholderTextColor={COLORS.grey}
             placeholder={placeholder}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
             {...rest}
             ref={ref}
           />
@@ -122,6 +133,14 @@ const styles = StyleSheet.create({
     marginHorizontal: s(8),
     ...FONT.content.M.regular,
     paddingVertical: s(10),
+  },
+  labelCont: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: s(2),
+  },
+  asterisk: {
+    color: COLORS.red,
   },
 });
 export default AppTextInput;

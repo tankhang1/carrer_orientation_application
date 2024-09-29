@@ -1,6 +1,4 @@
-import {TExam} from '@interfaces/DTO';
-import {TAnswer, TGroup, TSchoolScoreResult} from './metaTypes';
-import {IMajor} from '@interfaces/DTO/Dictionary/dictionary';
+import {TGroup, TSchoolScoreResult} from './metaTypes';
 
 export type TRootStackNav = {
   SplashScreen: undefined;
@@ -32,4 +30,6 @@ export type TRootStackNav = {
       cons: string;
     };
   };
+  SignUp: undefined;
+  Login: undefined;
 };

@@ -6,7 +6,7 @@ import {IConclusionResponse, TExam} from '@interfaces/DTO';
 import {TResults, TSchoolScoreResult} from '@utils/types/metaTypes';
 import {DefaultError, useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '@utils/constants';
-import useAPI from '@service/api';
+import api from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {ActivityIndicator} from 'react-native';
 type TConclusion = {
@@ -64,7 +64,7 @@ const Conclusion = ({answers, results, scoreResults}: TConclusion) => {
   >({
     queryKey: [QUERY_KEY.CONCLUSION],
     queryFn: () =>
-      useAPI(ENDPOINTS_URL.CONCLUSION.GET_CONCLUSION, 'POST', {
+      api(ENDPOINTS_URL.CONCLUSION.GET_CONCLUSION, 'POST', {
         data: {
           IQ: IQ_Result,
           EQ: EQ_Result,

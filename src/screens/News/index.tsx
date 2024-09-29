@@ -27,7 +27,7 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import {QUERY_KEY} from '@utils/constants';
-import useAPI from '@service/api';
+import api from '@service/api';
 import {ENDPOINTS_URL} from '@service';
 import {INew, INewsResponse} from '@interfaces/DTO';
 import {queryClient} from '@utils/constants';
@@ -42,7 +42,7 @@ const News = () => {
     error,
   } = useQuery<unknown, DefaultError, {_id: string; categoryName: string}[]>({
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_CATEGORIES],
-    queryFn: () => useAPI(ENDPOINTS_URL.NEWS.GET_ALL_CATEGORIES, 'GET', {}),
+    queryFn: () => api(ENDPOINTS_URL.NEWS.GET_ALL_CATEGORIES, 'GET', {}),
   });
 
   const [categoryId, setCategoryId] = useState(Categories?.[0]._id);
@@ -64,7 +64,7 @@ const News = () => {
     useInfiniteQuery<INewsResponse, DefaultError, InfiniteData<INewsResponse>>({
       queryKey: [QUERY_KEY.NEWS, categoryId],
       queryFn: async ({pageParam}) =>
-        useAPI(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
+        api(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
           params: {id: categoryId, page: pageParam ?? 1},
         } as const) as Promise<INewsResponse>,
       initialPageParam: 1,
