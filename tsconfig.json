@@ -13,7 +13,8 @@
       "service/*": ["./src/service/*"],
       "store/*": ["./src/store/*"],
       "utils/*": ["./src/utils/*"],
-      "interface/*": ["./src/interfaces/*"]
+      "interfaces/*": ["./src/interfaces/*"],
+      "schemas/*": ["./src/schemas/*"]
     }
   }
 }

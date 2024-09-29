@@ -56,6 +56,7 @@ export const FONT = {
     },
     S: fontPropertiesGenerator(FONT_FAMILY.regular, SIZE.S),
     XS: {
+      regular: fontPropertiesGenerator(FONT_FAMILY.regular, SIZE.XS),
       medium: fontPropertiesGenerator(FONT_FAMILY.medium, SIZE.XS),
     },
     XXS: {
@@ -87,12 +88,7 @@ export const FONT = {
   },
   link: {
     ...fontPropertiesGenerator(FONT_FAMILY.medium, SIZE.XS),
-    textDecorationLine: 'underline' as
-      | 'none'
-      | 'underline'
-      | 'line-through'
-      | 'underline line-through'
-      | undefined,
+    textDecorationLine: 'underline' as 'none' | 'underline' | 'line-through' | 'underline line-through' | undefined,
     color: COLORS.darkBlue,
   },
 };

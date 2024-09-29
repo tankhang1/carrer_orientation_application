@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-  TextInput,
-  TextInputProps,
-} from 'react-native';
+import {View, Text, StyleSheet, StyleProp, ViewStyle, TextStyle, TextInput, TextInputProps} from 'react-native';
 import React, {forwardRef, useState} from 'react';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {width} from '@utils/config';
@@ -27,6 +18,7 @@ type TAppTextInput = {
   onChangeText?: (value: string) => void;
   placeholder?: string;
   withAsterisk?: boolean;
+  error?: string;
 } & Partial<TextInputProps>;
 
 /**
@@ -47,76 +39,72 @@ type TAppTextInput = {
  * @augments Partial<import('react-native').TextInputProps>
  */
 
-const AppTextInput = forwardRef<TextInput, TAppTextInput>(
-  (props: TAppTextInput, ref) => {
-    const {
-      width,
-      height,
-      outStyle,
-      label = '',
-      labelStyle,
-      containerStyle,
-      leading,
-      onLeadingPress,
-      trailing,
-      onTrailingPress,
-      value,
-      onChangeText,
-      placeholder = 'Nhập thông tin',
-      withAsterisk = false,
-      ...rest
-    } = props;
-    const [isFocus, setIsFocus] = useState(false);
-    const containerInitStyle = StyleSheet.flatten([
-      styles.container,
-      width && {width},
-      height && {height},
-      {borderColor: isFocus ? COLORS.green : COLORS.grey},
-      containerStyle,
-    ]) as ViewStyle;
-    const renderLabel = () => {
-      const labelInitStyle = StyleSheet.flatten([
-        FONT.content.M.regular,
-        labelStyle,
-        {marginBottom: vs(5)},
-      ]) as TextStyle;
-      return (
-        <View style={styles.labelCont}>
-          <Text style={labelInitStyle}>{label}</Text>
-          {withAsterisk && <Text style={styles.asterisk}>*</Text>}
-        </View>
-      );
-    };
+const AppTextInput = forwardRef<TextInput, TAppTextInput>((props: TAppTextInput, ref) => {
+  const {
+    width,
+    height,
+    outStyle,
+    label = '',
+    labelStyle,
+    containerStyle,
+    leading,
+    onLeadingPress,
+    trailing,
+    onTrailingPress,
+    value,
+    onChangeText,
+    placeholder = 'Nhập thông tin',
+    withAsterisk = false,
+    error,
+    ...rest
+  } = props;
+  const [isFocus, setIsFocus] = useState(false);
+  const containerInitStyle = StyleSheet.flatten([
+    styles.container,
+    width && {width},
+    height && {height},
+    {borderColor: isFocus ? COLORS.green : COLORS.grey},
+    containerStyle,
+  ]) as ViewStyle;
+  const renderLabel = () => {
+    const labelInitStyle = StyleSheet.flatten([FONT.content.M.regular, labelStyle, {marginBottom: vs(5)}]) as TextStyle;
     return (
-      <View style={outStyle}>
-        {label && renderLabel()}
-        <View style={[containerInitStyle]}>
-          {leading && (
-            <AppButton onPress={onLeadingPress} type="transparent" size="S">
-              {leading}
-            </AppButton>
-          )}
-          <TextInput
-            value={value}
-            onChangeText={onChangeText}
-            style={styles.textInput}
-            placeholderTextColor={COLORS.grey}
-            placeholder={placeholder}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            {...rest}
-            ref={ref}
-          />
-          {trailing && (
-            <AppButton type="transparent" onPress={onTrailingPress} size="S">
-              {trailing}
-            </AppButton>
-          )}
-        </View>
+      <View style={styles.labelCont}>
+        <Text style={labelInitStyle}>{label}</Text>
+        {withAsterisk && <Text style={styles.asterisk}>*</Text>}
       </View>
     );
-  },
-);
+  };
+  return (
+    <View style={outStyle}>
+      {!!label && renderLabel()}
+      <View style={[containerInitStyle]}>
+        {!!leading && (
+          <AppButton onPress={onLeadingPress} type="transparent" size="S">
+            {leading}
+          </AppButton>
+        )}
+        <TextInput
+          value={value}
+          onChangeText={onChangeText}
+          style={styles.textInput}
+          placeholderTextColor={COLORS.grey}
+          placeholder={placeholder}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          {...rest}
+          ref={ref}
+        />
+        {trailing && (
+          <AppButton type="transparent" onPress={onTrailingPress} size="S">
+            {trailing}
+          </AppButton>
+        )}
+      </View>
+      {!!error && <Text style={styles.error}>{error}</Text>}
+    </View>
+  );
+});
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -141,6 +129,11 @@ const styles = StyleSheet.create({
   },
   asterisk: {
     color: COLORS.red,
+  },
+  error: {
+    ...FONT.content.XS.regular,
+    color: COLORS.red,
+    marginTop: vs(2),
   },
 });
 export default AppTextInput;

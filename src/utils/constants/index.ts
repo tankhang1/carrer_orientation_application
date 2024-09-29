@@ -14,3 +14,7 @@ const QUERY_KEY = {
 };
 export const queryClient = new QueryClient();
 export {QUERY_KEY};
+export const Schema = {
+  noEmpty: 'Vui lòng nhập thông tin!',
+  minPassword: 'Password phải bao gồm ít nhất 6 ký tự',
+};
