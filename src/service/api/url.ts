@@ -7,6 +7,9 @@ const ENDPOINTS_URL = {
     DELETE_EXAM: '/exams/deleteExam',
     UPDATE_EXAM: '/exams/updateExam',
   },
+  AUTH: {
+    GET_ANNONYMOUS_TOKEN: '/accounts/accessToken',
+  },
   NEWS: {
     GET_NEWS: '/news',
     GET_NEWEST_NEWS: '/news/newest',

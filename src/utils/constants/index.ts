@@ -11,6 +11,7 @@ const QUERY_KEY = {
   DICTIONARY: 'DICTIONARY',
   SCHOOL: 'SCHOOL',
   OCR: 'OCR',
+  ANNONYMOUS_TOKEN: 'ANNONYMOUS_TOKEN',
 };
 export const queryClient = new QueryClient();
 export {QUERY_KEY};

@@ -28,6 +28,8 @@
     "lottie-react-native": "^6.7.2",
     "react": "18.2.0",
     "react-native": "0.72.9",
+    "react-native-code-push": "^9.0.0",
+    "react-native-device-info": "^13.1.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-flipper": "^0.212.0",
     "react-native-gesture-handler": "^2.15.0",

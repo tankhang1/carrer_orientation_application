@@ -1,18 +1,16 @@
 import axios from 'axios';
 import {BASE_URL, ENDPOINTS_URL} from './url';
 import {TImage} from '@utils';
+import {KEY_STORE, storage} from '@store';
 type TMethod = 'GET' | 'POST';
-const api = <P, D>(
-  url: string,
-  method: TMethod,
-  options: {data?: D; params?: P},
-) => {
+const api = <P, D>(url: string, method: TMethod, options: {data?: D; params?: P}) => {
   const {data, params} = options;
+  const token = storage.getString(KEY_STORE.ANNONYMOUS_TOKEN);
   return new Promise((resolve, reject) => {
     axios({
       baseURL: BASE_URL,
       url: url,
-      headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+      headers: {Accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
       method,
       params,
       data,
