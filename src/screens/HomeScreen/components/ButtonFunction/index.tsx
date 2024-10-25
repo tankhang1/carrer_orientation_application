@@ -34,11 +34,11 @@ const BUTTONS: TButton[] = [
     title: 'Từ điển',
     onPress: () => navigationRef.navigate('Dictionary'),
   },
-  {
-    icon: 'users',
-    title: 'Tài khoản',
-    onPress: () => navigationRef.navigate('Login'),
-  },
+  // {
+  //   icon: 'users',
+  //   title: 'Tài khoản',
+  //   onPress: () => navigationRef.navigate('Login'),
+  // },
   {
     icon: 'envelope-o',
     title: 'Liên hệ',
@@ -54,11 +54,7 @@ const ButtonFunction = () => {
           return (
             <View key={index} style={styles.button}>
               <AppRoundedButton onPress={button.onPress}>
-                <FontAwesome
-                  name={button.icon as string}
-                  color={COLORS.green}
-                  size={s(20)}
-                />
+                <FontAwesome name={button.icon as string} color={COLORS.green} size={s(20)} />
               </AppRoundedButton>
               <Text style={FONT.content.M.medium}>{button.title}</Text>
             </View>
