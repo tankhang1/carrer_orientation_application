@@ -12,6 +12,8 @@ const QUERY_KEY = {
   SCHOOL: 'SCHOOL',
   OCR: 'OCR',
   ANNONYMOUS_TOKEN: 'ANNONYMOUS_TOKEN',
+  AUTH: 'AUTH',
+  SIGN_UP: 'SIGN_UP',
 };
 export const queryClient = new QueryClient();
 export {QUERY_KEY};

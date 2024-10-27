@@ -1,5 +1,5 @@
-const BASE_URL = 'https://career-app-ndt9.onrender.com';
-//const BASE_URL = 'http://192.168.2.3:3000';
+// const BASE_URL = 'https://career-app-ndt9.onrender.com';
+const BASE_URL = 'http://192.168.0.105:3000';
 const ENDPOINTS_URL = {
   EXAM: {
     GET_EXAM: '/exams',
@@ -9,6 +9,9 @@ const ENDPOINTS_URL = {
   },
   AUTH: {
     GET_ANNONYMOUS_TOKEN: '/accounts/accessToken',
+    LOGIN: '/accounts/login',
+    LOGIN_WITH_SOCIAL: '/accounts/loginWithSocial',
+    SIGN_UP: '/accounts',
   },
   NEWS: {
     GET_NEWS: '/news',

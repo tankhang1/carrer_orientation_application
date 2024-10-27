@@ -1,12 +1,19 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
-import {COLORS, FONT, s, vs, WIDTH} from '@utils';
+import {COLORS, FONT, QUERY_KEY, s, vs, WIDTH} from '@utils';
 import {AppButton, AppTextInput} from '@components';
 import Feather from 'react-native-vector-icons/Feather';
 import Checkbox from '@screens/ExamQuestion/components/Question/Checkbox';
 import {Title} from '@screens/Result/components';
 import {SignUpInput, signUpSchema} from '@schemas/sign-up.schema';
 import {useFormik} from 'formik';
+import {useMutation} from '@tanstack/react-query';
+import {ISignUpResponse, SignUpFormData} from '@interfaces/DTO/Auth/auth';
+import api from '@service/api';
+import {ENDPOINTS_URL} from '@service';
+import {navigationRef} from '@navigation';
+import DeviceInfo from 'react-native-device-info';
+import Toast from 'react-native-toast-message';
 
 const SAMPLE_TERMS = [
   {
@@ -22,15 +29,51 @@ const initialValues: SignUpInput = {
   name: '',
   email: '',
   password: '',
+  username: '',
 };
 const SignUpForm = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [agreeTerm, setAgreeTerm] = useState(false);
+  const {
+    isPending,
+    mutate: postSignUp,
+    error,
+  } = useMutation<ISignUpResponse, Error, SignUpFormData>({
+    mutationKey: [QUERY_KEY.AUTH],
+    mutationFn: (variables: SignUpFormData) => {
+      return api(ENDPOINTS_URL.AUTH.SIGN_UP, 'POST', {
+        data: {
+          ...variables,
+        },
+      }) as Promise<ISignUpResponse>; // Type assertion
+    },
+    onSuccess: (data: ISignUpResponse) => {
+      resetForm();
+      Toast.show({
+        type: 'success',
+        text1: 'Thông báo',
+        text2: 'Đăng ký thành công!',
+      });
+      navigationRef.navigate('Login');
+    },
+    onError: () => {
+      Toast.show({
+        type: 'error',
+        text1: 'Cảnh báo',
+        text2: 'Đăng ký thất bại',
+      });
+    },
+  });
   const {resetForm, values, handleChange, handleSubmit, errors} = useFormik<SignUpInput>({
     initialValues,
     validationSchema: signUpSchema,
     onSubmit: (value: SignUpInput) => {
-      console.log('value', value);
+      const deviceId = DeviceInfo.getUniqueIdSync();
+      postSignUp({
+        ...value,
+        role: 'TEACHER',
+        deviceId: deviceId,
+      });
     },
   });
   return (
@@ -42,6 +85,14 @@ const SignUpForm = () => {
         value={values.name}
         onChangeText={handleChange('name')}
         error={errors.name}
+      />
+      <AppTextInput
+        withAsterisk
+        label="Tên đăng nhập"
+        containerStyle={styles.w}
+        value={values.username}
+        onChangeText={handleChange('username')}
+        error={errors.username}
       />
       <AppTextInput
         withAsterisk
@@ -80,7 +131,7 @@ const SignUpForm = () => {
           checkedColor={COLORS.green}
         />
       </View>
-
+      {error?.message && <Text style={styles.error}>* {error?.message}</Text>}
       <AppButton
         label="Đăng ký"
         size="S"
@@ -88,6 +139,7 @@ const SignUpForm = () => {
         labelStyle={[FONT.content.L, {color: COLORS.white}]}
         disable={!agreeTerm}
         type={agreeTerm ? 'fill' : 'disable'}
+        loading={isPending}
         onPress={handleSubmit}
       />
     </View>
@@ -98,6 +150,8 @@ const styles = StyleSheet.create({
     marginTop: vs(10),
     gap: vs(20),
   },
+  error: {fontSize: 14, color: 'red'},
+
   w: {
     width: WIDTH * 0.85,
   },
