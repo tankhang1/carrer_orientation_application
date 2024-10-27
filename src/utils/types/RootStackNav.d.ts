@@ -31,5 +31,6 @@ export type TRootStackNav = {
     };
   };
   SignUp: undefined;
+  ForgotPassword: undefined;
   Login: undefined;
 };

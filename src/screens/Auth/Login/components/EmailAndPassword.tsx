@@ -1,12 +1,11 @@
 import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
-import {COLORS, FONT, QUERY_KEY, vs, WIDTH} from '@utils';
+import {COLORS, FONT, vs, WIDTH} from '@utils';
 import Feather from 'react-native-vector-icons/Feather';
 import {AppButton, AppTextInput} from '@components';
-import {Form, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import {LoginInput, loginSchema} from '@schemas/login.schema';
 import {useMutation} from '@tanstack/react-query';
-import axios from 'axios';
 import {ENDPOINTS_URL} from '@service';
 import api from '@service/api';
 import {KEY_STORE, storage} from '@store';
@@ -50,6 +49,9 @@ const EmailAndPassword = () => {
     },
   });
 
+  const onForgotPassword = () => {
+    navigationRef.navigate('ForgotPassword');
+  };
   const {resetForm, values, handleChange, handleSubmit, errors} = useFormik<LoginInput>({
     initialValues,
     validationSchema: loginSchema,
@@ -79,7 +81,7 @@ const EmailAndPassword = () => {
         onChangeText={handleChange('password')}
         error={error?.message || errors.password}
       />
-      <TouchableOpacity style={styles.forgotCont}>
+      <TouchableOpacity style={styles.forgotCont} onPress={onForgotPassword}>
         <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
       </TouchableOpacity>
       <AppButton
