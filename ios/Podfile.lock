@@ -5,24 +5,6 @@ PODS:
   - AppAuth/Core (1.7.5)
   - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
-  - appcenter-analytics (5.0.1):
-    - AppCenter/Analytics (~> 5.0)
-    - AppCenterReactNativeShared (~> 5.0)
-    - React-Core
-  - appcenter-core (5.0.1):
-    - AppCenterReactNativeShared (~> 5.0)
-    - React-Core
-  - appcenter-crashes (5.0.1):
-    - AppCenter/Crashes (~> 5.0)
-    - AppCenterReactNativeShared (~> 5.0)
-    - React-Core
-  - AppCenter/Analytics (5.0.4):
-    - AppCenter/Core
-  - AppCenter/Core (5.0.4)
-  - AppCenter/Crashes (5.0.4):
-    - AppCenter/Core
-  - AppCenterReactNativeShared (5.0.1):
-    - AppCenter/Core (= 5.0.4)
   - boost (1.76.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -556,6 +538,8 @@ PODS:
     - React-jsi (= 0.72.9)
     - React-logger (= 0.72.9)
     - React-perflogger (= 0.72.9)
+  - RNDeviceInfo (13.1.0):
+    - React-Core
   - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
@@ -605,9 +589,6 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - appcenter-analytics (from `../node_modules/appcenter-analytics`)
-  - appcenter-core (from `../node_modules/appcenter`)
-  - appcenter-crashes (from `../node_modules/appcenter-crashes`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -678,6 +659,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
@@ -692,8 +674,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
-    - AppCenter
-    - AppCenterReactNativeShared
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -722,12 +702,6 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  appcenter-analytics:
-    :path: "../node_modules/appcenter-analytics"
-  appcenter-core:
-    :path: "../node_modules/appcenter"
-  appcenter-crashes:
-    :path: "../node_modules/appcenter-crashes"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -820,6 +794,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
@@ -843,11 +819,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
-  AppCenter: 85c92db0759d2792a65eb61d6842d2e86611a49a
-  appcenter-analytics: b3a60e025b8db7013a71053c1ced96bcf7acba75
-  appcenter-core: 53cc7b5d9a2cdd6a484cae8e50977bab91e0780e
-  appcenter-crashes: 9cb825ee8f89715a1b0a7164a71fc8c582b0e796
-  AppCenterReactNativeShared: 22aea9046e80c449137f4e574ae1f229616e2358
   boost: 7dcd2de282d72e344012f7d6564d024930a6a440
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
@@ -915,6 +886,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: a7b1442e155c6f131d8bdfaac47abdc303f50788
   React-utils: a3ffbc321572ee91911d7bc30965abe9aa4e16af
   ReactCommon: 180205f326d59f52e12fa724f5278fcf8fb6afc3
+  RNDeviceInfo: e13b7d68878fba693c9fbb13ca4d56ad57d95917
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: 7909c50383a18f0cb10ce1db7262b9a6da504c03
   RNGoogleMobileAds: 62e54047b0dbc6781150940441602dce36c2bcb4
@@ -933,4 +905,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: fe7cfd94db09f733292cc817cc03d76c6967f4d1
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
