@@ -21,13 +21,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {TextInput} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppImage from '@components/AppImage';
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, {interpolate, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
 import {IResponse} from '@interfaces/DTO';
 interface TSchoolScore {
   subjects: Record<string, TSubject>;
@@ -37,15 +31,9 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
   const textInputRefs = useRef<React.RefObject<TextInput>[]>([]);
   const animatedValue = useSharedValue(0);
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      {rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg`},
-    ],
+    transform: [{rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg`}],
   }));
-  const {isLoading, data, isError} = useQuery<
-    unknown,
-    DefaultError,
-    ISchoolSubjectsResponse
-  >({
+  const {isLoading, data, isError} = useQuery<unknown, DefaultError, ISchoolSubjectsResponse>({
     queryKey: [QUERY_KEY.SCHOOL_SUBJECTS],
     queryFn: () => api(ENDPOINTS_URL.SCHOOL_SUBJECTS.GET_SUBJECTS, 'GET', {}),
   });
@@ -97,6 +85,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       height: 400,
       cropping: true,
       includeBase64: true,
+      cropperToolbarColor: 'red',
     })
       .then(async image => {
         setOpenImagePicker(false);
@@ -109,10 +98,15 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
   };
   const onLibrary = async () => {
     await ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 100,
+      height: 100,
       cropping: true,
       includeBase64: true,
+      cropperToolbarColor: 'red',
+      cropperToolbarWidgetColor: 'yellow',
+      freeStyleCropEnabled: true,
+      cropperCircleOverlay: true,
+      showCropGuidelines: false,
     })
       .then(async image => {
         setOpenImagePicker(false);
@@ -145,11 +139,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       });
   };
   const onNextFocus = (index: number) => {
-    if (
-      index >= 0 &&
-      index < Object.keys(subjects)?.length - 1 &&
-      textInputRefs.current[index + 1]
-    ) {
+    if (index >= 0 && index < Object.keys(subjects)?.length - 1 && textInputRefs.current[index + 1]) {
       textInputRefs.current[index + 1]?.current?.focus();
     }
     if (index === Object.keys(subjects)?.length - 1) {
@@ -158,15 +148,12 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       }
     }
   };
-  if (Object.keys(subjects)?.length === 0)
-    return <ActivityIndicator size="small" color={COLORS.green} />;
+  if (Object.keys(subjects)?.length === 0) return <ActivityIndicator size="small" color={COLORS.green} />;
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <KeyboardAvoidingView style={styles.container}>
-        <Text style={styles.title}>
-          Vui lòng nhập điểm trung bình của từng môn nhé!
-        </Text>
+        <Text style={styles.title}>Vui lòng nhập điểm trung bình của từng môn nhé!</Text>
         <View style={styles.scanContainer}>
           <TouchableOpacity onPress={() => setOpenImagePicker(true)}>
             <AntDesign name="scan1" size={s(33)} color={COLORS.green} />
@@ -178,8 +165,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
         </View>
         <View style={{flex: 1}}>
           {Object.entries(subjects)?.map(([key, subject], index) => {
-            textInputRefs.current[index] =
-              textInputRefs.current[index] || React.createRef<TextInput>();
+            textInputRefs.current[index] = textInputRefs.current[index] || React.createRef<TextInput>();
             return (
               <AppTextInput
                 key={index}
@@ -200,17 +186,10 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
             );
           })}
         </View>
-        <AppBackDrop
-          open={openImagePicker || convertImageToText.isPending}
-          setOpen={setOpenImagePicker}
-          disabled={convertImageToText.isPending}>
+        <AppBackDrop open={openImagePicker || convertImageToText.isPending} setOpen={setOpenImagePicker} disabled={convertImageToText.isPending}>
           {convertImageToText.isPending ? (
             <Animated.View style={animatedStyle}>
-              <AppImage
-                source={require('@assets/images/bookmark.png')}
-                style={styles.loadingImage}
-                resizeMode="contain"
-              />
+              <AppImage source={require('@assets/images/bookmark.png')} style={styles.loadingImage} resizeMode="contain" />
             </Animated.View>
           ) : (
             <AppImagePicker

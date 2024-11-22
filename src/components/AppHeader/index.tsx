@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle} from 'react-native';
 import React from 'react';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {navigationRef} from '@navigation';

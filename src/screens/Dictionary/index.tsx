@@ -1,10 +1,4 @@
-import {
-  ListRenderItemInfo,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  Text,
-} from 'react-native';
+import {ListRenderItemInfo, StyleSheet, View, ActivityIndicator, Text} from 'react-native';
 import React, {useMemo, useRef} from 'react';
 import {AppHeader, AppView} from '@components';
 import DictionaryItem from './components/DictionaryItem';
@@ -13,19 +7,12 @@ import {FlatList} from 'react-native-gesture-handler';
 import {DefaultError, useQuery} from '@tanstack/react-query';
 import api from '@service/api';
 import {ENDPOINTS_URL} from '@service';
-import {
-  IDictionary,
-  IDictionaryResponse,
-} from '@interfaces/DTO/Dictionary/dictionary';
+import {IDictionary, IDictionaryResponse} from '@interfaces/DTO/Dictionary/dictionary';
 import Animated, {FadeIn} from 'react-native-reanimated';
 import AppNoData from '@components/AppNoData';
 const Dictionary = () => {
   const ref = useRef<FlatList>(null);
-  const {isLoading, data, error} = useQuery<
-    unknown,
-    DefaultError,
-    IDictionaryResponse
-  >({
+  const {isLoading, data, error} = useQuery<unknown, DefaultError, IDictionaryResponse>({
     queryKey: [QUERY_KEY.DICTIONARY],
     queryFn: () => api(ENDPOINTS_URL.DICTIONARY.GET_DICTIONARY, 'GET', {}),
   });
@@ -33,8 +20,7 @@ const Dictionary = () => {
   const dictionary = useMemo(() => data?.data, [data?.data]);
   const scrollToIndex = (index: number) => {
     setTimeout(() => {
-      if (ref.current && dictionary && dictionary?.length > 0)
-        ref?.current?.scrollToIndex({animated: true, index, viewPosition: 0});
+      if (ref.current && dictionary && dictionary?.length > 0) ref?.current?.scrollToIndex({animated: true, index, viewPosition: 0});
     }, 300);
   };
   const renderItem = ({item, index}: ListRenderItemInfo<IDictionary>) => {
@@ -70,13 +56,9 @@ const Dictionary = () => {
         }}
         ListEmptyComponent={() =>
           error && (
-            <Animated.View
-              style={styles.placeHolderContainer}
-              entering={FadeIn}>
+            <Animated.View style={styles.placeHolderContainer} entering={FadeIn}>
               <AppNoData />
-              <Text style={styles.placeHolderText}>
-                Oops! Chưa có từ điển nào được cập nhật! Thử lại sau nhé!
-              </Text>
+              <Text style={styles.placeHolderText}>Oops! Chưa có từ điển nào được cập nhật! Thử lại sau nhé!</Text>
             </Animated.View>
           )
         }

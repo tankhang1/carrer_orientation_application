@@ -1,19 +1,5 @@
-import {
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  ImageBackground,
-  StatusBar,
-} from 'react-native';
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import {View, StyleSheet, ActivityIndicator, KeyboardAvoidingView, ImageBackground, StatusBar} from 'react-native';
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {navigationRef} from '@navigation';
 import {AppHeader, AppModal, AppView} from '@components';
 import {Question, SchoolScore, BottomButton} from './components';
@@ -70,11 +56,7 @@ const ExamQuestion = () => {
         },
       };
       const currentListResult = storage.getString(KEY_STORE.LIST_RESULT);
-      if (currentListResult)
-        storage.set(
-          KEY_STORE.LIST_RESULT,
-          JSON.stringify([storedUserAnswers, ...JSON.parse(currentListResult)]),
-        );
+      if (currentListResult) storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers, ...JSON.parse(currentListResult)]));
       else {
         storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers]));
       }
@@ -94,36 +76,18 @@ const ExamQuestion = () => {
   const [errorNotAnswer, setErrorNotAnswer] = useState(false);
   const [subjects, setSubjects] = useState<Record<string, TSubject>>({});
   const isContinue = useRef(false);
-  const IQ = useMemo(
-    () => data?.data?.find(exam => exam.type === 'IQ')?.questions || [],
-    [data?.data],
-  );
-  const EQ = useMemo(
-    () => data?.data?.find(exam => exam.type === 'EQ')?.questions || [],
-    [data?.data],
-  );
+  const IQ = useMemo(() => data?.data?.find(exam => exam.type === 'IQ')?.questions || [], [data?.data]);
+  const EQ = useMemo(() => data?.data?.find(exam => exam.type === 'EQ')?.questions || [], [data?.data]);
   const IQ_EQ_List = useMemo(() => [...IQ, ...EQ], [data?.data]);
-  const HOLLAND = useMemo(
-    () =>
-      data?.data?.filter(exam => exam.type !== 'IQ' && exam.type !== 'EQ') ||
-      [],
-    [data?.data],
-  );
-  const totalExams = useMemo(
-    () => HOLLAND?.length + IQ_EQ_List?.length || 1,
-    [data?.data],
-  );
-  const questionIndex = useMemo(
-    () => questionNumber - HOLLAND?.length,
-    [questionNumber, HOLLAND?.length],
-  );
+  const HOLLAND = useMemo(() => data?.data?.filter(exam => exam.type !== 'IQ' && exam.type !== 'EQ') || [], [data?.data]);
+  const totalExams = useMemo(() => HOLLAND?.length + IQ_EQ_List?.length || 1, [data?.data]);
+  const questionIndex = useMemo(() => questionNumber - HOLLAND?.length, [questionNumber, HOLLAND?.length]);
 
   const onUpdateAnswer = () => {
     const currentAnswer = answers;
     if (examInfo.examType === 'EQ' || examInfo.examType === 'IQ') {
       let tmp = currentAnswer.get(examInfo.examType)!;
-      const index =
-        examInfo.examType === 'IQ' ? questionIndex : questionIndex - IQ?.length;
+      const index = examInfo.examType === 'IQ' ? questionIndex : questionIndex - IQ?.length;
       tmp[index] = selections[0];
       currentAnswer.set(examInfo.examType, tmp);
       setAnswers(currentAnswer);
@@ -159,14 +123,7 @@ const ExamQuestion = () => {
       setQuestionNumber(questionNumber + 1);
       onUpdateAnswer();
     }
-  }, [
-    data?.data,
-    questionNumber,
-    totalExams,
-    selections,
-    questionIndex,
-    subjects,
-  ]);
+  }, [data?.data, questionNumber, totalExams, selections, questionIndex, subjects]);
 
   const onPrev = useCallback(() => {
     if (questionNumber > 0) {
@@ -190,12 +147,9 @@ const ExamQuestion = () => {
     }
     return {headerTitle: 'Điểm trung bình', examType: 'SchoolScore'};
   }, [questionNumber]);
+
   useLayoutEffect(() => {
-    if (
-      questionNumber === HOLLAND?.length &&
-      !isContinue?.current &&
-      data?.data
-    ) {
+    if (questionNumber === HOLLAND?.length && !isContinue?.current && data?.data) {
       setOpenModalNext(true);
       isContinue.current = true;
     }
@@ -227,9 +181,7 @@ const ExamQuestion = () => {
     return userAnswers;
   };
   return (
-    <ImageBackground
-      source={require('@assets/images/background_1.png')}
-      style={{flex: 1, paddingTop: StatusBar.currentHeight ?? 44}}>
+    <ImageBackground source={require('@assets/images/background_1.png')} style={{flex: 1, paddingTop: StatusBar.currentHeight ?? 44}}>
       <AppHeader
         title={examInfo.headerTitle}
         onPress={() => {
@@ -242,18 +194,10 @@ const ExamQuestion = () => {
         <View style={styles.container}>
           {questionNumber < totalExams ? (
             <Question
-              question={
-                questionNumber < HOLLAND?.length
-                  ? HOLLAND[questionNumber].questions[0]
-                  : IQ_EQ_List[questionIndex]
-              }
+              question={questionNumber < HOLLAND?.length ? HOLLAND[questionNumber].questions[0] : IQ_EQ_List[questionIndex]}
               questionNumber={questionNumber}
               type={examInfo.examType}
-              questionIndex={
-                examInfo.examType === 'IQ'
-                  ? questionIndex
-                  : questionIndex - IQ?.length
-              }
+              questionIndex={examInfo.examType === 'IQ' ? questionIndex : questionIndex - IQ?.length}
               selections={selections}
               setSelections={setSelections}
               answers={answers}
@@ -265,12 +209,7 @@ const ExamQuestion = () => {
         </View>
       )}
 
-      <BottomButton
-        onNext={onNext}
-        onPrev={onPrev}
-        maxValue={totalExams + 1}
-        currentValue={questionNumber}
-      />
+      <BottomButton onNext={onNext} onPrev={onPrev} maxValue={totalExams + 1} currentValue={questionNumber} />
       <AppModal
         disableBackDrop={true}
         visible={openModalNext}
