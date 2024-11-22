@@ -2,7 +2,7 @@ import {Schema} from '@utils';
 import * as yup from 'yup';
 
 export const loginSchema = yup.object().shape({
-  email: yup.string().email().required(Schema.noEmpty),
+  username: yup.string().required(Schema.noEmpty),
   password: yup.string().min(6, Schema.minPassword).required(Schema.noEmpty),
 });
 

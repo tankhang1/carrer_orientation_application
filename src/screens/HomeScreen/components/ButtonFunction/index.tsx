@@ -34,11 +34,11 @@ const BUTTONS: TButton[] = [
     title: 'Từ điển',
     onPress: () => navigationRef.navigate('Dictionary'),
   },
-  // {
-  //   icon: 'users',
-  //   title: 'Tài khoản',
-  //   onPress: () => navigationRef.navigate('Login'),
-  // },
+  {
+    icon: 'users',
+    title: 'Tài khoản',
+    onPress: () => navigationRef.navigate('Login'),
+  },
   {
     icon: 'envelope-o',
     title: 'Liên hệ',

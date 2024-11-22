@@ -21,8 +21,8 @@ const api = <P, D>(url: string, method: TMethod, options: {data?: D; params?: P}
         resolve(data);
       })
       .catch(e => {
-        console.log(`>>>>>>${url} - ${method} error >>>>>> `, e);
-        reject(e);
+        console.log(`>>>>>>${url} - ${method} error >>>>>> `, e.response.data);
+        reject(e.response.data);
       });
   });
 };

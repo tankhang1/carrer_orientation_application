@@ -3,31 +3,71 @@ import React, {useState} from 'react';
 import {COLORS, FONT, vs, WIDTH} from '@utils';
 import Feather from 'react-native-vector-icons/Feather';
 import {AppButton, AppTextInput} from '@components';
-import {Form, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import {LoginInput, loginSchema} from '@schemas/login.schema';
+import {useMutation} from '@tanstack/react-query';
+import {ENDPOINTS_URL} from '@service';
+import api from '@service/api';
+import {KEY_STORE, storage} from '@store';
+import {ILoginResponse} from '@interfaces/DTO/Auth/auth';
+import {navigationRef} from '@navigation';
+import Toast from 'react-native-toast-message';
 const initialValues: LoginInput = {
-  email: '',
+  username: '',
   password: '',
 };
+
 const EmailAndPassword = () => {
   const [hidePassword, setHidePassword] = useState(true);
+
+  const {
+    isPending,
+    mutate: postLogin,
+    error,
+  } = useMutation<ILoginResponse, Error, LoginInput>({
+    mutationFn: (variables: LoginInput) => {
+      return api(ENDPOINTS_URL.AUTH.LOGIN, 'POST', {
+        data: variables,
+      }) as Promise<ILoginResponse>; // Type assertion
+    },
+    onSuccess: (data: ILoginResponse) => {
+      storage.set(KEY_STORE.ANNONYMOUS_TOKEN, data.data.accessToken);
+      resetForm();
+      Toast.show({
+        type: 'success',
+        text1: 'Thông báo',
+        text2: 'Đăng nhập thành công!',
+      });
+      navigationRef.navigate('HomeScreen');
+    },
+    onError: () => {
+      Toast.show({
+        type: 'error',
+        text1: 'Cảnh báo',
+        text2: 'Đăng nhập thất bại!',
+      });
+    },
+  });
+
+  const onForgotPassword = () => {
+    navigationRef.navigate('ForgotPassword');
+  };
   const {resetForm, values, handleChange, handleSubmit, errors} = useFormik<LoginInput>({
     initialValues,
     validationSchema: loginSchema,
-    onSubmit: (value: LoginInput) => {
-      console.log('value', value);
-    },
+    onSubmit: (values: LoginInput) => postLogin(values), // Use mutateAsync to await the mutation
   });
+
   return (
     <>
       <AppTextInput
         withAsterisk
-        label="Email"
+        label="Tài khoản"
         outStyle={styles.textInputOutStyle}
         containerStyle={styles.w}
-        value={values.email}
-        onChangeText={handleChange('email')}
-        error={errors.email}
+        value={values.username}
+        onChangeText={handleChange('username')}
+        error={error?.message || errors.username}
       />
       <AppTextInput
         withAsterisk
@@ -39,9 +79,9 @@ const EmailAndPassword = () => {
         containerStyle={styles.w}
         value={values.password}
         onChangeText={handleChange('password')}
-        error={errors.password}
+        error={error?.message || errors.password}
       />
-      <TouchableOpacity style={styles.forgotCont}>
+      <TouchableOpacity style={styles.forgotCont} onPress={onForgotPassword}>
         <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
       </TouchableOpacity>
       <AppButton
@@ -50,10 +90,11 @@ const EmailAndPassword = () => {
         buttonStyle={{width: WIDTH * 0.85, marginVertical: vs(20)}}
         labelStyle={[FONT.content.L, {color: COLORS.white}]}
         onPress={handleSubmit}
+        loading={isPending}
       />
       <View style={styles.dividerCont}>
         <View style={styles.divider} />
-        <Text style={[FONT.content.XS.medium, {color: COLORS.grey}]}>OR</Text>
+        <Text style={[FONT.content.XS.medium, {color: COLORS.grey}]}>HOẶC</Text>
         <View style={styles.divider} />
       </View>
     </>
@@ -83,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   divider: {
-    width: WIDTH * 0.38,
+    width: WIDTH * 0.35,
     height: vs(0.75),
     backgroundColor: COLORS.grey,
   },

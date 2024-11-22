@@ -9,6 +9,10 @@ const ENDPOINTS_URL = {
   },
   AUTH: {
     GET_ANNONYMOUS_TOKEN: '/accounts/accessToken',
+    LOGIN: '/accounts/login',
+    LOGIN_WITH_SOCIAL: '/accounts/loginWithSocial',
+    SIGN_UP: '/accounts',
+    FORGOT_PASSWORD: '/accounts/forgotPassword',
   },
   NEWS: {
     GET_NEWS: '/news',

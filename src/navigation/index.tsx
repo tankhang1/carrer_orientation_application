@@ -18,6 +18,7 @@ import Dictionary from '@screens/Dictionary';
 import DictonaryDetail from '@screens/DictionaryDetail';
 import SignUp from '@screens/Auth/SignUp';
 import Login from '@screens/Auth/Login';
+import ForgotPassword from '@screens/Auth/ForgotPassword';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
@@ -44,6 +45,7 @@ const AppNavigation = () => {
         <Stack.Screen name="Dictionary" component={Dictionary} />
         <Stack.Screen name="DictionaryDetail" component={DictonaryDetail} />
         <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
     </NavigationContainer>

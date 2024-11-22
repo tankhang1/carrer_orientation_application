@@ -13,6 +13,7 @@ import {KEY_STORE, storage} from '@store';
 const SplashScreen = () => {
   const {data} = useQuery<IAnnonymousToken, DefaultError, IAnnonymousTokenResponse>({
     queryKey: [QUERY_KEY.NEWS],
+    //@ts-expect-error no check
     queryFn: async () =>
       api(ENDPOINTS_URL.AUTH.GET_ANNONYMOUS_TOKEN, 'GET', {
         params: {

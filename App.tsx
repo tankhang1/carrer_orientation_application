@@ -9,7 +9,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NetInfo, {addEventListener} from '@react-native-community/netinfo';
 import {AppNoInternet} from '@components';
 import codePush from 'react-native-code-push';
-
+import Toast from 'react-native-toast-message';
 //const codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
 
 const App = () => {
@@ -50,6 +50,7 @@ const App = () => {
           {isInternet === false && <AppNoInternet />}
         </GestureHandlerRootView>
       </Host>
+      <Toast />
     </QueryClientProvider>
   );
 };
