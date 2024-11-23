@@ -9,23 +9,13 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
-import React, {
-  startTransition,
-  useDeferredValue,
-  useEffect,
-  useState,
-} from 'react';
+import React, {startTransition, useDeferredValue, useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLORS, FONT, s, vs} from '@utils/config';
 import {AppTextInput, AppButton} from '@components';
 import NewsJobs from './components/NewsJobs';
 import AppHeader from '@components/AppHeader';
-import {
-  DefaultError,
-  InfiniteData,
-  useInfiniteQuery,
-  useQuery,
-} from '@tanstack/react-query';
+import {DefaultError, InfiniteData, useInfiniteQuery, useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '@utils/constants';
 import api from '@service/api';
 import {ENDPOINTS_URL} from '@service';
@@ -60,22 +50,21 @@ const News = () => {
   useEffect(() => {
     setCategoryId(Categories?.[0]._id);
   }, [Categories]);
-  const {data, isFetchingNextPage, fetchNextPage, hasNextPage} =
-    useInfiniteQuery<INewsResponse, DefaultError, InfiniteData<INewsResponse>>({
-      queryKey: [QUERY_KEY.NEWS, categoryId],
-      queryFn: async ({pageParam}) =>
-        api(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
-          params: {id: categoryId, page: pageParam ?? 1},
-        } as const) as Promise<INewsResponse>,
-      initialPageParam: 1,
-      getNextPageParam: (lastPage, allPages) => {
-        if (lastPage?.data?.length === 0) {
-          return undefined;
-        }
-        return allPages.length + 1;
-      },
-      //staleTime: 5 * 60 * 1000,
-    });
+  const {data, isFetchingNextPage, fetchNextPage, hasNextPage} = useInfiniteQuery<INewsResponse, DefaultError, InfiniteData<INewsResponse>>({
+    queryKey: [QUERY_KEY.NEWS, categoryId],
+    queryFn: async ({pageParam}) =>
+      api(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
+        params: {id: categoryId, page: pageParam ?? 1},
+      } as const) as Promise<INewsResponse>,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.data?.length === 0) {
+        return undefined;
+      }
+      return allPages.length + 1;
+    },
+    //staleTime: 5 * 60 * 1000,
+  });
   const onRefresh = () => {
     if (isFetchingNextPage) return;
     queryClient.fetchInfiniteQuery({
@@ -83,16 +72,11 @@ const News = () => {
       initialPageParam: 1,
     });
   };
-  const renderItem = ({item, index}: ListRenderItemInfo<INew>) => (
-    <NewsJobs index={index} item={item} deferSearchInfo={deferSearchInfo} />
-  );
+  const renderItem = ({item, index}: ListRenderItemInfo<INew>) => <NewsJobs index={index} item={item} deferSearchInfo={deferSearchInfo} />;
   console.log('isLoading', isLoading);
   return (
     <KeyboardAvoidingView style={{flex: 1}}>
-      <ImageBackground
-        source={require('@assets/images/background_1.png')}
-        resizeMode="cover"
-        style={styles.wrapper}>
+      <ImageBackground source={require('@assets/images/background_1.png')} resizeMode="cover" style={styles.wrapper}>
         <SafeAreaView style={{flex: 1}}>
           <AppHeader
             title="Tin tức"
@@ -101,14 +85,9 @@ const News = () => {
             }}
           />
           <FlatList
-            refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
             scrollEventThrottle={16}
-            data={
-              (data?.pages.flatMap(page => page?.data) as unknown as INew[]) ||
-              []
-            }
+            data={(data?.pages.flatMap(page => page?.data) as unknown as INew[]) || []}
             ListHeaderComponent={
               <View>
                 {data && (
@@ -123,13 +102,7 @@ const News = () => {
                     outStyle={{marginHorizontal: s(20)}}
                     placeholder="Tìm kiếm tin tức"
                     placeholderTextColor={COLORS.grey}
-                    trailing={
-                      <AntDesign
-                        name="search1"
-                        size={s(25)}
-                        color={COLORS.grey}
-                      />
-                    }
+                    trailing={<AntDesign name="search1" size={s(25)} color={COLORS.grey} />}
                   />
                 )}
                 <ScrollView
@@ -151,9 +124,7 @@ const News = () => {
                         {
                           marginHorizontal: 0,
                         },
-                        categoryId === category._id
-                          ? {color: COLORS.white}
-                          : {color: COLORS.black},
+                        categoryId === category._id ? {color: COLORS.white} : {color: COLORS.black},
                       ]}
                       buttonStyle={[
                         styles.categoryBtn,
@@ -169,13 +140,9 @@ const News = () => {
             }
             ListEmptyComponent={() =>
               error ? (
-                <Animated.View
-                  style={styles.placeHolderContainer}
-                  entering={FadeIn}>
+                <Animated.View style={styles.placeHolderContainer} entering={FadeIn}>
                   <AppNoData />
-                  <Text style={styles.placeHolderText}>
-                    Oops! Chưa có tin tức nào được cập nhật! Thử lại sau nhé!
-                  </Text>
+                  <Text style={styles.placeHolderText}>Oops! Chưa có tin tức nào được cập nhật! Thử lại sau nhé!</Text>
                 </Animated.View>
               ) : isLoading ? (
                 <ActivityIndicator size={'large'} color={COLORS.green} />
