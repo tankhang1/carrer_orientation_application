@@ -1,11 +1,10 @@
-import {View, Text, StyleSheet, Linking} from 'react-native';
-import React, {useMemo} from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppRoundedButton from '@components/AppRoundedButton';
-import {COLORS, FONT, s, WIDTH, width} from '@utils/config';
-import {navigationRef} from '@navigation';
-import {KEY_STORE, storage} from '@store';
-import {useAuthStore} from '@store/auth.store';
+import { navigationRef } from '@navigation';
+import { useAuthStore } from '@store/auth.store';
+import { COLORS, FONT, s, WIDTH, width } from '@utils/config';
+import React, { useMemo } from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 type TButton = {
   icon?: string;
   title?: string;
@@ -13,7 +12,7 @@ type TButton = {
 };
 
 const ButtonFunction = () => {
-  const {isLogin} = useAuthStore();
+  const { isLogin } = useAuthStore();
 
   const buttons = useMemo<TButton[]>(
     () => [

@@ -1,37 +1,30 @@
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import prettier from 'eslint-plugin-prettier';
-import eslintComments from 'eslint-plugin-eslint-comments';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
 
-export default tseslint.config(
+/** @type {import('eslint').Linter.Config[]} */
+export default [
   {
-    root: true,
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'], // Target relevant files
     ignores: ['dist', 'babel.config.js', 'metro.config.js'],
-  },
-  {
-    files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
+  },
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  {
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'], // Re-apply after extending
     plugins: {
-      prettier,
-      'eslint-comments': eslintComments,
+      'react-hooks': pluginReactHooks,
     },
     rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          endOfLine: 'auto',
-        },
-      ],
-      'eslint-comments/no-aggregating-enable': 'off', // Example rule from eslint-comments
-      'eslint-comments/no-unused-disable': 'warn',
+      '@typescript-eslint/no-require-imports': 'off', // Ensure this takes precedence,
+      'react-hooks/exhaustive-deps': ['warn'],
     },
   },
-);
+];

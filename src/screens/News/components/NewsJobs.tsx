@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
-import React, {lazy, memo, Suspense} from 'react';
-import {s, vs, width} from '@utils/config';
+import { StyleSheet } from 'react-native';
+import React, { lazy, memo, Suspense } from 'react';
+import { s, vs, width } from '@utils/config';
 import dayjs from 'dayjs';
-import {navigationRef} from '@navigation';
+import { navigationRef } from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
-import {INew} from '@interfaces/DTO';
+import { INew } from '@interfaces/DTO';
 const AppCard = lazy(() => import('@components/AppCard'));
 type TNewsJobsProps = {
   deferSearchInfo: string;
@@ -13,7 +13,7 @@ type TNewsJobsProps = {
   item: INew;
   index: number;
 };
-const NewsJobs = ({deferSearchInfo, item, index}: TNewsJobsProps) => {
+const NewsJobs = ({ deferSearchInfo, item, index }: TNewsJobsProps) => {
   const searchPattern = new RegExp(deferSearchInfo.toLowerCase(), 'i');
   if (searchPattern.test(item?.title?.toLowerCase())) {
     return (
@@ -24,10 +24,8 @@ const NewsJobs = ({deferSearchInfo, item, index}: TNewsJobsProps) => {
           imageUrl={item?.image?.shortImage}
           subTitle={dayjs(item?.createdAt).format('DD/MM/YYYY')}
           title={item?.title}
-          type="large"
-          onPress={() =>
-            navigationRef.navigate('NewsDetail1', {content: item?.content})
-          }
+          type='large'
+          onPress={() => navigationRef.navigate('NewsDetail1', { content: item?.content })}
           containerStyle={styles.container}
         />
       </Suspense>

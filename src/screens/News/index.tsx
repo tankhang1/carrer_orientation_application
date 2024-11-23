@@ -1,36 +1,35 @@
+import { AppButton, AppTextInput } from '@components';
+import AppHeader from '@components/AppHeader';
+import AppNoData from '@components/AppNoData';
+import { INew, INewsResponse } from '@interfaces/DTO';
+import { ENDPOINTS_URL } from '@service';
+import api from '@service/api';
+import { DefaultError, InfiniteData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { COLORS, FONT, s, vs } from '@utils/config';
+import { QUERY_KEY, queryClient } from '@utils/constants';
+import React, { startTransition, useDeferredValue, useEffect, useState } from 'react';
 import {
-  View,
-  StyleSheet,
-  ScrollView,
+  ActivityIndicator,
+  ImageBackground,
+  KeyboardAvoidingView,
   ListRenderItemInfo,
   RefreshControl,
-  KeyboardAvoidingView,
-  ImageBackground,
+  ScrollView,
+  StyleSheet,
   Text,
-  ActivityIndicator,
+  View,
 } from 'react-native';
-import React, {startTransition, useDeferredValue, useEffect, useState} from 'react';
+import { FlatList } from 'react-native-gesture-handler';
+import Animated, { FadeIn } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {COLORS, FONT, s, vs} from '@utils/config';
-import {AppTextInput, AppButton} from '@components';
 import NewsJobs from './components/NewsJobs';
-import AppHeader from '@components/AppHeader';
-import {DefaultError, InfiniteData, useInfiniteQuery, useQuery} from '@tanstack/react-query';
-import {QUERY_KEY} from '@utils/constants';
-import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
-import {INew, INewsResponse} from '@interfaces/DTO';
-import {queryClient} from '@utils/constants';
-import {FlatList} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import AppNoData from '@components/AppNoData';
-import Animated, {FadeIn} from 'react-native-reanimated';
 const News = () => {
   const {
     data: Categories,
     isLoading,
     error,
-  } = useQuery<unknown, DefaultError, {_id: string; categoryName: string}[]>({
+  } = useQuery<unknown, DefaultError, { _id: string; categoryName: string }[]>({
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_CATEGORIES],
     queryFn: () => api(ENDPOINTS_URL.NEWS.GET_ALL_CATEGORIES, 'GET', {}),
   });
@@ -50,11 +49,15 @@ const News = () => {
   useEffect(() => {
     setCategoryId(Categories?.[0]._id);
   }, [Categories]);
-  const {data, isFetchingNextPage, fetchNextPage, hasNextPage} = useInfiniteQuery<INewsResponse, DefaultError, InfiniteData<INewsResponse>>({
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery<
+    INewsResponse,
+    DefaultError,
+    InfiniteData<INewsResponse>
+  >({
     queryKey: [QUERY_KEY.NEWS, categoryId],
-    queryFn: async ({pageParam}) =>
+    queryFn: async ({ pageParam }) =>
       api(ENDPOINTS_URL.NEWS.GET_NEWS, 'GET', {
-        params: {id: categoryId, page: pageParam ?? 1},
+        params: { id: categoryId, page: pageParam ?? 1 },
       } as const) as Promise<INewsResponse>,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -72,14 +75,16 @@ const News = () => {
       initialPageParam: 1,
     });
   };
-  const renderItem = ({item, index}: ListRenderItemInfo<INew>) => <NewsJobs index={index} item={item} deferSearchInfo={deferSearchInfo} />;
+  const renderItem = ({ item, index }: ListRenderItemInfo<INew>) => (
+    <NewsJobs index={index} item={item} deferSearchInfo={deferSearchInfo} />
+  );
   console.log('isLoading', isLoading);
   return (
-    <KeyboardAvoidingView style={{flex: 1}}>
-      <ImageBackground source={require('@assets/images/background_1.png')} resizeMode="cover" style={styles.wrapper}>
-        <SafeAreaView style={{flex: 1}}>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <ImageBackground source={require('@assets/images/background_1.png')} resizeMode='cover' style={styles.wrapper}>
+        <SafeAreaView style={{ flex: 1 }}>
           <AppHeader
-            title="Tin tức"
+            title='Tin tức'
             style={{
               marginBottom: 10,
             }}
@@ -87,7 +92,7 @@ const News = () => {
           <FlatList
             refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
             scrollEventThrottle={16}
-            data={(data?.pages.flatMap(page => page?.data) as unknown as INew[]) || []}
+            data={(data?.pages.flatMap((page) => page?.data) as unknown as INew[]) || []}
             ListHeaderComponent={
               <View>
                 {data && (
@@ -99,10 +104,10 @@ const News = () => {
                       backgroundColor: COLORS.white,
                       borderWidth: 0,
                     }}
-                    outStyle={{marginHorizontal: s(20)}}
-                    placeholder="Tìm kiếm tin tức"
+                    outStyle={{ marginHorizontal: s(20) }}
+                    placeholder='Tìm kiếm tin tức'
                     placeholderTextColor={COLORS.grey}
-                    trailing={<AntDesign name="search1" size={s(25)} color={COLORS.grey} />}
+                    trailing={<AntDesign name='search1' size={s(25)} color={COLORS.grey} />}
                   />
                 )}
                 <ScrollView
@@ -124,7 +129,7 @@ const News = () => {
                         {
                           marginHorizontal: 0,
                         },
-                        categoryId === category._id ? {color: COLORS.white} : {color: COLORS.black},
+                        categoryId === category._id ? { color: COLORS.white } : { color: COLORS.black },
                       ]}
                       buttonStyle={[
                         styles.categoryBtn,
@@ -154,7 +159,7 @@ const News = () => {
               fetchNextPage();
             }}
             onEndReachedThreshold={0.2}
-            keyboardDismissMode="on-drag"
+            keyboardDismissMode='on-drag'
             renderToHardwareTextureAndroid
             maxToRenderPerBatch={10}
           />
