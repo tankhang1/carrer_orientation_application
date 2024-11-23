@@ -28,10 +28,7 @@ const NewsDetail1 = ({route}: Props) => {
               <AppSkeleton width={'10%'} height={20} radius={10} />
             </View>
           }>
-          <WebView
-            source={{uri: content}}
-            style={{width: width, height: height}}
-          />
+          <WebView source={{uri: content}} style={{width: width, height: height}} />
         </Suspense>
         <AppHeader style={{position: 'absolute', marginTop: s(40)}} />
       </View>

@@ -12,6 +12,7 @@ import {KEY_STORE, storage} from '@store';
 import {ILoginResponse} from '@interfaces/DTO/Auth/auth';
 import {navigationRef} from '@navigation';
 import Toast from 'react-native-toast-message';
+import {useAuthStore} from '@store/auth.store';
 const initialValues: LoginInput = {
   username: '',
   password: '',
@@ -19,6 +20,7 @@ const initialValues: LoginInput = {
 
 const EmailAndPassword = () => {
   const [hidePassword, setHidePassword] = useState(true);
+  const authStore = useAuthStore();
 
   const {
     isPending,
@@ -32,6 +34,9 @@ const EmailAndPassword = () => {
     },
     onSuccess: (data: ILoginResponse) => {
       storage.set(KEY_STORE.ANNONYMOUS_TOKEN, data.data.accessToken);
+
+      const {accessToken, ...userInfo} = data?.data;
+      authStore?.setAuthStore({...userInfo});
       resetForm();
       Toast.show({
         type: 'success',

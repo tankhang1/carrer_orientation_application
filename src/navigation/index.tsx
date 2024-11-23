@@ -19,6 +19,7 @@ import DictonaryDetail from '@screens/DictionaryDetail';
 import SignUp from '@screens/Auth/SignUp';
 import Login from '@screens/Auth/Login';
 import ForgotPassword from '@screens/Auth/ForgotPassword';
+import GroupListScreen from '@screens/GroupListScreen/GroupListScreen';
 const Stack = createNativeStackNavigator<TRootStackNav>();
 export const navigationRef = createNavigationContainerRef<TRootStackNav>();
 const AppNavigation = () => {
@@ -47,6 +48,7 @@ const AppNavigation = () => {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="GroupList" component={GroupListScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -92,6 +92,7 @@ const AppTextInput = forwardRef<TextInput, TAppTextInput>((props: TAppTextInput,
           placeholder={placeholder}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
+          autoCapitalize="none"
           {...rest}
           ref={ref}
         />

@@ -18,7 +18,7 @@ interface Permission {
   updatedAt: string;
 }
 
-interface UserData {
+export interface UserData {
   id: string;
   name: string;
   role: string;

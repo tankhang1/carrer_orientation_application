@@ -121,7 +121,7 @@ const AppButton = ({
         }}
         disabled={disable}>
         {loading ? (
-          <ActivityIndicator size={'large'} color={styleBaseOnType?.color} />
+          <ActivityIndicator size={'small'} color={styleBaseOnType?.color} />
         ) : (
           <>
             {leading && leading}

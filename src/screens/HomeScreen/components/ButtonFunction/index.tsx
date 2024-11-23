@@ -1,56 +1,70 @@
 import {View, Text, StyleSheet, Linking} from 'react-native';
-import React from 'react';
+import React, {useMemo} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppRoundedButton from '@components/AppRoundedButton';
 import {COLORS, FONT, s, WIDTH, width} from '@utils/config';
 import {navigationRef} from '@navigation';
+import {KEY_STORE, storage} from '@store';
+import {useAuthStore} from '@store/auth.store';
 type TButton = {
   icon?: string;
   title?: string;
   onPress?: () => void;
 };
-const BUTTONS: TButton[] = [
-  {
-    icon: 'pencil',
-    title: 'Kiểm tra',
-    onPress: () => {
-      navigationRef.navigate('ListExam');
-    },
-  },
-  {
-    icon: 'history',
-    title: 'Lịch sử',
-    onPress: () => {
-      navigationRef.navigate('ListResult');
-    },
-  },
-  {
-    icon: 'newspaper-o',
-    title: 'Tin tức',
-    onPress: () => navigationRef.navigate('News'),
-  },
-  {
-    icon: 'book',
-    title: 'Từ điển',
-    onPress: () => navigationRef.navigate('Dictionary'),
-  },
-  {
-    icon: 'users',
-    title: 'Tài khoản',
-    onPress: () => navigationRef.navigate('Login'),
-  },
-  {
-    icon: 'envelope-o',
-    title: 'Liên hệ',
-    onPress: () => Linking.openURL('mailto:mydaily203@gmail.com'),
-  },
-];
+
 const ButtonFunction = () => {
+  const {isLogin} = useAuthStore();
+
+  const buttons = useMemo<TButton[]>(
+    () => [
+      {
+        icon: 'pencil',
+        title: 'Kiểm tra',
+        onPress: () => {
+          navigationRef.navigate('ListExam');
+        },
+      },
+      {
+        icon: 'history',
+        title: 'Lịch sử',
+        onPress: () => {
+          navigationRef.navigate('ListResult');
+        },
+      },
+      {
+        icon: 'newspaper-o',
+        title: 'Tin tức',
+        onPress: () => navigationRef.navigate('News'),
+      },
+      {
+        icon: 'book',
+        title: 'Từ điển',
+        onPress: () => navigationRef.navigate('Dictionary'),
+      },
+      {
+        icon: 'users',
+        title: 'Nhóm',
+        onPress: () => {
+          if (!isLogin) {
+            navigationRef.navigate('Login');
+          } else {
+            navigationRef.navigate('GroupList');
+          }
+        },
+      },
+      {
+        icon: 'envelope-o',
+        title: 'Liên hệ',
+        onPress: () => Linking.openURL('mailto:mydaily203@gmail.com'),
+      },
+    ],
+    [isLogin],
+  );
   return (
     <View style={styles.container}>
       {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}> */}
       <View style={styles.buttonCont}>
-        {BUTTONS?.map((button: TButton, index: number) => {
+        {buttons?.map((button: TButton, index: number) => {
           return (
             <View key={index} style={styles.button}>
               <AppRoundedButton onPress={button.onPress}>
