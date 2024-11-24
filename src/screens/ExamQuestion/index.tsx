@@ -1,16 +1,15 @@
-import {View, StyleSheet, ActivityIndicator, KeyboardAvoidingView, ImageBackground, StatusBar} from 'react-native';
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
-import {navigationRef} from '@navigation';
-import {AppHeader, AppModal, AppView} from '@components';
-import {Question, SchoolScore, BottomButton} from './components';
-import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
+import { AppHeader, AppModal } from '@components';
+import { IExamResponse, TExam } from '@interfaces/DTO';
+import { navigationRef } from '@navigation';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
-import {IExamResponse, TExam} from '@interfaces/DTO';
-import {QUERY_KEY} from '@utils/constants';
-import {initialSubjects} from './components/SchoolScore/constant';
-import {TSubject, TAnswer, vs, COLORS, height} from '@utils';
-import {KEY_STORE, storage} from '@store';
+import { KEY_STORE, storage } from '@store';
+import { DefaultError, useMutation, useQuery } from '@tanstack/react-query';
+import { COLORS, TAnswer, TSubject, vs } from '@utils';
+import { QUERY_KEY } from '@utils/constants';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, ImageBackground, StatusBar, StyleSheet, View } from 'react-native';
+import { BottomButton, Question, SchoolScore } from './components';
 
 type TExamInfo = {
   headerTitle: string;
@@ -30,9 +29,9 @@ const ExamQuestion = () => {
       ['EQ', []],
     ]),
   );
-  const {data, isLoading} = useQuery<unknown, DefaultError, IExamResponse>({
+  const { data, isLoading } = useQuery<unknown, DefaultError, IExamResponse>({
     queryKey: [QUERY_KEY.EXAMS],
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     queryFn: () => api(ENDPOINTS_URL.EXAM.GET_EXAM, 'GET', {}),
   });
 
@@ -56,7 +55,8 @@ const ExamQuestion = () => {
         },
       };
       const currentListResult = storage.getString(KEY_STORE.LIST_RESULT);
-      if (currentListResult) storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers, ...JSON.parse(currentListResult)]));
+      if (currentListResult)
+        storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers, ...JSON.parse(currentListResult)]));
       else {
         storage.set(KEY_STORE.LIST_RESULT, JSON.stringify([storedUserAnswers]));
       }
@@ -65,7 +65,18 @@ const ExamQuestion = () => {
         userAnswers,
         schoolScoreResults: data.data,
       });
-      setAnswers;
+      setAnswers(
+        new Map([
+          ['R', []],
+          ['I', []],
+          ['A', []],
+          ['S', []],
+          ['E', []],
+          ['C', []],
+          ['IQ', []],
+          ['EQ', []],
+        ]),
+      );
     },
   });
 
@@ -76,17 +87,17 @@ const ExamQuestion = () => {
   const [errorNotAnswer, setErrorNotAnswer] = useState(false);
   const [subjects, setSubjects] = useState<Record<string, TSubject>>({});
   const isContinue = useRef(false);
-  const IQ = useMemo(() => data?.data?.find(exam => exam.type === 'IQ')?.questions || [], [data?.data]);
-  const EQ = useMemo(() => data?.data?.find(exam => exam.type === 'EQ')?.questions || [], [data?.data]);
+  const IQ = useMemo(() => data?.data?.find((exam) => exam.type === 'IQ')?.questions || [], [data?.data]);
+  const EQ = useMemo(() => data?.data?.find((exam) => exam.type === 'EQ')?.questions || [], [data?.data]);
   const IQ_EQ_List = useMemo(() => [...IQ, ...EQ], [data?.data]);
-  const HOLLAND = useMemo(() => data?.data?.filter(exam => exam.type !== 'IQ' && exam.type !== 'EQ') || [], [data?.data]);
+  const HOLLAND = useMemo(() => data?.data?.filter((exam) => exam.type !== 'IQ' && exam.type !== 'EQ') || [], [data?.data]);
   const totalExams = useMemo(() => HOLLAND?.length + IQ_EQ_List?.length || 1, [data?.data]);
   const questionIndex = useMemo(() => questionNumber - HOLLAND?.length, [questionNumber, HOLLAND?.length]);
 
   const onUpdateAnswer = () => {
     const currentAnswer = answers;
     if (examInfo.examType === 'EQ' || examInfo.examType === 'IQ') {
-      let tmp = currentAnswer.get(examInfo.examType)!;
+      const tmp = currentAnswer.get(examInfo.examType)!;
       const index = examInfo.examType === 'IQ' ? questionIndex : questionIndex - IQ?.length;
       tmp[index] = selections[0];
       currentAnswer.set(examInfo.examType, tmp);
@@ -140,12 +151,12 @@ const ExamQuestion = () => {
       };
     }
     if (questionNumber < HOLLAND?.length + IQ?.length) {
-      return {headerTitle: 'Kiểm tra trí tuệ', examType: 'IQ'};
+      return { headerTitle: 'Kiểm tra trí tuệ', examType: 'IQ' };
     }
     if (questionNumber < totalExams) {
-      return {headerTitle: 'Kiểm tra cảm xúc', examType: 'EQ'};
+      return { headerTitle: 'Kiểm tra cảm xúc', examType: 'EQ' };
     }
-    return {headerTitle: 'Điểm trung bình', examType: 'SchoolScore'};
+    return { headerTitle: 'Điểm trung bình', examType: 'SchoolScore' };
   }, [questionNumber]);
 
   useLayoutEffect(() => {
@@ -181,7 +192,9 @@ const ExamQuestion = () => {
     return userAnswers;
   };
   return (
-    <ImageBackground source={require('@assets/images/background_1.png')} style={{flex: 1, paddingTop: StatusBar.currentHeight ?? 44}}>
+    <ImageBackground
+      source={require('@assets/images/background_1.png')}
+      style={{ flex: 1, paddingTop: StatusBar.currentHeight ?? 44 }}>
       <AppHeader
         title={examInfo.headerTitle}
         onPress={() => {

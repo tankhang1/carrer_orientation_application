@@ -1,57 +1,42 @@
+import React, { forwardRef } from 'react';
 import {
-  ImageBackground,
-  StyleSheet,
-  ScrollView,
-  View,
-  StyleProp,
-  ViewStyle,
-  ListRenderItemInfo,
-  FlatListProps,
   FlatList,
+  FlatListProps,
+  ImageBackground,
+  ListRenderItemInfo,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
 } from 'react-native';
-import React, {forwardRef} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type TAppView<TData> = {
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   data?: TData[];
-  renderItem?: (
-    info: ListRenderItemInfo<TData>,
-  ) => React.ReactElement<
-    any,
-    string | React.JSXElementConstructor<any>
-  > | null;
+  renderItem?: (info: ListRenderItemInfo<TData>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
 } & Partial<FlatListProps<TData>>;
 export type TAppViewRef = {
   scrollToItem: (index: number) => void;
 };
 const AppView = forwardRef<TAppViewRef, TAppView<any>>(
   <TData,>(
-    {children, style, data = [], renderItem, ...FlatlistProps}: TAppView<TData>,
+    { children, style, data = [], renderItem, ...FlatlistProps }: TAppView<TData>,
     ref: React.ForwardedRef<TAppViewRef>,
   ) => {
     return (
-      <ImageBackground
-        source={require('@assets/images/background_1.png')}
-        resizeMode="cover"
-        style={styles.wrapper}>
+      <ImageBackground source={require('@assets/images/background_1.png')} resizeMode='cover' style={styles.wrapper}>
         <SafeAreaView style={[styles.container, style]}>
-          <GestureHandlerRootView>
+          <GestureHandlerRootView style={{ flex: 1 }}>
             {data?.length === 0 ? (
-              <ScrollView
-                removeClippedSubviews
-                renderToHardwareTextureAndroid
-                {...FlatlistProps}>
-                <View>{children && children}</View>
+              <ScrollView removeClippedSubviews renderToHardwareTextureAndroid {...FlatlistProps} style={{ flex: 1 }}>
+                <View style={{ flex: 1 }}>{children && children}</View>
               </ScrollView>
             ) : (
-              <FlatList
-                data={data}
-                renderItem={renderItem}
-                {...FlatlistProps}
-              />
+              <FlatList data={data} renderItem={renderItem} {...FlatlistProps} />
             )}
           </GestureHandlerRootView>
         </SafeAreaView>

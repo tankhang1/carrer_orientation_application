@@ -25,6 +25,10 @@ export default [
     rules: {
       '@typescript-eslint/no-require-imports': 'off', // Ensure this takes precedence,
       'react-hooks/exhaustive-deps': ['warn'],
+      'react/display-name': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'react/no-children-prop': 'off',
     },
   },
 ];

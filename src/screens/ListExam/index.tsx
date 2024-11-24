@@ -1,47 +1,37 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
-import {navigationRef} from '@navigation';
-import AppView from '@components/AppView';
-import {COLORS, FONT, s, vs} from '@utils/config';
+import { AppButton } from '@components';
 import AppHeader from '@components/AppHeader';
 import AppImage from '@components/AppImage';
+import AppView from '@components/AppView';
+import { navigationRef } from '@navigation';
+import { COLORS, FONT, s, vs } from '@utils/config';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import ExamCard from './components/ExamCard';
-import {AppButton} from '@components';
 
 const ListExam = () => {
   return (
     <>
       <AppView>
-        <AppHeader title="Danh sách bài kiểm tra" />
+        <AppHeader title='Danh sách bài kiểm tra' />
         <View style={styles.container}>
-          <ExamCard
-            name="IQ"
-            image={require('@assets/images/IQ_background.jpg')}
-          />
-          <ExamCard
-            name="EQ"
-            image={require('@assets/images/EQ_background.jpg')}
-            namePosition="right"
-          />
+          <ExamCard name='IQ' image={require('@assets/images/IQ_background.jpg')} />
+          <ExamCard name='EQ' image={require('@assets/images/EQ_background.jpg')} namePosition='right' />
           <View style={styles.card}>
             <Text style={[FONT.title.XL]}>{`Tính cách \n Holland`}</Text>
-            <AppImage
-              source={require('@assets/images/Holland_background.png')}
-              style={styles.image}
-            />
+            <AppImage source={require('@assets/images/Holland_background.png')} style={styles.image} />
           </View>
           <ExamCard
-            name="Điểm trung bình"
+            name='Điểm trung bình'
             image={require('@assets/images/school.jpg')}
-            namePosition="right"
-            titleStyle={{fontSize: s(30), color: COLORS.red}}
+            namePosition='right'
+            titleStyle={{ fontSize: s(30), color: COLORS.red }}
           />
         </View>
       </AppView>
       <View style={styles.bottomSheet}>
         <AppButton
-          label="Bắt đầu kiểm tra"
-          buttonStyle={{width: s(307)}}
+          label='Bắt đầu kiểm tra'
+          buttonStyle={{ width: s(307) }}
           onPress={() => navigationRef.navigate('ExamQuestion')}
         />
       </View>

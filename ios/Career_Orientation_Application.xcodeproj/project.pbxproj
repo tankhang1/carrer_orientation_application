@@ -15,8 +15,7 @@
 		24FF972225BF97BB07678C03 /* libPods-Career_Orientation_Application.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F54825B4438E63C53107ADDA /* libPods-Career_Orientation_Application.a */; };
 		2ADF578214454DAEA8F15FEC /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F36DEDE089FA428195465440 /* BootSplash.storyboard */; };
 		363483C139CAD3CDE3754843 /* libPods-Career_Orientation_Application-Career_Orientation_ApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3A61FA2B594B91C98BF42A /* libPods-Career_Orientation_Application-Career_Orientation_ApplicationTests.a */; };
-		452444EE2CA99E2400668468 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 452444ED2CA99E2400668468 /* GoogleService-Info.plist */; };
-		452444EF2CA99E2400668468 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 452444ED2CA99E2400668468 /* GoogleService-Info.plist */; };
+		4582A33B2CF2CF99000DE503 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4582A33A2CF2CF99000DE503 /* GoogleService-Info.plist */; };
 		45C8332A2BCC2579009554C6 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A97C787F2E384357BA88C58C /* Raleway-Bold.ttf */; };
 		45C8332B2BCC2579009554C6 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BBC36F6CADA740B9A614920A /* Raleway-Medium.ttf */; };
 		45C8332C2BCC2579009554C6 /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99A2A092ABB54E8E95915B8B /* Raleway-Regular.ttf */; };
@@ -50,7 +49,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Career_Orientation_Application/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Career_Orientation_Application/main.m; sourceTree = "<group>"; };
 		25C5C35DD5BCB8CA188227C9 /* Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests.release.xcconfig"; path = "Target Support Files/Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests/Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests.release.xcconfig"; sourceTree = "<group>"; };
-		452444ED2CA99E2400668468 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4582A33A2CF2CF99000DE503 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../materials/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4EABB039DF8741687BD051BE /* Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests.debug.xcconfig"; path = "Target Support Files/Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests/Pods-Career_Orientation_Application-Career_Orientation_ApplicationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		67221B005DE543028753EDB5 /* Raleway-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-SemiBold.ttf"; path = "../src/assets/fonts/Raleway-SemiBold.ttf"; sourceTree = "<group>"; };
 		7E3A61FA2B594B91C98BF42A /* libPods-Career_Orientation_Application-Career_Orientation_ApplicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Career_Orientation_Application-Career_Orientation_ApplicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,7 +117,7 @@
 		13B07FAE1A68108700A75B9A /* Career_Orientation_Application */ = {
 			isa = PBXGroup;
 			children = (
-				452444ED2CA99E2400668468 /* GoogleService-Info.plist */,
+				4582A33A2CF2CF99000DE503 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -276,7 +275,6 @@
 				45C8332C2BCC2579009554C6 /* Raleway-Regular.ttf in Resources */,
 				45C8332D2BCC2579009554C6 /* Raleway-SemiBold.ttf in Resources */,
 				45C8332E2BCC2579009554C6 /* Raleway-ExtraBold.ttf in Resources */,
-				452444EF2CA99E2400668468 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,11 +284,11 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				452444EE2CA99E2400668468 /* GoogleService-Info.plist in Resources */,
 				04C809031A2A430C81241900 /* Raleway-Bold.ttf in Resources */,
 				CD354F9E475D4ACE8DE36A67 /* Raleway-Medium.ttf in Resources */,
 				D946D73192654F2E9CA8B3C3 /* Raleway-Regular.ttf in Resources */,
 				DB3D84EB186A499B957491EE /* Raleway-SemiBold.ttf in Resources */,
+				4582A33B2CF2CF99000DE503 /* GoogleService-Info.plist in Resources */,
 				74F6AA443EF84AA48C817E15 /* Raleway-ExtraBold.ttf in Resources */,
 				2ADF578214454DAEA8F15FEC /* BootSplash.storyboard in Resources */,
 			);

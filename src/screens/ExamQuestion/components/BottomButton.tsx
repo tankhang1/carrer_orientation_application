@@ -1,29 +1,24 @@
-import {View, StyleSheet} from 'react-native';
-import React from 'react';
-import {COLORS, s, vs} from '@utils/config';
+import { AppProgressBar } from '@components';
 import AppRoundedButton from '@components/AppRoundedButton';
+import { COLORS, s, vs } from '@utils/config';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {AppProgressBar} from '@components';
 type TBottomButton = {
   onNext?: () => void;
   onPrev?: () => void;
   maxValue?: number;
   currentValue?: number;
 };
-const BottomButton = ({
-  onNext,
-  onPrev,
-  maxValue = 1,
-  currentValue = 0,
-}: TBottomButton) => {
+const BottomButton = ({ onNext, onPrev, maxValue = 1, currentValue = 0 }: TBottomButton) => {
   return (
     <View style={styles.container}>
-      <AppRoundedButton type="fill" onPress={onPrev}>
-        <Entypo name="chevron-left" size={s(20)} color={COLORS.white} />
+      <AppRoundedButton type='fill' onPress={onPrev}>
+        <Entypo name='chevron-left' size={s(20)} color={COLORS.white} />
       </AppRoundedButton>
       <AppProgressBar maxValue={maxValue} progress={currentValue} />
-      <AppRoundedButton type="fill" onPress={onNext}>
-        <Entypo name="chevron-right" size={s(20)} color={COLORS.white} />
+      <AppRoundedButton type='fill' onPress={onNext}>
+        <Entypo name='chevron-right' size={s(20)} color={COLORS.white} />
       </AppRoundedButton>
     </View>
   );

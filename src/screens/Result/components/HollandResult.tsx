@@ -1,29 +1,23 @@
-import {View, StyleSheet} from 'react-native';
-import React from 'react';
-import {COLORS, s, vs, width} from '@utils/config';
-import Chart from './Chart';
-import Title from './Title';
-import {TExam} from '@interfaces/DTO';
-import {useSharedValue} from 'react-native-reanimated';
-import {TResults} from '@utils';
 import AppCardCarousel from '@components/AppCardCarousel';
 import CardCarouseltItem from '@components/AppCardCarousel/components/CardCarouselItem';
 import AppImage from '@components/AppImage';
+import { TExam } from '@interfaces/DTO';
+import { navigationRef } from '@navigation';
+import { TResults } from '@utils';
+import { COLORS, s, vs, width } from '@utils/config';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 import RenderHTML from 'react-native-render-html';
-import {navigationRef} from '@navigation';
+import Chart from './Chart';
+import Title from './Title';
 type THollandResult = {
   answers: Record<TExam, string>;
   results: TResults[];
 };
-const HollandResult = ({answers, results}: THollandResult) => {
+const HollandResult = ({ answers, results }: THollandResult) => {
   const animatedScroll = useSharedValue(0);
-  const renderItem = ({
-    item: result,
-    index,
-  }: {
-    item: TResults;
-    index: number;
-  }) => {
+  const renderItem = ({ item: result, index }: { item: TResults; index: number }) => {
     if (result?.type !== 'IQ' && result?.type !== 'EQ') {
       return (
         <CardCarouseltItem
@@ -39,23 +33,19 @@ const HollandResult = ({answers, results}: THollandResult) => {
           children={
             <>
               <View style={styles.imageContainer}>
-                <AppImage
-                  source={{uri: result.resultContents[0].image}}
-                  style={styles.image}
-                />
+                <AppImage source={{ uri: result.resultContents[0].image }} style={styles.image} />
               </View>
               {result?.resultContents[0] && (
                 <View>
                   <RenderHTML
                     source={{
-                      html: result?.resultContents[0]
-                        .content as unknown as string,
+                      html: result?.resultContents[0].content as unknown as string,
                     }}
                     contentWidth={200}
                     enableExperimentalMarginCollapsing={true}
                     tagsStyles={{
-                      article: {color: COLORS.black},
-                      h3: {alignSelf: 'center'},
+                      article: { color: COLORS.black },
+                      h3: { alignSelf: 'center' },
                     }}
                   />
                 </View>
@@ -71,16 +61,11 @@ const HollandResult = ({answers, results}: THollandResult) => {
   console.log('lenghth', results?.length);
   return (
     <View style={styles.container}>
-      <Title title="Holland" />
-      <View style={{overflow: 'hidden'}}>
+      <Title title='Holland' />
+      <View style={{ overflow: 'hidden' }}>
         <Chart answes={answers} />
       </View>
-      <AppCardCarousel
-        data={results}
-        renderItem={renderItem}
-        animatedScroll={animatedScroll}
-        snapToInterval={width * 0.8}
-      />
+      <AppCardCarousel data={results} renderItem={renderItem} animatedScroll={animatedScroll} snapToInterval={width * 0.8} />
     </View>
   );
 };
