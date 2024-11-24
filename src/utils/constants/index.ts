@@ -1,4 +1,4 @@
-import {QueryClient} from '@tanstack/query-core';
+import { QueryClient } from '@tanstack/query-core';
 
 const QUERY_KEY = {
   EXAMS: 'EXAMS',
@@ -14,9 +14,10 @@ const QUERY_KEY = {
   ANNONYMOUS_TOKEN: 'ANNONYMOUS_TOKEN',
   AUTH: 'AUTH',
   SIGN_UP: 'SIGN_UP',
+  DESIGN_EXAM: 'DESIGN_EXAM',
 };
 export const queryClient = new QueryClient();
-export {QUERY_KEY};
+export { QUERY_KEY };
 export const Schema = {
   noEmpty: 'Vui lòng nhập thông tin!',
   minPassword: 'Password phải bao gồm ít nhất 6 ký tự',

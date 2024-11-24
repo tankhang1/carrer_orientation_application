@@ -1,8 +1,8 @@
-import {UserData} from '@interfaces/DTO/Auth/auth';
-import {MMKVStorage} from '@store';
-import {create} from 'zustand';
-import {persist, createJSONStorage} from 'zustand/middleware';
-import {getLocalAccessToken, removeLocalAccessToken} from './local-storage.store';
+import { UserData } from '@interfaces/DTO/Auth/auth';
+import { MMKVStorage } from '@store';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { getLocalAccessToken } from './local-storage.store';
 
 type AuthState = {
   isLogin: boolean;
@@ -13,16 +13,16 @@ type AuthState = {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    set => ({
+    (set) => ({
       isLogin: false,
       accessToken: getLocalAccessToken(),
       userInfo: null,
-      setAuthStore: userInfo => {
-        set({userInfo, isLogin: true});
+      setAuthStore: (userInfo) => {
+        set({ userInfo, isLogin: true });
       },
       resetAuthStore: () => {
-        removeLocalAccessToken();
-        set({userInfo: null, isLogin: false});
+        //removeLocalAccessToken();
+        set({ userInfo: null, isLogin: false });
       },
     }),
     {

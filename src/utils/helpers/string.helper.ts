@@ -1,1 +1,1 @@
-export const isContainsHTMLTags = (str: string) => /<\/?[a-z][\s\S]*>/i.test(str);
+export const isContainsHTMLTags = (str?: string) => (!!str ? /<\/?[a-z][\s\S]*>/i.test(str) : false);

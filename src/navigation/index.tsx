@@ -6,6 +6,7 @@ import SignUp from '@screens/Auth/SignUp';
 import Chatbot from '@screens/Chatbot';
 import Dictionary from '@screens/Dictionary';
 import DictonaryDetail from '@screens/DictionaryDetail';
+import DoExamScreen from '@screens/DoExam/DoExamScreen';
 import ExamQuestion from '@screens/ExamQuestion';
 import GroupDetailScreen from '@screens/GroupDetail/GroupDetailScreen';
 import GroupListScreen from '@screens/GroupListScreen/GroupListScreen';
@@ -50,6 +51,7 @@ const AppNavigation = () => {
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='GroupList' component={GroupListScreen} />
         <Stack.Screen name='GroupDetail' component={GroupDetailScreen} />
+        <Stack.Screen name='DoExam' component={DoExamScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

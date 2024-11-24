@@ -1,18 +1,18 @@
-import {View, StyleSheet, Image} from 'react-native';
-import React, {useEffect} from 'react';
-import {COLORS, width} from '@utils/config';
-import LottieView from 'lottie-react-native';
-import {navigationRef} from '@navigation';
-import {DefaultError, useQuery} from '@tanstack/react-query';
-import {IAnnonymousToken, IAnnonymousTokenResponse} from '@interfaces/DTO/Auth/auth';
-import {QUERY_KEY} from '@utils';
+import { IAnnonymousToken, IAnnonymousTokenResponse } from '@interfaces/DTO/Auth/auth';
+import { navigationRef } from '@navigation';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
+import { KEY_STORE, storage } from '@store';
+import { DefaultError, useQuery } from '@tanstack/react-query';
+import { QUERY_KEY } from '@utils';
+import { COLORS, width } from '@utils/config';
+import LottieView from 'lottie-react-native';
+import React, { useEffect } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import {KEY_STORE, storage} from '@store';
 const SplashScreen = () => {
-  const {data} = useQuery<IAnnonymousToken, DefaultError, IAnnonymousTokenResponse>({
-    queryKey: [QUERY_KEY.NEWS],
+  const { data } = useQuery<IAnnonymousToken, DefaultError, IAnnonymousTokenResponse>({
+    queryKey: [QUERY_KEY.AUTH],
     //@ts-expect-error no check
     queryFn: async () =>
       api(ENDPOINTS_URL.AUTH.GET_ANNONYMOUS_TOKEN, 'GET', {
@@ -34,8 +34,8 @@ const SplashScreen = () => {
   }, [data?.data]);
   return (
     <View style={styles.container}>
-      <LottieView source={require('@assets/images/clover.json')} autoPlay loop style={styles.lottie} resizeMode="contain" />
-      <Image source={require('@assets/images/slogan.png')} style={styles.image} resizeMode="contain" />
+      <LottieView source={require('@assets/images/clover.json')} autoPlay loop style={styles.lottie} resizeMode='contain' />
+      <Image source={require('@assets/images/slogan.png')} style={styles.image} resizeMode='contain' />
     </View>
   );
 };

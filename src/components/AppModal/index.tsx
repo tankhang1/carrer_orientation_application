@@ -1,16 +1,10 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageSourcePropType,
-  Pressable,
-} from 'react-native';
-import React from 'react';
-import {COLORS, FONT, s, vs, width} from '@utils/config';
-import AppImage from '@components/AppImage';
-import {Source} from 'react-native-fast-image';
 import AppButton from '@components/AppButton';
-import Animated, {SlideInDown} from 'react-native-reanimated';
+import AppImage from '@components/AppImage';
+import { COLORS, FONT, s, vs, width } from '@utils/config';
+import React from 'react';
+import { ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Source } from 'react-native-fast-image';
+import Animated, { SlideInDown } from 'react-native-reanimated';
 type TAppModal = {
   title?: string;
   visible?: boolean;
@@ -19,41 +13,45 @@ type TAppModal = {
   onCancel?: () => void;
   onAccept?: () => void;
   disableBackDrop?: boolean;
+  cancelText?: string;
+  confirmText?: string;
 };
 const AppModal = ({
   title = '',
   image = require('@assets/images/question.jpeg'),
-  onAccept = () => {},
-  onCancel = () => {},
+  onAccept,
+  onCancel,
   visible = false,
   setVisible = () => {},
   disableBackDrop = false,
+  confirmText,
+  cancelText,
 }: TAppModal) => {
   if (!visible) return;
   return (
-    <View style={[StyleSheet.absoluteFill, styles.container]}>
-      <Pressable
-        disabled={disableBackDrop}
-        style={styles.backdrop}
-        onPress={() => setVisible(false)}
-      />
+    <View style={[StyleSheet.absoluteFill, styles.container, { zIndex: 9999 }]}>
+      <Pressable disabled={disableBackDrop} style={styles.backdrop} onPress={() => setVisible(false)} />
       <Animated.View style={styles.card} entering={SlideInDown.delay(100)}>
         {title && <Text style={styles.title}>{title}</Text>}
-        <AppImage source={image} style={styles.image} resizeMode="contain" />
+        <AppImage source={image} style={styles.image} resizeMode='contain' />
         <View style={styles.buttonContainer}>
-          <AppButton
-            label="Bỏ qua"
-            type="outline"
-            buttonStyle={{paddingVertical: vs(8)}}
-            labelStyle={FONT.content.M.semiBold}
-            onPress={onCancel}
-          />
-          <AppButton
-            label="Tiếp tục"
-            buttonStyle={{paddingVertical: vs(10)}}
-            labelStyle={[FONT.content.M.bold, {color: COLORS.white}]}
-            onPress={onAccept}
-          />
+          {!!onCancel && (
+            <AppButton
+              label={cancelText || 'Bỏ qua'}
+              type='outline'
+              buttonStyle={{ paddingVertical: vs(8) }}
+              labelStyle={FONT.content.M.semiBold}
+              onPress={onCancel}
+            />
+          )}
+          {!!onAccept && (
+            <AppButton
+              label={confirmText || 'Tiếp tục'}
+              buttonStyle={{ paddingVertical: vs(10) }}
+              labelStyle={[FONT.content.M.bold, { color: COLORS.white }]}
+              onPress={onAccept}
+            />
+          )}
         </View>
       </Animated.View>
     </View>

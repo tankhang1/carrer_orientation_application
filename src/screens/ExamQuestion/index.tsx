@@ -31,7 +31,6 @@ const ExamQuestion = () => {
   );
   const { data, isLoading } = useQuery<unknown, DefaultError, IExamResponse>({
     queryKey: [QUERY_KEY.EXAMS],
-
     queryFn: () => api(ENDPOINTS_URL.EXAM.GET_EXAM, 'GET', {}),
   });
 

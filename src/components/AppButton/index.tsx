@@ -1,8 +1,18 @@
-import {View, Text, ViewStyle, StyleProp, StyleSheet, TextStyle, ActivityIndicator, InteractionManager, TouchableOpacity} from 'react-native';
+import { COLORS } from '@utils/config/color';
+import { FONT } from '@utils/config/font';
+import { s } from '@utils/config/responsive';
 import React from 'react';
-import {COLORS} from '@utils/config/color';
-import {FONT} from '@utils/config/font';
-import {s} from '@utils/config/responsive';
+import {
+  ActivityIndicator,
+  InteractionManager,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 export type TType = 'fill' | 'outline' | 'transparent' | 'disable';
 
 const BUTTON_BASE_STYLE = {
@@ -93,15 +103,20 @@ const AppButton = ({
   const buttonInitStyle = StyleSheet.flatten([
     styles.container,
     styleBaseOnType,
-    {padding: BUTTON_BASE_SIZE[size]},
-    width && {width},
-    height && {height},
-    {borderRadius},
+    { padding: BUTTON_BASE_SIZE[size] },
+    width && { width },
+    height && { height },
+    { borderRadius },
     buttonStyle,
   ]) as ViewStyle;
 
   const renderMiddle = () => {
-    const labelInitStyle = StyleSheet.flatten([styles.middleContainer, FONT.button.XL, {color: styleBaseOnType?.color}, labelStyle]) as TextStyle;
+    const labelInitStyle = StyleSheet.flatten([
+      styles.middleContainer,
+      FONT.button.XL,
+      { color: styleBaseOnType?.color },
+      labelStyle,
+    ]) as TextStyle;
     return (
       <View>
         {!!label && <Text style={[labelInitStyle]}>{label}</Text>}

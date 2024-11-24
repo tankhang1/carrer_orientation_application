@@ -75,7 +75,7 @@ const AppCard = ({
         <>
           <AppImage source={{ uri: imageUrl }} style={[styles.image, imageStyle]} />
           <View style={[type === 'large' && styles.largeTitle]}>
-            <Text style={[CARD_FONT[type].subTitle, { color: COLORS.grey }, subTitleStyle]}>{subTitle}</Text>
+            {!!subTitle && <Text style={[CARD_FONT[type].subTitle, { color: COLORS.grey }, subTitleStyle]}>{subTitle}</Text>}
             {typeof title === 'string' ? (
               <Text style={[CARD_FONT[type].title, titleStyle]} numberOfLines={4}>
                 {title}
