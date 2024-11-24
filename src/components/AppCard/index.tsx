@@ -1,20 +1,12 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-  TouchableOpacity,
-} from 'react-native';
-import React, {memo} from 'react';
-import {COLORS, FONT, s, width} from '@utils/config';
 import AppImage from '@components/AppImage';
-import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
+import { COLORS, FONT, s, width } from '@utils/config';
+import React, { memo } from 'react';
+import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 type TAppCard = {
   index?: number;
-  imageUrl: string;
-  title?: string;
+  imageUrl?: string;
+  title?: string | React.ReactNode;
   subTitle?: string;
   type?: 'small' | 'large';
   containerStyle?: StyleProp<ViewStyle>;
@@ -23,6 +15,8 @@ type TAppCard = {
   titleStyle?: StyleProp<TextStyle>;
   subTitleStyle?: StyleProp<TextStyle>;
   onPress?: () => void;
+  children?: React.ReactNode;
+  rightSection?: React.ReactNode;
 };
 const CARD_BASE_TYPE = {
   small: {
@@ -58,6 +52,9 @@ const AppCard = ({
   subTitleStyle,
   index,
   onPress,
+  imageStyle,
+  children,
+  rightSection,
 }: TAppCard) => {
   const initStyle = StyleSheet.flatten([
     styles.container,
@@ -70,21 +67,26 @@ const AppCard = ({
       entering={FadeIn.delay((index ?? 0) * 150)}
       exiting={FadeOut}
       style={initStyle}
+      disabled={!onPress}
       onPress={onPress}>
-      <AppImage source={{uri: imageUrl}} style={[styles.image]} />
-      <View style={type === 'large' && styles.largeTitle}>
-        <Text
-          style={[
-            CARD_FONT[type].subTitle,
-            {color: COLORS.grey},
-            subTitleStyle,
-          ]}>
-          {subTitle}
-        </Text>
-        <Text style={[CARD_FONT[type].title, titleStyle]} numberOfLines={4}>
-          {title}
-        </Text>
-      </View>
+      {!!children ? (
+        children
+      ) : (
+        <>
+          <AppImage source={{ uri: imageUrl }} style={[styles.image, imageStyle]} />
+          <View style={[type === 'large' && styles.largeTitle]}>
+            <Text style={[CARD_FONT[type].subTitle, { color: COLORS.grey }, subTitleStyle]}>{subTitle}</Text>
+            {typeof title === 'string' ? (
+              <Text style={[CARD_FONT[type].title, titleStyle]} numberOfLines={4}>
+                {title}
+              </Text>
+            ) : (
+              title
+            )}
+          </View>
+          {!!rightSection && rightSection}
+        </>
+      )}
     </AnimatedTouchable>
   );
 };
@@ -112,9 +114,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   largeTitle: {
-    width: '70%',
+    //width: '70%',
     marginLeft: s(10),
+    flex: 1,
     justifyContent: 'space-between',
+    gap: s(4),
   },
 });
 export default memo(AppCard);

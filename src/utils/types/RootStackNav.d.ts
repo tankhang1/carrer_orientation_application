@@ -1,4 +1,4 @@
-import {TGroup, TSchoolScoreResult} from './metaTypes';
+import { TGroup, TSchoolScoreResult } from './metaTypes';
 
 export type TRootStackNav = {
   SplashScreen: undefined;
@@ -34,4 +34,5 @@ export type TRootStackNav = {
   ForgotPassword: undefined;
   Login: undefined;
   GroupList: undefined;
+  GroupDetail: undefined;
 };
