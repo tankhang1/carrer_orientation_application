@@ -1,5 +1,5 @@
 //const BASE_URL = 'https://career-app-ndt9.onrender.com';
-const BASE_URL = 'http://192.168.1.4:3000';
+const BASE_URL = 'http://192.168.0.101:3000';
 const ENDPOINTS_URL = {
   EXAM: {
     GET_EXAM: '/exams',
@@ -14,6 +14,7 @@ const ENDPOINTS_URL = {
     LOGIN_WITH_SOCIAL: '/accounts/loginWithSocial',
     SIGN_UP: '/accounts',
     FORGOT_PASSWORD: '/accounts/forgotPassword',
+    LIST_MEMBER: '/accounts/account-name',
   },
   NEWS: {
     GET_NEWS: '/news',
@@ -38,6 +39,12 @@ const ENDPOINTS_URL = {
   },
   UPLOAD: {
     UPLOAD_OCR: '/ocr/ocrGemini',
+  },
+  GROUP: {
+    GET_LIST_GROUP_BY_USER_ID: '/accounts/list-group',
+    GET_DETAIL: '/groups',
+    GET_ALL_SELECT: '/groups/select',
+    UPDATE_GROUP: '/groups',
   },
 };
 export { BASE_URL, ENDPOINTS_URL };

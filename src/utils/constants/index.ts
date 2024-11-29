@@ -15,6 +15,9 @@ const QUERY_KEY = {
   AUTH: 'AUTH',
   SIGN_UP: 'SIGN_UP',
   DESIGN_EXAM: 'DESIGN_EXAM',
+  GROUP: 'GROUP',
+  GROUP_SELECT: 'GROUP_SELECT',
+  MEMBER_SELECT: 'MEMBER_SELECT',
 };
 export const queryClient = new QueryClient();
 export { QUERY_KEY };

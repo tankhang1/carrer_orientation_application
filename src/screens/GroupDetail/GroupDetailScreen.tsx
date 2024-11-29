@@ -1,10 +1,18 @@
 import { AppHeader, AppView } from '@components';
 import AppImage from '@components/AppImage';
-import { COLORS, s, vs } from '@utils';
-import React from 'react';
-import { FlatList, ListRenderItemInfo, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { IAccountItem, IExamItem, IGroupResponse } from '@interfaces/DTO/Group/group';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ENDPOINTS_URL } from '@service';
+import api from '@service/api';
+import { DefaultError, useQuery } from '@tanstack/react-query';
+import { COLORS, QUERY_KEY, s, vs } from '@utils';
+import { TRootStackNav } from '@utils/types/RootStackNav';
+import React, { useState } from 'react';
+import { FlatList, ListRenderItemInfo, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
+import ListGroup from './components/ListGroup';
 
 type TAccount = {
   id: string;
@@ -18,34 +26,21 @@ type TExam = {
   status: boolean;
 };
 
-const EXAMS: TExam[] = [
-  {
-    type: 'Online',
-    name: 'Mathematics Final Exam',
-    category: 'Mathematics',
-    status: true, // Active
-  },
-  {
-    type: 'Offline',
-    name: 'Physics Lab Test',
-    category: 'Physics',
-    status: false, // Inactive
-  },
-];
-const MEMBERS: TAccount[] = [
-  {
-    id: '1',
-    name: 'Alice Johnson',
-    email: 'alice.johnson@example.com',
-  },
-  {
-    id: '2',
-    name: 'Bob Smith',
-    email: 'bob.smith@example.com',
-  },
-];
-const GroupDetailScreen = () => {
-  const renderMemberItem = ({ item, index }: ListRenderItemInfo<TAccount>) => {
+type Props = NativeStackScreenProps<TRootStackNav, 'GroupDetail'>;
+const GroupDetailScreen = ({ route }: Props) => {
+  const { id } = route.params;
+  const { data: group } = useQuery<unknown, DefaultError, IGroupResponse>({
+    queryKey: [QUERY_KEY.GROUP, { id }],
+    queryFn: () =>
+      api(ENDPOINTS_URL.GROUP.GET_DETAIL, 'GET', {
+        params: {
+          id: id,
+        },
+      }),
+  });
+
+  const [openAddMemberModal, setOpenAddMemberModal] = useState(false);
+  const renderMemberItem = ({ item, index }: ListRenderItemInfo<IAccountItem>) => {
     return (
       <View key={index} style={styles.memberContainer}>
         <AppImage
@@ -64,7 +59,7 @@ const GroupDetailScreen = () => {
       </View>
     );
   };
-  const renderExamItem = ({ item, index }: ListRenderItemInfo<TExam>) => {
+  const renderExamItem = ({ item, index }: ListRenderItemInfo<IExamItem>) => {
     return (
       <View key={index} style={styles.memberContainer}>
         <AppImage source={{ uri: 'https://cdn-icons-png.flaticon.com/512/8750/8750743.png' }} style={styles.avatar} />
@@ -92,32 +87,50 @@ const GroupDetailScreen = () => {
             source={{ uri: 'https://t3.ftcdn.net/jpg/06/57/85/22/360_F_657852299_5py03y6oH4mrUDyZnf9XxFSFfrjcqAzP.jpg' }}
           />
           <View style={styles.groupInfo}>
-            <Text style={styles.groupTitle}>Đoàn Tấn Khang</Text>
-            <Text style={styles.groupTitle}>Số lượng thành viên: 8 người</Text>
-            <View style={styles.badge}>
-              <Text style={styles.badgeContent}>Đang hoạt động</Text>
-            </View>
+            <Text style={styles.groupTitle}>{group?.data?.owner?.name}</Text>
+            <Text style={styles.groupTitle}>Số lượng thành viên: {group?.data?.members?.length} người</Text>
+            {group?.data?.status ? (
+              <View style={styles.badge}>
+                <Text style={styles.badgeContent}>Đang hoạt động</Text>
+              </View>
+            ) : (
+              <View
+                style={[styles.badge, group?.data?.status ? { backgroundColor: COLORS.green } : { backgroundColor: COLORS.red }]}>
+                <Text style={styles.badgeContent}>Tạm dừng hoạt động</Text>
+              </View>
+            )}
           </View>
         </View>
         <View style={styles.body}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Danh sách thành viên</Text>
-            <TouchableOpacity style={styles.addNewButton}>
+            <TouchableOpacity style={styles.addNewButton} onPress={() => setOpenAddMemberModal(true)}>
               <AntDesign name='plus' size={s(18)} color={COLORS.green} />
               <Text style={styles.addNewLabel}>Thêm mới</Text>
             </TouchableOpacity>
           </View>
-          <FlatList data={MEMBERS} renderItem={renderMemberItem} contentContainerStyle={{ gap: 10 }} />
+          <FlatList data={group?.data?.members} renderItem={renderMemberItem} contentContainerStyle={{ gap: 10 }} />
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Danh sách bài kiểm tra</Text>
-            <TouchableOpacity style={styles.addNewButton}>
-              <AntDesign name='plus' size={s(18)} color={COLORS.green} />
-              <Text style={styles.addNewLabel}>Thêm mới</Text>
-            </TouchableOpacity>
           </View>
-          <FlatList data={EXAMS} renderItem={renderExamItem} contentContainerStyle={{ gap: 10 }} />
+          <FlatList data={group?.data?.exams} renderItem={renderExamItem} contentContainerStyle={{ gap: 10 }} />
         </View>
       </AppView>
+      <Modal visible={openAddMemberModal} onRequestClose={() => setOpenAddMemberModal(false)} statusBarTranslucent>
+        <SafeAreaView style={styles.modalOverall}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Thêm mới thành viên</Text>
+            <TouchableOpacity hitSlop={10} onPress={() => setOpenAddMemberModal(false)}>
+              <Feather name='x' size={24} color={'black'} />
+            </TouchableOpacity>
+          </View>
+          <ListGroup
+            members={group?.data?.members || []}
+            groupId={group?.data?._id || ''}
+            onBack={() => setOpenAddMemberModal(false)}
+          />
+        </SafeAreaView>
+      </Modal>
     </React.Fragment>
   );
 };
@@ -202,5 +215,22 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
   deleteButton: {},
+  modalOverall: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+    paddingHorizontal: s(16),
+    paddingTop: vs(10),
+    gap: vs(10),
+  },
+
+  modalTitle: {
+    fontSize: s(18),
+    color: COLORS.black,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 });
 export default GroupDetailScreen;

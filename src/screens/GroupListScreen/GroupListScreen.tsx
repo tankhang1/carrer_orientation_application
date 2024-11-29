@@ -1,11 +1,11 @@
 import { AppCard, AppHeader, AppView } from '@components';
-import { IGroup } from '@interfaces/DTO/Group/group';
+import { IListGroup, IListGroupResponse } from '@interfaces/DTO/Group/group';
 import { navigationRef } from '@navigation';
 import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
 import { useAuthStore } from '@store/auth.store';
-import { useMutation } from '@tanstack/react-query';
-import { COLORS, FONT, s, vs, width } from '@utils';
+import { DefaultError, useMutation, useQuery } from '@tanstack/react-query';
+import { COLORS, FONT, QUERY_KEY, s, vs, width } from '@utils';
 import { EROLE } from '@utils/enum/user.enum';
 import React from 'react';
 import { Button, ListRenderItemInfo, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -47,22 +47,32 @@ const GroupListScreen = () => {
       navigationRef.navigate('HomeScreen');
     },
   });
+  const { data: groups } = useQuery<unknown, DefaultError, IListGroupResponse>({
+    queryKey: [QUERY_KEY.GROUP],
+    queryFn: () =>
+      api(ENDPOINTS_URL.GROUP.GET_LIST_GROUP_BY_USER_ID, 'GET', {
+        params: {
+          userId: userInfo?.id,
+        },
+      }),
+  });
+  console.log(userInfo?.id);
 
   // METHODS
   const handleLogout = async () => {
     mutate();
   };
 
-  const renderGroupItem = ({ item, index }: ListRenderItemInfo<IGroup>) => {
+  const renderGroupItem = ({ item, index }: ListRenderItemInfo<IListGroup>) => {
     return (
       <View key={index}>
         <AppCard
           containerStyle={[styles.card, { alignSelf: 'center' }]}
           type='large'
           imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMAkWsip8bmdBWfZ8qBfO1Nccf-Se0JUpoq6GhO09oKq5ctxB0FwyvBwwfFmQpMvEZkzI&usqp=CAU'
-          subTitle={item.ownerName}
+          subTitle={item.owner.name}
           title={item.groupName}
-          onPress={() => navigationRef?.navigate('GroupDetail')}
+          onPress={() => navigationRef?.navigate('GroupDetail', { id: item._id })}
         />
       </View>
     );
@@ -71,8 +81,9 @@ const GroupListScreen = () => {
   return (
     <React.Fragment>
       <AppView
-        data={GROUPS}
+        data={groups?.data}
         renderItem={renderGroupItem}
+        ListEmptyComponent={<Text>21312</Text>}
         ListHeaderComponent={
           <>
             <View style={styles.header}>

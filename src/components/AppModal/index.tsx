@@ -4,6 +4,7 @@ import { COLORS, FONT, s, vs, width } from '@utils/config';
 import React from 'react';
 import { ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Source } from 'react-native-fast-image';
+import { Portal } from 'react-native-portalize';
 import Animated, { SlideInDown } from 'react-native-reanimated';
 type TAppModal = {
   title?: string;
@@ -29,32 +30,34 @@ const AppModal = ({
 }: TAppModal) => {
   if (!visible) return;
   return (
-    <View style={[StyleSheet.absoluteFill, styles.container, { zIndex: 9999 }]}>
-      <Pressable disabled={disableBackDrop} style={styles.backdrop} onPress={() => setVisible(false)} />
-      <Animated.View style={styles.card} entering={SlideInDown.delay(100)}>
-        {title && <Text style={styles.title}>{title}</Text>}
-        <AppImage source={image} style={styles.image} resizeMode='contain' />
-        <View style={styles.buttonContainer}>
-          {!!onCancel && (
-            <AppButton
-              label={cancelText || 'Bỏ qua'}
-              type='outline'
-              buttonStyle={{ paddingVertical: vs(8) }}
-              labelStyle={FONT.content.M.semiBold}
-              onPress={onCancel}
-            />
-          )}
-          {!!onAccept && (
-            <AppButton
-              label={confirmText || 'Tiếp tục'}
-              buttonStyle={{ paddingVertical: vs(10) }}
-              labelStyle={[FONT.content.M.bold, { color: COLORS.white }]}
-              onPress={onAccept}
-            />
-          )}
-        </View>
-      </Animated.View>
-    </View>
+    <Portal>
+      <View style={[StyleSheet.absoluteFill, styles.container, { zIndex: 9999 }]}>
+        <Pressable disabled={disableBackDrop} style={styles.backdrop} onPress={() => setVisible(false)} />
+        <Animated.View style={styles.card} entering={SlideInDown.delay(100)}>
+          {title && <Text style={styles.title}>{title}</Text>}
+          <AppImage source={image} style={styles.image} resizeMode='contain' />
+          <View style={styles.buttonContainer}>
+            {!!onCancel && (
+              <AppButton
+                label={cancelText || 'Bỏ qua'}
+                type='outline'
+                buttonStyle={{ paddingVertical: vs(8) }}
+                labelStyle={FONT.content.M.semiBold}
+                onPress={onCancel}
+              />
+            )}
+            {!!onAccept && (
+              <AppButton
+                label={confirmText || 'Tiếp tục'}
+                buttonStyle={{ paddingVertical: vs(10) }}
+                labelStyle={[FONT.content.M.bold, { color: COLORS.white }]}
+                onPress={onAccept}
+              />
+            )}
+          </View>
+        </Animated.View>
+      </View>
+    </Portal>
   );
 };
 const styles = StyleSheet.create({

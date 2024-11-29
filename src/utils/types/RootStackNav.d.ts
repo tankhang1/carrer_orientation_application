@@ -34,7 +34,9 @@ export type TRootStackNav = {
   ForgotPassword: undefined;
   Login: undefined;
   GroupList: undefined;
-  GroupDetail: undefined;
+  GroupDetail: {
+    id: string;
+  };
   DoExam: {
     examId: string;
   };

@@ -1,4 +1,4 @@
-import {IResponse} from '..';
+import { IResponse } from '..';
 interface PermissionDetails {
   create: boolean;
   edit: boolean;
@@ -35,6 +35,11 @@ export interface SignUpFormData {
   role: string;
   deviceId: string;
 }
+export interface MemberSelectData {
+  _id: string;
+  email: string;
+  name: string;
+}
 export interface IAnnonymousToken {
   token: string;
 }
@@ -49,4 +54,8 @@ export interface ILoginResponse extends IResponse {
 
 export interface ISignUpResponse extends IResponse {
   data: any;
+}
+
+export interface IMemberSelectResponse extends IResponse {
+  data: MemberSelectData[];
 }

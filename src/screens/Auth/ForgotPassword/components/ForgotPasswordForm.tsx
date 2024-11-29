@@ -1,17 +1,16 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-import {useFormik} from 'formik';
-import {ForgotPasswordInput, forgotPasswordSchema} from '@schemas/forgot-password.schema';
-import {AppButton, AppTextInput} from '@components';
-import {COLORS, FONT, vs, WIDTH} from '@utils';
-import Feather from 'react-native-vector-icons/Feather';
-import {useMutation} from '@tanstack/react-query';
-import {ILoginResponse} from '@interfaces/DTO/Auth/auth';
-import {ENDPOINTS_URL} from '@service';
+import { AppButton, AppTextInput } from '@components';
+import { IResponse } from '@interfaces/DTO';
+import { navigationRef } from '@navigation';
+import { ForgotPasswordInput, forgotPasswordSchema } from '@schemas/forgot-password.schema';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {IResponse} from '@interfaces/DTO';
+import { useMutation } from '@tanstack/react-query';
+import { COLORS, FONT, vs, WIDTH } from '@utils';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
-import {navigationRef} from '@navigation';
+import Feather from 'react-native-vector-icons/Feather';
 
 const initialValues: ForgotPasswordInput = {
   username: '',
@@ -42,7 +41,7 @@ const ForgotPasswordForm = () => {
       });
       navigationRef.navigate('Login');
     },
-    onError: e => {
+    onError: (e) => {
       console.log(e);
       Toast.show({
         type: 'error',
@@ -51,16 +50,16 @@ const ForgotPasswordForm = () => {
       });
     },
   });
-  const {resetForm, values, handleChange, handleSubmit, errors} = useFormik<ForgotPasswordInput>({
+  const { resetForm, values, handleChange, handleSubmit, errors } = useFormik<ForgotPasswordInput>({
     initialValues,
     validationSchema: forgotPasswordSchema,
-    onSubmit: values => postForgotPassword(values), // Use mutateAsync to await the mutation
+    onSubmit: (values) => postForgotPassword(values), // Use mutateAsync to await the mutation
   });
   return (
     <View style={styles.overall}>
       <AppTextInput
         withAsterisk
-        label="Tài khoản"
+        label='Tài khoản'
         outStyle={styles.textInputOutStyle}
         containerStyle={styles.w}
         value={values.username}
@@ -69,7 +68,7 @@ const ForgotPasswordForm = () => {
       />
       <AppTextInput
         withAsterisk
-        label="Mật khẩu hiện tại"
+        label='Mật khẩu hiện tại'
         secureTextEntry={hidePassword1}
         trailing={<Feather name={hidePassword1 ? 'eye' : 'eye-off'} size={20} color={COLORS.grey} />}
         outStyle={styles.textInputOutStyle}
@@ -81,7 +80,7 @@ const ForgotPasswordForm = () => {
       />
       <AppTextInput
         withAsterisk
-        label="Mật khẩu khẩu mới"
+        label='Mật khẩu khẩu mới'
         secureTextEntry={hidePassword2}
         trailing={<Feather name={hidePassword2 ? 'eye' : 'eye-off'} size={20} color={COLORS.grey} />}
         outStyle={styles.textInputOutStyle}
@@ -92,10 +91,10 @@ const ForgotPasswordForm = () => {
         error={errors.newPassword}
       />
       <AppButton
-        label="Xác thực"
-        size="S"
-        buttonStyle={{width: WIDTH * 0.85, marginVertical: vs(20)}}
-        labelStyle={[FONT.content.L, {color: COLORS.white}]}
+        label='Xác thực'
+        size='S'
+        buttonStyle={{ width: WIDTH * 0.85, marginVertical: vs(20) }}
+        labelStyle={[FONT.content.L, { color: COLORS.white }]}
         onPress={handleSubmit}
         loading={isPending}
       />
