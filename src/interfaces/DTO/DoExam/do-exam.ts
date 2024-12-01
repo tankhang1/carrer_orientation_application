@@ -6,5 +6,5 @@ export interface IMyAnswers {
 export interface IDoExam {
   examId: string;
   groupId: string;
-  myAnswers: string;
+  myAnswers: IMyAnswers[];
 }

@@ -18,6 +18,7 @@ const QUERY_KEY = {
   GROUP: 'GROUP',
   GROUP_SELECT: 'GROUP_SELECT',
   MEMBER_SELECT: 'MEMBER_SELECT',
+  DO_EXAM: 'DO_EXAM',
 };
 export const queryClient = new QueryClient();
 export { QUERY_KEY };

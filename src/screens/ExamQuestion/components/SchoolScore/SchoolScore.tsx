@@ -1,39 +1,38 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  NativeModules,
-  ActivityIndicator,
-  Keyboard,
-  TouchableOpacity,
-  InteractionManager,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'react-native';
-import React, {startTransition, useEffect, useRef, useState} from 'react';
-import {AppBackDrop, AppImagePicker, AppTextInput} from '@components';
-import {DefaultError, useMutation, useQuery} from '@tanstack/react-query';
-import {QUERY_KEY, TSubject, COLORS, FONT, s, vs, height} from '@utils';
-import {ISchoolSubjectsResponse} from '@interfaces/DTO/SchoolSubject/schoolSubject';
-import api, {uploadImage} from '@service/api';
-import {ENDPOINTS_URL} from '@service';
-import ImagePicker from 'react-native-image-crop-picker';
-import {TextInput} from 'react-native-gesture-handler';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { AppBackDrop, AppImagePicker, AppTextInput } from '@components';
 import AppImage from '@components/AppImage';
-import Animated, {interpolate, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
-import {IResponse} from '@interfaces/DTO';
+import { IResponse } from '@interfaces/DTO';
+import { ISchoolSubjectsResponse } from '@interfaces/DTO/SchoolSubject/schoolSubject';
+import { ENDPOINTS_URL } from '@service';
+import api from '@service/api';
+import { DefaultError, useMutation, useQuery } from '@tanstack/react-query';
+import { COLORS, FONT, QUERY_KEY, s, TSubject, vs } from '@utils';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  InteractionManager,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import ImagePicker from 'react-native-image-crop-picker';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 interface TSchoolScore {
   subjects: Record<string, TSubject>;
   setSubjects: (subjects: Record<string, TSubject>) => void;
 }
-const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
+const SchoolScore = ({ subjects, setSubjects }: TSchoolScore) => {
   const textInputRefs = useRef<React.RefObject<TextInput>[]>([]);
   const animatedValue = useSharedValue(0);
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg`}],
+    transform: [{ rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg` }],
   }));
-  const {isLoading, data, isError} = useQuery<unknown, DefaultError, ISchoolSubjectsResponse>({
+  const { isLoading, data, isError } = useQuery<unknown, DefaultError, ISchoolSubjectsResponse>({
     queryKey: [QUERY_KEY.SCHOOL_SUBJECTS],
     queryFn: () => api(ENDPOINTS_URL.SCHOOL_SUBJECTS.GET_SUBJECTS, 'GET', {}),
   });
@@ -43,7 +42,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       console.log('image', image.data);
       if (!image) return;
       return await api(ENDPOINTS_URL.UPLOAD.UPLOAD_OCR, 'POST', {
-        data: {base64Image: JSON.stringify(image.data), mimeType: image?.mime},
+        data: { base64Image: JSON.stringify(image.data), mimeType: image?.mime },
       });
       // return await uploadImage({
       //   uri: image?.path,
@@ -64,15 +63,15 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
   useEffect(() => {
     if (data) {
       const newData = new Map();
-      data?.data?.forEach(d => {
-        newData.set(d.name, {...d, value: ''});
+      data?.data?.forEach((d) => {
+        newData.set(d.name, { ...d, value: '' });
       });
       setSubjects(Object.fromEntries(newData));
     }
   }, [data]);
   useEffect(() => {
     if (convertImageToText.isPending) {
-      animatedValue.value = withRepeat(withTiming(1, {duration: 1000}), -1);
+      animatedValue.value = withRepeat(withTiming(1, { duration: 1000 }), -1);
     } else {
       animatedValue.value = withTiming(0);
     }
@@ -87,7 +86,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       includeBase64: true,
       cropperToolbarColor: 'red',
     })
-      .then(async image => {
+      .then(async (image) => {
         setOpenImagePicker(false);
         setImageUrl(image.path);
         convertImageToText.mutate(image);
@@ -108,7 +107,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       cropperCircleOverlay: true,
       showCropGuidelines: false,
     })
-      .then(async image => {
+      .then(async (image) => {
         setOpenImagePicker(false);
         setImageUrl(image.path);
         convertImageToText.mutate(image);
@@ -148,7 +147,7 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
       }
     }
   };
-  if (Object.keys(subjects)?.length === 0) return <ActivityIndicator size="small" color={COLORS.green} />;
+  if (Object.keys(subjects)?.length === 0) return <ActivityIndicator size='small' color={COLORS.green} />;
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -156,14 +155,14 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
         <Text style={styles.title}>Vui lòng nhập điểm trung bình của từng môn nhé!</Text>
         <View style={styles.scanContainer}>
           <TouchableOpacity onPress={() => setOpenImagePicker(true)}>
-            <AntDesign name="scan1" size={s(33)} color={COLORS.green} />
+            <AntDesign name='scan1' size={s(33)} color={COLORS.green} />
           </TouchableOpacity>
-          <View style={{marginLeft: s(10)}}>
+          <View style={{ marginLeft: s(10) }}>
             <Text style={FONT.content.M.semiBold}>Tính năng thử nghiệm</Text>
             <Text style={FONT.content.S}>Thử chụp ảnh học bạ của bạn nhé!</Text>
           </View>
         </View>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           {Object.entries(subjects)?.map(([key, subject], index) => {
             textInputRefs.current[index] = textInputRefs.current[index] || React.createRef<TextInput>();
             return (
@@ -171,14 +170,14 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
                 key={index}
                 label={subject.vnName}
                 value={subject.value.toString()}
-                containerStyle={{backgroundColor: COLORS.white}}
-                onChangeText={text => onValueChange(key, text, subject.vnName)}
-                keyboardType="numeric"
-                placeholder="0"
+                containerStyle={{ backgroundColor: COLORS.white }}
+                onChangeText={(text) => onValueChange(key, text, subject.vnName)}
+                keyboardType='numeric'
+                placeholder='0'
                 onSubmitEditing={() => {
                   onNextFocus(index);
                 }}
-                returnKeyType="done"
+                returnKeyType='done'
                 ref={textInputRefs.current[index]}
                 blurOnSubmit={false}
                 autoFocus={index === 0}
@@ -186,10 +185,13 @@ const SchoolScore = ({subjects, setSubjects}: TSchoolScore) => {
             );
           })}
         </View>
-        <AppBackDrop open={openImagePicker || convertImageToText.isPending} setOpen={setOpenImagePicker} disabled={convertImageToText.isPending}>
+        <AppBackDrop
+          open={openImagePicker || convertImageToText.isPending}
+          setOpen={setOpenImagePicker}
+          disabled={convertImageToText.isPending}>
           {convertImageToText.isPending ? (
             <Animated.View style={animatedStyle}>
-              <AppImage source={require('@assets/images/bookmark.png')} style={styles.loadingImage} resizeMode="contain" />
+              <AppImage source={require('@assets/images/bookmark.png')} style={styles.loadingImage} resizeMode='contain' />
             </Animated.View>
           ) : (
             <AppImagePicker

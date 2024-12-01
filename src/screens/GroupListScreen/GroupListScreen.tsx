@@ -1,4 +1,5 @@
 import { AppCard, AppHeader, AppView } from '@components';
+import AppEmpty from '@components/AppNoData/AppEmpty';
 import { IListGroup, IListGroupResponse } from '@interfaces/DTO/Group/group';
 import { navigationRef } from '@navigation';
 import { ENDPOINTS_URL } from '@service';
@@ -17,10 +18,18 @@ const GROUPS = [
   {
     groupName: 'Group 1',
     ownerName: 'Tina',
+    owner: {
+      _id: '1133',
+      name: 'OKKK',
+    },
   },
   {
     groupName: 'Group 2',
     ownerName: 'Tina',
+    owner: {
+      _id: '1133',
+      name: 'OKKK',
+    },
   },
 ];
 
@@ -56,7 +65,6 @@ const GroupListScreen = () => {
         },
       }),
   });
-  console.log(userInfo?.id);
 
   // METHODS
   const handleLogout = async () => {
@@ -81,11 +89,11 @@ const GroupListScreen = () => {
   return (
     <React.Fragment>
       <AppView
-        data={groups?.data}
+        data={groups?.data || []}
         renderItem={renderGroupItem}
-        ListEmptyComponent={<Text>21312</Text>}
+        ListEmptyComponent={<AppEmpty />}
         ListHeaderComponent={
-          <>
+          <View>
             <View style={styles.header}>
               <AppHeader title='Nhóm' onPress={() => navigationRef.navigate('HomeScreen')} />
             </View>
@@ -117,13 +125,13 @@ const GroupListScreen = () => {
               />
               <Button
                 title='Test Do Exam'
-                onPress={() => navigationRef.navigate('DoExam', { examId: '6742e6ee29c7d5c1afcd02e9' })}
+                onPress={() => navigationRef.navigate('DoExam', { examId: '674c2a56d2c3568d8116b29d' })}
               />
               <View style={styles.groupContainer}>
                 <Text style={FONT.content.L}>Danh sách nhóm</Text>
               </View>
             </View>
-          </>
+          </View>
         }
       />
     </React.Fragment>

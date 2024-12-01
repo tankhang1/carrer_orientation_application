@@ -16,6 +16,7 @@ type TAppModal = {
   disableBackDrop?: boolean;
   cancelText?: string;
   confirmText?: string;
+  loading?: boolean;
 };
 const AppModal = ({
   title = '',
@@ -27,6 +28,7 @@ const AppModal = ({
   disableBackDrop = false,
   confirmText,
   cancelText,
+  loading,
 }: TAppModal) => {
   if (!visible) return;
   return (
@@ -52,6 +54,7 @@ const AppModal = ({
                 buttonStyle={{ paddingVertical: vs(10) }}
                 labelStyle={[FONT.content.M.bold, { color: COLORS.white }]}
                 onPress={onAccept}
+                loading={loading}
               />
             )}
           </View>

@@ -1,15 +1,15 @@
-import {View, StyleSheet, Pressable} from 'react-native';
-import React, {memo} from 'react';
-import {COLORS, s} from '@utils/config';
+import { COLORS, s } from '@utils/config';
+import React, { memo } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 type Props = {
   selected?: boolean;
   onPress?: () => void;
 };
-const RadioButton = ({selected = true, onPress}: Props) => {
+const RadioButton = ({ selected = true, onPress }: Props) => {
   return (
-    <Pressable style={styles.outerCircle} onPress={onPress}>
+    <TouchableOpacity style={styles.outerCircle} onPress={onPress} disabled={!onPress}>
       {selected && <View style={styles.innerCircle}></View>}
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

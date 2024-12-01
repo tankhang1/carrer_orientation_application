@@ -1,6 +1,6 @@
-import {StyleSheet, Pressable, View, ViewStyle, StyleProp} from 'react-native';
-import React, {memo} from 'react';
-import {COLORS, s} from '@utils/config';
+import { COLORS, s } from '@utils/config';
+import React, { memo } from 'react';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 type Props = {
   isCheck?: boolean;
@@ -9,9 +9,9 @@ type Props = {
   label?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 };
-const Checkbox = ({isCheck = false, onPress = () => {}, checkedColor = COLORS.blue, style, label}: Props) => {
+const Checkbox = ({ isCheck = false, onPress = () => {}, checkedColor = COLORS.blue, style, label }: Props) => {
   return (
-    <Pressable onPress={onPress} hitSlop={10} style={[styles.cont, style]}>
+    <TouchableOpacity onPress={onPress} hitSlop={10} style={[styles.cont, style]}>
       <View
         style={[
           styles.box,
@@ -20,10 +20,10 @@ const Checkbox = ({isCheck = false, onPress = () => {}, checkedColor = COLORS.bl
             borderWidth: isCheck ? 0 : 1,
           },
         ]}>
-        {isCheck && <Entypo name="check" color={COLORS.white} size={s(16)} />}
+        {isCheck && <Entypo name='check' color={COLORS.white} size={s(16)} />}
       </View>
       {label && label}
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
