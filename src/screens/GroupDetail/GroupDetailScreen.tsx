@@ -1,6 +1,7 @@
 import { AppHeader, AppView } from '@components';
 import AppImage from '@components/AppImage';
 import { IAccountItem, IExamItem, IGroupResponse } from '@interfaces/DTO/Group/group';
+import { navigationRef } from '@navigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
@@ -12,7 +13,6 @@ import { FlatList, ListRenderItemInfo, Modal, StyleSheet, Text, TouchableOpacity
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import ListGroup from './components/ListGroup';
-
 type TAccount = {
   id: string;
   name: string;
@@ -52,9 +52,6 @@ const GroupDetailScreen = ({ route }: Props) => {
           <Text style={styles.title}>{item.name}</Text>
           <Text style={styles.desc}>{item.email}</Text>
         </View>
-        <TouchableOpacity>
-          <Feather name='x' size={s(20)} color={COLORS.red} />
-        </TouchableOpacity>
       </View>
     );
   };
@@ -62,7 +59,7 @@ const GroupDetailScreen = ({ route }: Props) => {
     return (
       <View key={index} style={styles.memberContainer}>
         <AppImage source={{ uri: 'https://cdn-icons-png.flaticon.com/512/8750/8750743.png' }} style={styles.avatar} />
-        <View style={{ flex: 1 }}>
+        <View style={styles.examRightSection}>
           <Text style={styles.title}>{item.name}</Text>
           <Text style={styles.desc}>{item.category}</Text>
           <Text style={styles.desc}>{item.type}</Text>
@@ -70,8 +67,8 @@ const GroupDetailScreen = ({ route }: Props) => {
             {item.status ? 'Đang hoạt động' : 'Tạm dừng'}
           </Text>
         </View>
-        <TouchableOpacity>
-          <Feather name='x' size={s(20)} color={COLORS.red} />
+        <TouchableOpacity onPress={() => navigationRef.navigate('DoExam', { examId: item._id })}>
+          <Feather name='chevrons-right' color={'gray'} size={24} />
         </TouchableOpacity>
       </View>
     );
@@ -227,5 +224,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  examRightSection: { flex: 1, paddingLeft: 10 },
 });
 export default GroupDetailScreen;

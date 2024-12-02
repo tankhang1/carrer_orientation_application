@@ -9,7 +9,7 @@ import { DefaultError, useMutation, useQuery } from '@tanstack/react-query';
 import { COLORS, FONT, QUERY_KEY, s, vs, width } from '@utils';
 import { EROLE } from '@utils/enum/user.enum';
 import React from 'react';
-import { Button, ListRenderItemInfo, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ListRenderItemInfo, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Toast from 'react-native-toast-message';
 import Feather from 'react-native-vector-icons/Feather';
@@ -122,10 +122,6 @@ const GroupListScreen = () => {
                     <Feather name='edit-3' size={20} color={COLORS.grey} />
                   </TouchableOpacity>
                 }
-              />
-              <Button
-                title='Test Do Exam'
-                onPress={() => navigationRef.navigate('DoExam', { examId: '674c2a56d2c3568d8116b29d' })}
               />
               <View style={styles.groupContainer}>
                 <Text style={FONT.content.L}>Danh sách nhóm</Text>
