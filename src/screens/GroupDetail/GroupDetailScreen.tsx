@@ -10,7 +10,6 @@ import { TRootStackNav } from '@utils/types/RootStackNav';
 import React, { useState } from 'react';
 import { FlatList, ListRenderItemInfo, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import ListGroup from './components/ListGroup';
 
@@ -104,10 +103,6 @@ const GroupDetailScreen = ({ route }: Props) => {
         <View style={styles.body}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Danh sách thành viên</Text>
-            <TouchableOpacity style={styles.addNewButton} onPress={() => setOpenAddMemberModal(true)}>
-              <AntDesign name='plus' size={s(18)} color={COLORS.green} />
-              <Text style={styles.addNewLabel}>Thêm mới</Text>
-            </TouchableOpacity>
           </View>
           <FlatList data={group?.data?.members} renderItem={renderMemberItem} contentContainerStyle={{ gap: 10 }} />
           <View style={styles.titleContainer}>
