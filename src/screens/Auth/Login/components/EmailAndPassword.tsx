@@ -6,6 +6,7 @@ import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
 import { KEY_STORE, storage } from '@store';
 import { useAuthStore } from '@store/auth.store';
+import { setLocalAccessToken } from '@store/local-storage.store';
 import { useMutation } from '@tanstack/react-query';
 import { COLORS, FONT, vs, WIDTH } from '@utils';
 import { useFormik } from 'formik';
@@ -37,6 +38,7 @@ const EmailAndPassword = () => {
 
       const { accessToken, ...userInfo } = data?.data;
       authStore?.setAuthStore({ ...userInfo });
+      setLocalAccessToken(accessToken);
       resetForm();
       Toast.show({
         type: 'success',

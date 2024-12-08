@@ -1,4 +1,4 @@
-import { AppHeader, AppView } from '@components';
+import { AppButton, AppHeader, AppView } from '@components';
 import AppImage from '@components/AppImage';
 import { IAccountItem, IExamItem, IGroupResponse } from '@interfaces/DTO/Group/group';
 import { navigationRef } from '@navigation';
@@ -6,24 +6,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
 import { DefaultError, useQuery } from '@tanstack/react-query';
-import { COLORS, QUERY_KEY, s, vs } from '@utils';
+import { COLORS, FONT, QUERY_KEY, s, vs } from '@utils';
 import { TRootStackNav } from '@utils/types/RootStackNav';
 import React, { useState } from 'react';
 import { FlatList, ListRenderItemInfo, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import ListGroup from './components/ListGroup';
-type TAccount = {
-  id: string;
-  name: string;
-  email: string;
-};
-type TExam = {
-  type: string;
-  name: string;
-  category: string;
-  status: boolean;
-};
 
 type Props = NativeStackScreenProps<TRootStackNav, 'GroupDetail'>;
 const GroupDetailScreen = ({ route }: Props) => {
@@ -67,7 +57,7 @@ const GroupDetailScreen = ({ route }: Props) => {
             {item.status ? 'Đang hoạt động' : 'Tạm dừng'}
           </Text>
         </View>
-        <TouchableOpacity onPress={() => navigationRef.navigate('DoExam', { examId: item._id })}>
+        <TouchableOpacity onPress={() => navigationRef.navigate('DoExam', { examId: item._id, groupId: id })}>
           <Feather name='chevrons-right' color={'gray'} size={24} />
         </TouchableOpacity>
       </View>
@@ -106,6 +96,18 @@ const GroupDetailScreen = ({ route }: Props) => {
             <Text style={styles.title}>Danh sách bài kiểm tra</Text>
           </View>
           <FlatList data={group?.data?.exams} renderItem={renderExamItem} contentContainerStyle={{ gap: 10 }} />
+
+          {/* Chat bot */}
+          <View style={{ marginTop: vs(16) }}>
+            <AppButton
+              label='Đặt câu hỏi'
+              labelStyle={FONT.content.M.semiBold}
+              size='S'
+              type='outline'
+              leading={<AntDesign name='questioncircleo' size={20} color={COLORS.green} />}
+              onPress={() => {}}
+            />
+          </View>
         </View>
       </AppView>
       <Modal visible={openAddMemberModal} onRequestClose={() => setOpenAddMemberModal(false)} statusBarTranslucent>

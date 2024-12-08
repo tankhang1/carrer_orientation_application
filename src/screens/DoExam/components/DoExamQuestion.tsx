@@ -59,11 +59,11 @@ const DoExamQuestion = ({ question, myAnswers, setMyAnswers, error = true }: DoE
           }}
           contentWidth={200}
           enableExperimentalMarginCollapsing={true}
-          tagsStyles={{
-            article: { color: COLORS.black },
-            //h3: { alignSelf: 'center' },
-            p: { ...FONT.content.M.semiBold },
-          }}
+          // tagsStyles={{
+          //   article: { color: COLORS.black },
+          //   //h3: { alignSelf: 'center' },
+          //   p: { ...FONT.content.M.semiBold },
+          // }}
         />
       ) : (
         <Text style={styles.question}>{question?.questionTitle}</Text>
@@ -162,4 +162,4 @@ const styles = StyleSheet.create({
     color: COLORS.red,
   },
 });
-export default DoExamQuestion;
+export default React.memo(DoExamQuestion);

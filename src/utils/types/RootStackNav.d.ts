@@ -39,5 +39,6 @@ export type TRootStackNav = {
   };
   DoExam: {
     examId: string;
+    groupId: string;
   };
 };

@@ -38,8 +38,8 @@ const DoExamScreen = ({ route }: Props) => {
     mutationFn: () =>
       api<any, IDoExam>(ENDPOINTS_URL.DO_EXAM, 'POST', {
         data: {
-          examId: route?.params.examId as string,
-          groupId: '6742e73629c7d5c1afcd038c',
+          examId: route?.params?.examId as string,
+          groupId: route?.params?.groupId as string,
           myAnswers: myAnswers,
         },
       }),
