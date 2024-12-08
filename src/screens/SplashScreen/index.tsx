@@ -13,7 +13,6 @@ import DeviceInfo from 'react-native-device-info';
 const SplashScreen = () => {
   const { data } = useQuery<IAnnonymousToken, DefaultError, IAnnonymousTokenResponse>({
     queryKey: [QUERY_KEY.AUTH],
-    //@ts-expect-error no check
     queryFn: async () =>
       api(ENDPOINTS_URL.AUTH.GET_ANNONYMOUS_TOKEN, 'GET', {
         params: {
@@ -21,6 +20,7 @@ const SplashScreen = () => {
           deviceId: await DeviceInfo.getUniqueId(),
         },
       }),
+    enabled: !!storage.getString(KEY_STORE.ANNONYMOUS_TOKEN) ? false : true,
   });
   useEffect(() => {
     const timeout = setTimeout(() => {

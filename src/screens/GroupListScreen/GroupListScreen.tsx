@@ -4,6 +4,7 @@ import { IListGroup, IListGroupResponse } from '@interfaces/DTO/Group/group';
 import { navigationRef } from '@navigation';
 import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
+import { KEY_STORE, storage } from '@store';
 import { useAuthStore } from '@store/auth.store';
 import { DefaultError, useMutation, useQuery } from '@tanstack/react-query';
 import { COLORS, FONT, QUERY_KEY, s, vs, width } from '@utils';
@@ -40,13 +41,14 @@ const GroupListScreen = () => {
   // API
   const { mutate, isPending } = useMutation({
     mutationFn: async () =>
-      api(ENDPOINTS_URL.AUTH.GET_ANNONYMOUS_TOKEN, 'GET', {
-        params: {
+      api(ENDPOINTS_URL.AUTH.LOGOUT, 'POST', {
+        data: {
           key: '25012003',
           deviceId: await DeviceInfo.getUniqueId(),
         },
       }),
-    onSuccess: () => {
+    onSuccess: (value: { data: string | null }) => {
+      storage.set(KEY_STORE.ANNONYMOUS_TOKEN, value.data || '');
       Toast.show({
         type: 'success',
         text1: 'Thông báo',
