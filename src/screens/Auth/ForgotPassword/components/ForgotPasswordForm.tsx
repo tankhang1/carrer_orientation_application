@@ -14,12 +14,10 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const initialValues: ForgotPasswordInput = {
   username: '',
-  oldPassword: '',
   newPassword: '',
 };
 
 const ForgotPasswordForm = () => {
-  const [hidePassword1, setHidePassword1] = useState(true);
   const [hidePassword2, setHidePassword2] = useState(true);
 
   const {
@@ -66,7 +64,7 @@ const ForgotPasswordForm = () => {
         onChangeText={handleChange('username')}
         error={errors.username}
       />
-      <AppTextInput
+      {/* <AppTextInput
         withAsterisk
         label='Mật khẩu hiện tại'
         secureTextEntry={hidePassword1}
@@ -77,7 +75,7 @@ const ForgotPasswordForm = () => {
         value={values.oldPassword}
         onChangeText={handleChange('oldPassword')}
         error={errors.oldPassword}
-      />
+      /> */}
       <AppTextInput
         withAsterisk
         label='Mật khẩu khẩu mới'

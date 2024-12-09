@@ -1,19 +1,18 @@
-import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
-import React, {lazy, memo, Suspense, useCallback} from 'react';
-import {FONT, s, vs} from '@utils/config';
+import { FONT, s, vs } from '@utils/config';
+import React, { lazy, memo, Suspense, useCallback } from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import {navigationRef} from '@navigation';
 import AppSkeleton from '@components/AppSkeleton';
-import Animated from 'react-native-reanimated';
-import {DefaultError, useQuery} from '@tanstack/react-query';
-import {QUERY_KEY} from '@utils/constants';
-import {INew} from '@interfaces/DTO';
+import { INew } from '@interfaces/DTO';
+import { navigationRef } from '@navigation';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
+import { DefaultError, useQuery } from '@tanstack/react-query';
+import { QUERY_KEY } from '@utils/constants';
+import Animated from 'react-native-reanimated';
 const AppCard = lazy(() => import('@components/AppCard'));
 const card = {
-  imageUrl:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGn6vq0C1-MRqFGbUcBJ7M9pn20QAp4JYQnw&usqp=CAU',
+  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGn6vq0C1-MRqFGbUcBJ7M9pn20QAp4JYQnw&usqp=CAU',
   date: new Date().toLocaleDateString(),
   title: 'Đại học UEH công bố phương thức tuyển sinh',
 };
@@ -25,41 +24,31 @@ type TCard = {
 const CARDS: TCard[] = new Array(6).fill(card);
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const NewsCard = () => {
-  const {isLoading, data, isError, status} = useQuery<
-    unknown,
-    DefaultError,
-    INew[]
-  >({
+  const { isLoading, data, isError, status } = useQuery<unknown, DefaultError, { data: INew[] }>({
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
     queryFn: () => api(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
   });
 
-  const renderCard = useCallback(
-    ({item, index}: {item: INew; index: number}) => {
-      return (
-        <Suspense
-          fallback={<AppSkeleton width={100} height={150} radius={10} />}>
-          <Animated.View>
-            <AppCard
-              key={index}
-              index={index}
-              imageUrl={item.image.shortImage}
-              title={item.title}
-              subTitle={''}
-              containerStyle={{
-                width: s(100),
-                height: s(160),
-              }}
-              onPress={() =>
-                navigationRef.navigate('NewsDetail1', {content: item.content})
-              }
-            />
-          </Animated.View>
-        </Suspense>
-      );
-    },
-    [],
-  );
+  const renderCard = useCallback(({ item, index }: { item: INew; index: number }) => {
+    return (
+      <Suspense fallback={<AppSkeleton width={100} height={150} radius={10} />}>
+        <Animated.View>
+          <AppCard
+            key={index}
+            index={index}
+            imageUrl={item.image.shortImage}
+            title={item.title}
+            subTitle={''}
+            containerStyle={{
+              width: s(100),
+              height: s(160),
+            }}
+            onPress={() => navigationRef.navigate('NewsDetail1', { content: item.content })}
+          />
+        </Animated.View>
+      </Suspense>
+    );
+  }, []);
   if (!data) return null;
   return (
     <View style={styles.container}>
@@ -71,7 +60,7 @@ const NewsCard = () => {
       </View>
       <FlatList
         horizontal
-        data={data?.reverse()}
+        data={data?.data?.reverse()}
         renderItem={renderCard}
         contentContainerStyle={styles.listContainer}
         showsHorizontalScrollIndicator={false}

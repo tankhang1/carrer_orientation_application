@@ -1,7 +1,6 @@
-import {Schema} from '@utils';
+import { Schema } from '@utils';
 import * as yup from 'yup';
 export const forgotPasswordSchema = yup.object({
-  oldPassword: yup.string().min(6, Schema.minPassword).required(Schema.noEmpty),
   newPassword: yup.string().min(6, Schema.minPassword).required(Schema.noEmpty),
   username: yup.string().required(Schema.noEmpty),
 });

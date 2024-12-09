@@ -1,24 +1,14 @@
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {COLORS, s, width} from '@utils/config';
 import AppImage from '@components/AppImage';
-import Indicator, {TIndicatorRef} from './Indicator';
-import {
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from 'react-native-reanimated';
-import Animated from 'react-native-reanimated';
-import {QUERY_KEY} from '@utils/constants';
-import {DefaultError, useQuery} from '@tanstack/react-query';
-import {INew} from '@interfaces/DTO';
-import {ENDPOINTS_URL} from '@service';
+import { INew } from '@interfaces/DTO';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
+import { DefaultError, useQuery } from '@tanstack/react-query';
+import { COLORS, s, width } from '@utils/config';
+import { QUERY_KEY } from '@utils/constants';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
+import Indicator, { TIndicatorRef } from './Indicator';
 
 const Carousel = () => {
   const currentPosition = useRef<number>(0);
@@ -32,23 +22,21 @@ const Carousel = () => {
     isLoading,
     data: news,
     isError,
-  } = useQuery<unknown, DefaultError, INew[]>({
+  } = useQuery<unknown, DefaultError, { data: INew[] }>({
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
-    queryFn: () => api(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
+    queryFn: () => api(ENDPOINTS_URL.NEWS.GET_ALL_NEWS_DETAIL, 'GET', {}),
   });
   const banners = useMemo(
     () =>
-      !news
-        ? [
-            'https://cdythadong.edu.vn/uploads/files/tuyen%20sinh/2024/thong%20bao%20ts/thumbnail%20hdmc.png',
-          ]
-        : news
-            ?.map(item => item.image.longImage)
+      !news?.data
+        ? ['https://cdythadong.edu.vn/uploads/files/tuyen%20sinh/2024/thong%20bao%20ts/thumbnail%20hdmc.png']
+        : news?.data
+            ?.map((item) => item.image.longImage)
             ?.reverse()
             .slice(0, 5),
-    [news],
+    [news?.data],
   );
-  const newsLength = useMemo(() => banners?.length ?? 1, [news?.length]);
+  const newsLength = useMemo(() => banners?.length ?? 1, [banners?.length]);
   const listWidth = useMemo(() => newsLength * width, [newsLength]);
   useEffect(() => {
     if (newsLength > 0 && !isLoading) {
@@ -73,7 +61,7 @@ const Carousel = () => {
         interval.current = undefined;
       }
     };
-  }, [newsLength]);
+  }, [newsLength, isLoading]);
   const onScrollBeginDrag = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       if (newsLength <= 0) return;
@@ -85,29 +73,23 @@ const Carousel = () => {
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       if (newsLength <= 0) return;
       autoScroll.current = true;
-      currentPosition.current = Math.round(
-        e.nativeEvent.contentOffset.x / listWidth,
-      );
+      currentPosition.current = Math.round(e.nativeEvent.contentOffset.x / listWidth);
       indicatorRef?.current?.scrollToIndicator(currentPosition.current);
     },
     [listWidth, newsLength],
   );
-  const onScroll = useAnimatedScrollHandler(e => {
+  const onScroll = useAnimatedScrollHandler((e) => {
     indicatorValue.value = e.contentOffset.x;
   }, []);
   const renderItem = useCallback(
-    ({item, index}: {item?: string; index: number}) => {
+    ({ item, index }: { item?: string; index: number }) => {
       return (
         <View style={styles.cardContainer} key={index}>
-          <AppImage
-            source={{uri: item ?? ''}}
-            style={styles.image}
-            resizeMode="stretch"
-          />
+          <AppImage source={{ uri: item ?? '' }} style={styles.image} resizeMode='stretch' />
         </View>
       );
     },
-    [news],
+    [news?.data],
   );
 
   return (
@@ -130,11 +112,7 @@ const Carousel = () => {
         //snapToInterval={width}
         onScroll={onScroll}
       />
-      <Indicator
-        animatedValue={indicatorValue}
-        length={banners?.length ?? 1}
-        ref={indicatorRef}
-      />
+      <Indicator animatedValue={indicatorValue} length={banners?.length ?? 1} ref={indicatorRef} />
     </View>
   );
 };
