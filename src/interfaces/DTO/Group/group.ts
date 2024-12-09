@@ -24,7 +24,7 @@ export interface IExamItem {
   type: string;
   name: string;
   category: string;
-  status: number;
+  status: string;
 }
 export interface IAccountDetail {
   _id: string;
