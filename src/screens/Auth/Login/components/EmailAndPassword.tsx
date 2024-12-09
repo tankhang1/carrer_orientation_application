@@ -74,7 +74,7 @@ const EmailAndPassword = () => {
         containerStyle={styles.w}
         value={values.username}
         onChangeText={handleChange('username')}
-        error={error?.message || errors.username}
+        error={error?.message ?? errors.username}
       />
       <AppTextInput
         withAsterisk
@@ -86,7 +86,7 @@ const EmailAndPassword = () => {
         containerStyle={styles.w}
         value={values.password}
         onChangeText={handleChange('password')}
-        error={error?.message || errors.password}
+        error={error?.message ?? errors.password}
       />
       <TouchableOpacity style={styles.forgotCont} onPress={onForgotPassword}>
         <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>

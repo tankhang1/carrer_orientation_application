@@ -53,7 +53,7 @@ const GroupDetailScreen = ({ route }: Props) => {
           <Text style={styles.title}>{item.name}</Text>
           <Text style={styles.desc}>{item.category}</Text>
           <Text style={styles.desc}>{item.type}</Text>
-          <Text style={[styles.desc, item.status ? { color: COLORS.green } : { color: COLORS.red }]}>
+          <Text style={[styles.desc, item.status ? { color: COLORS.green } : { color: COLORS.red }, styles.chip]}>
             {item.status ? 'Đang hoạt động' : 'Tạm dừng'}
           </Text>
         </View>
@@ -95,7 +95,11 @@ const GroupDetailScreen = ({ route }: Props) => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Danh sách bài kiểm tra</Text>
           </View>
-          <FlatList data={group?.data?.exams} renderItem={renderExamItem} contentContainerStyle={{ gap: 10 }} />
+          <FlatList
+            data={group?.data?.exams?.filter((exam) => exam.status === 'ACTIVE')}
+            renderItem={renderExamItem}
+            contentContainerStyle={{ gap: 10 }}
+          />
 
           {/* Chat bot */}
           <View style={{ marginTop: vs(16) }}>
@@ -227,5 +231,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   examRightSection: { flex: 1, paddingLeft: 10 },
+  chip: {
+    paddingHorizontal: s(10),
+    color: COLORS.white,
+    backgroundColor: COLORS.green,
+    width: s(120),
+    paddingVertical: vs(2),
+    borderRadius: s(15),
+  },
 });
 export default GroupDetailScreen;
