@@ -26,7 +26,7 @@ const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const NewsCard = () => {
   const { isLoading, data, isError, status } = useQuery<unknown, DefaultError, { data: INew[] }>({
     queryKey: [QUERY_KEY.NEWS, QUERY_KEY.NEWS_NEWEST],
-    queryFn: () => api(ENDPOINTS_URL.NEWS.GET_NEWEST_NEWS, 'GET', {}),
+    queryFn: () => api(ENDPOINTS_URL.NEWS.GET_ALL_NEWS_DETAIL, 'GET', {}),
   });
 
   const renderCard = useCallback(({ item, index }: { item: INew; index: number }) => {
