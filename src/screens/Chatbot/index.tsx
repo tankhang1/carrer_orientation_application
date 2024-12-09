@@ -1,37 +1,31 @@
-import {
-  View,
-  Text,
-  ListRenderItemInfo,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ImageBackground,
-  Platform,
-  Keyboard,
-  InteractionManager,
-} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import { AppTextInput } from '@components';
 import AppImage from '@components/AppImage';
-import {COLORS, FONT, height, s, vs} from '@utils/config';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {AppTextInput} from '@components';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {navigationRef} from '@navigation';
-import {useMutation} from '@tanstack/react-query';
-import {IChat, IResponse} from '@interfaces/DTO';
+import { IChat, IResponse } from '@interfaces/DTO';
+import { navigationRef } from '@navigation';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { KEY_STORE, storage } from '@store';
+import { useMutation } from '@tanstack/react-query';
+import { COLORS, FONT, height, s, vs } from '@utils/config';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  FlatList,
+  ImageBackground,
+  InteractionManager,
+  Keyboard,
+  KeyboardAvoidingView,
+  ListRenderItemInfo,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {KEY_STORE, storage} from '@store';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const Chatbot = () => {
   const [chats, setChats] = useState<IChat[]>([]);
   const [message, setMessage] = useState('');
@@ -42,7 +36,7 @@ const Chatbot = () => {
     mutationFn: async (message: string) => {
       if (!message) return;
       return await api(ENDPOINTS_URL.CHAT_BOT.GET_CHAT, 'POST', {
-        data: {prompt: message},
+        data: { prompt: message },
       });
     },
     onSuccess: async (data: IResponse | any) => {
@@ -61,14 +55,12 @@ const Chatbot = () => {
     onSettled: () => {
       console.log('settle');
     },
-    onError: async e => {
+    onError: async (e) => {
       console.log('err', e);
     },
   });
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      {rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg`},
-    ],
+    transform: [{ rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg` }],
   }));
   useEffect(() => {
     const listCharts = storage.getString(KEY_STORE.LIST_CHAT);
@@ -84,7 +76,7 @@ const Chatbot = () => {
     }, 300);
     return () => clearTimeout(timeout);
   }, [chats?.length]);
-  const renderChat = ({item, index}: ListRenderItemInfo<IChat>) => {
+  const renderChat = ({ item, index }: ListRenderItemInfo<IChat>) => {
     return (
       <View
         key={index}
@@ -95,13 +87,9 @@ const Chatbot = () => {
           styles.chatRowWrapper,
         ]}>
         <AppImage
-          source={
-            item.isBot
-              ? require('@assets/images/clover.png')
-              : require('@assets/images/avatar.jpeg')
-          }
-          style={[styles.avatar, {borderRadius: item.isBot ? 0 : s(100)}]}
-          resizeMode="contain"
+          source={item.isBot ? require('@assets/images/clover.png') : require('@assets/images/avatar.jpeg')}
+          style={[styles.avatar, { borderRadius: item.isBot ? 0 : s(100) }]}
+          resizeMode='contain'
         />
         <View style={styles.chatCard}>
           <Text style={FONT.content.S}>{item.message}</Text>
@@ -127,7 +115,7 @@ const Chatbot = () => {
   };
   useEffect(() => {
     if (getChat.isPending) {
-      animatedValue.value = withRepeat(withTiming(1, {duration: 1000}), -1);
+      animatedValue.value = withRepeat(withTiming(1, { duration: 1000 }), -1);
     } else {
       animatedValue.value = withTiming(0);
     }
@@ -139,10 +127,7 @@ const Chatbot = () => {
   };
   //console.log('platform', Platform);
   return (
-    <ImageBackground
-      source={require('@assets/images/background_1.png')}
-      resizeMode="cover"
-      style={styles.container}>
+    <ImageBackground source={require('@assets/images/background_1.png')} resizeMode='cover' style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         //behavior="height"
@@ -151,7 +136,7 @@ const Chatbot = () => {
         <SafeAreaView style={[styles.container, styles.wrapper]}>
           <View style={styles.header}>
             <TouchableOpacity onPress={onBack}>
-              <AntDesign name="arrowleft" size={s(25)} color={COLORS.black} />
+              <AntDesign name='arrowleft' size={s(25)} color={COLORS.black} />
             </TouchableOpacity>
             {chats?.length !== 0 && (
               <TouchableOpacity
@@ -161,7 +146,7 @@ const Chatbot = () => {
                   }
                 }}
                 disabled={getChat.isPending}>
-                <EvilIcons name="trash" size={30} color={COLORS.black} />
+                <EvilIcons name='trash' size={30} color={COLORS.black} />
               </TouchableOpacity>
             )}
           </View>
@@ -170,51 +155,34 @@ const Chatbot = () => {
             <FlatList
               data={chats}
               renderItem={renderChat}
-              contentContainerStyle={{gap: vs(10)}}
+              contentContainerStyle={{ gap: vs(10) }}
               showsVerticalScrollIndicator={false}
               ref={scrollRef}
               automaticallyAdjustKeyboardInsets
-              keyboardDismissMode="interactive"
+              keyboardDismissMode='interactive'
               ListEmptyComponent={
                 <View style={styles.fallbackContainer}>
-                  <AppImage
-                    source={require('@assets/images/clover.png')}
-                    style={styles.fallback}
-                  />
-                  <Text style={[FONT.content.M.medium, {color: COLORS.grey}]}>
-                    Chúc một ngày tốt lành!
-                  </Text>
+                  <AppImage source={require('@assets/images/clover.png')} style={styles.fallback} />
+                  <Text style={[FONT.content.M.medium, { color: COLORS.grey }]}>Chúc một ngày tốt lành!</Text>
                 </View>
               }
             />
           </View>
           <AppTextInput
-            outStyle={[
-              styles.chatInput,
-              {marginBottom: Platform.OS === 'ios' ? 0 : vs(20)},
-            ]}
+            outStyle={[styles.chatInput, { marginBottom: Platform.OS === 'ios' ? 0 : vs(20) }]}
             containerStyle={{
               borderWidth: 0,
             }}
             value={message}
             onChangeText={setMessage}
             onSubmitEditing={onSubmit}
-            placeholder="Nhập câu hỏi..."
+            placeholder='Nhập câu hỏi...'
             trailing={
               !getChat?.isPending ? (
-                <Ionicons
-                  name="send-outline"
-                  size={s(25)}
-                  color={COLORS.grey}
-                  onPress={onSubmit}
-                />
+                <Ionicons name='send-outline' size={s(25)} color={COLORS.grey} onPress={onSubmit} />
               ) : (
                 <Animated.View style={animatedStyle}>
-                  <AppImage
-                    source={require('@assets/images/bookmark.png')}
-                    style={styles.trailing}
-                    resizeMode="contain"
-                  />
+                  <AppImage source={require('@assets/images/bookmark.png')} style={styles.trailing} resizeMode='contain' />
                 </Animated.View>
               )
             }

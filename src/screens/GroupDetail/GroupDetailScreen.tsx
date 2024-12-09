@@ -100,12 +100,12 @@ const GroupDetailScreen = ({ route }: Props) => {
           {/* Chat bot */}
           <View style={{ marginTop: vs(16) }}>
             <AppButton
-              label='Đặt câu hỏi'
+              label='Chat cùng giáo viên'
               labelStyle={FONT.content.M.semiBold}
               size='S'
               type='outline'
               leading={<AntDesign name='questioncircleo' size={20} color={COLORS.green} />}
-              onPress={() => {}}
+              onPress={() => navigationRef.navigate('ChatbotInGroup', { groupId: route?.params?.id })}
             />
           </View>
         </View>

@@ -27,6 +27,7 @@ const DoExamScreen = ({ route }: Props) => {
   const [error, setError] = useState(false);
   const [result, setResult] = useState<IDoExam | null>(null);
   const [isView, setIsView] = useState(false);
+
   const { userInfo } = useAuthStore();
 
   // APIS
@@ -131,7 +132,10 @@ const DoExamScreen = ({ route }: Props) => {
     }
   };
 
-  const isLoading = useMemo(() => isFetchingExam || isFetchingDoExam, [isFetchingDoExam, isFetchingExam]);
+  const isLoading = useMemo(
+    () => isFetchingExam || isFetchingDoExam || isFetchingDoExamDetail,
+    [isFetchingDoExam, isFetchingDoExamDetail, isFetchingExam],
+  );
 
   // EFFECTS
   useEffect(() => {

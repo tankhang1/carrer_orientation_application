@@ -4,6 +4,7 @@ import ForgotPassword from '@screens/Auth/ForgotPassword';
 import Login from '@screens/Auth/Login';
 import SignUp from '@screens/Auth/SignUp';
 import Chatbot from '@screens/Chatbot';
+import ChatbotInGroupScreen from '@screens/ChatbotInGroup/ChatbotInGroupScreen';
 import Dictionary from '@screens/Dictionary';
 import DictonaryDetail from '@screens/DictionaryDetail';
 import DoExamScreen from '@screens/DoExam/DoExamScreen';
@@ -52,6 +53,7 @@ const AppNavigation = () => {
         <Stack.Screen name='GroupList' component={GroupListScreen} />
         <Stack.Screen name='GroupDetail' component={GroupDetailScreen} />
         <Stack.Screen name='DoExam' component={DoExamScreen} />
+        <Stack.Screen name='ChatbotInGroup' component={ChatbotInGroupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
