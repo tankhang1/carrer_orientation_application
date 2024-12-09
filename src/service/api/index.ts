@@ -31,7 +31,7 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Check if the error is 403 and it's not already retried
+    // Check if the error is a 401 and the request is not already retried
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true; // Mark request as retried
       try {
@@ -40,13 +40,18 @@ apiClient.interceptors.response.use(
         // Update the original request headers with the new token
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
-        // Retry the original request
+        // Retry the original request with the new token
         return apiClient(originalRequest);
       } catch (refreshError) {
-        return Promise.reject(refreshError);
+        console.error('Failed to refresh token:', refreshError);
+
+        // Optional: Log out the user or clear stored tokens
+        storage.delete(KEY_STORE.ANNONYMOUS_TOKEN);
+        throw refreshError; // Propagate error to the caller
       }
     }
 
+    // For all other errors, reject the promise
     return Promise.reject(error);
   },
 );

@@ -20,7 +20,7 @@ const SplashScreen = () => {
           deviceId: await DeviceInfo.getUniqueId(),
         },
       }),
-    enabled: !!storage.getString(KEY_STORE.ANNONYMOUS_TOKEN) ? false : true,
+    enabled: storage.getString(KEY_STORE.ANNONYMOUS_TOKEN) ? false : true,
   });
   useEffect(() => {
     const timeout = setTimeout(() => {
