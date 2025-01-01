@@ -1,4 +1,4 @@
-//const BASE_URL = 'https://career-app-ndt9.onrender.com';
+// const BASE_URL = 'https://career-app-ndt9.onrender.com';
 const BASE_URL = 'http://192.168.0.101:3000';
 const ENDPOINTS_URL = {
   EXAM: {
@@ -29,6 +29,7 @@ const ENDPOINTS_URL = {
   },
   CHAT_BOT: {
     GET_CHAT: '/geminiAI/generateChat',
+    GET_CHAT_IN_GROUP: '/chat-bot/execute-in-group',
   },
   CONCLUSION: {
     GET_CONCLUSION: '/exams/getConclusion',
