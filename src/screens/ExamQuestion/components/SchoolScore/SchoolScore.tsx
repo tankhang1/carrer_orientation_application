@@ -32,7 +32,7 @@ const SchoolScore = ({ subjects, setSubjects }: TSchoolScore) => {
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${interpolate(animatedValue.value, [0, 1], [0, 360])}deg` }],
   }));
-  const { isLoading, data, isError } = useQuery<unknown, DefaultError, ISchoolSubjectsResponse>({
+  const { isLoading, data } = useQuery<unknown, DefaultError, ISchoolSubjectsResponse>({
     queryKey: [QUERY_KEY.SCHOOL_SUBJECTS],
     queryFn: () => api(ENDPOINTS_URL.SCHOOL_SUBJECTS.GET_SUBJECTS, 'GET', {}),
   });
@@ -84,7 +84,6 @@ const SchoolScore = ({ subjects, setSubjects }: TSchoolScore) => {
       height: 400,
       cropping: true,
       includeBase64: true,
-      cropperToolbarColor: 'red',
     })
       .then(async (image) => {
         setOpenImagePicker(false);
@@ -97,14 +96,9 @@ const SchoolScore = ({ subjects, setSubjects }: TSchoolScore) => {
   };
   const onLibrary = async () => {
     await ImagePicker.openPicker({
-      width: 100,
-      height: 100,
       cropping: true,
       includeBase64: true,
-      cropperToolbarColor: 'red',
-      cropperToolbarWidgetColor: 'yellow',
       freeStyleCropEnabled: true,
-      cropperCircleOverlay: true,
       showCropGuidelines: false,
     })
       .then(async (image) => {
@@ -147,7 +141,7 @@ const SchoolScore = ({ subjects, setSubjects }: TSchoolScore) => {
       }
     }
   };
-  if (Object.keys(subjects)?.length === 0) return <ActivityIndicator size='small' color={COLORS.green} />;
+  if (isLoading) return <ActivityIndicator size='small' color={COLORS.green} />;
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

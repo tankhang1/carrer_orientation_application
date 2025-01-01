@@ -2,6 +2,7 @@ import AppRoundedButton from '@components/AppRoundedButton';
 import AppSkeleton from '@components/AppSkeleton';
 import AppView from '@components/AppView';
 import { navigationRef } from '@navigation';
+import { KEY_STORE, storage } from '@store';
 import { COLORS, FONT, s, vs } from '@utils/config';
 import React, { lazy, Suspense, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -13,6 +14,7 @@ const Carousel = lazy(() => import('./components/Carousel/Carousel'));
 const adUnitId = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-7671392847069245/2923533772';
 const HomeScreen = () => {
   const bannerRef = useRef<BannerAd>(null);
+  console.log(storage.getString(KEY_STORE.ANNONYMOUS_TOKEN));
 
   return (
     <>
