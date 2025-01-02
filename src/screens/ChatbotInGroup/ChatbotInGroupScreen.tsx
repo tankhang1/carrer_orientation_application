@@ -31,7 +31,6 @@ type Props = NativeStackScreenProps<TRootStackNav, 'ChatbotInGroup'>;
 const ChatbotInGroupScreen = ({ route }: Props) => {
   const groupId = route.params.groupId;
   const animatedValue = useSharedValue(0);
-
   const [message, setMessage] = useState('');
   const [chats, setChats] = useState<IChat[]>([]);
   const animatedStyle = useAnimatedStyle(() => ({
