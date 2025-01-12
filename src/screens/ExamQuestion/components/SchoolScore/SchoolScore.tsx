@@ -111,7 +111,6 @@ const SchoolScore = ({ subjects, setSubjects }: TSchoolScore) => {
       });
   };
   const onValueChange = (key: string, value: string, vnName: string) => {
-    console.log('eee', key, +value, vnName);
     if (value.length === 2 && value[1] !== '.' && +value[1] > 0) {
       setSubjects({
         ...subjects,

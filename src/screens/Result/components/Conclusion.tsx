@@ -1,39 +1,32 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React, {useMemo} from 'react';
-import {COLORS, FONT, s, vs} from '@utils/config';
-import Title from './Title';
-import {IConclusionResponse, TExam} from '@interfaces/DTO';
-import {TResults, TSchoolScoreResult} from '@utils/types/metaTypes';
-import {DefaultError, useQuery} from '@tanstack/react-query';
-import {QUERY_KEY} from '@utils/constants';
+import { IConclusionResponse, TExam } from '@interfaces/DTO';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
-import {ActivityIndicator} from 'react-native';
+import { DefaultError, useQuery } from '@tanstack/react-query';
+import { COLORS, FONT, s, vs } from '@utils/config';
+import { QUERY_KEY } from '@utils/constants';
+import { TResults, TSchoolScoreResult } from '@utils/types/metaTypes';
+import React, { useMemo } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import Title from './Title';
 type TConclusion = {
   answers: Record<TExam, string>;
   results: TResults[];
   scoreResults: TSchoolScoreResult[];
 };
-const Conclusion = ({answers, results, scoreResults}: TConclusion) => {
+const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
   const IQ_Result = useMemo(() => {
-    const resultContents = results.find(r => r.type === 'IQ')?.resultContents;
+    const resultContents = results.find((r) => r.type === 'IQ')?.resultContents;
     const score = answers?.IQ?.split('/')[0];
-    const evaluation = resultContents?.find(
-      item =>
-        item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!,
-    );
+    const evaluation = resultContents?.find((item) => item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!);
     if (evaluation) {
       return `${evaluation?.score![0]} - ${evaluation?.score![1]}`;
     }
     return '-';
   }, [results, answers]);
   const EQ_Result = useMemo(() => {
-    const resultContents = results.find(r => r.type === 'EQ')?.resultContents;
+    const resultContents = results.find((r) => r.type === 'EQ')?.resultContents;
     const score = answers?.EQ?.split('/')[0];
-    const evaluation = resultContents?.find(
-      item =>
-        item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!,
-    );
+    const evaluation = resultContents?.find((item) => item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!);
     if (evaluation) {
       return `${evaluation?.score![0]} - ${evaluation?.score![1]}`;
     }
@@ -47,21 +40,14 @@ const Conclusion = ({answers, results, scoreResults}: TConclusion) => {
 
   const HollandResult = useMemo(() => {
     return Object.keys(answers)
-      .filter(key => key !== 'IQ' && key !== 'EQ')
+      .filter((key) => key !== 'IQ' && key !== 'EQ')
       .reduce(
         (maxKey, key) =>
-          Number(answers[key as TExam].split('/')[0]) >
-          Number(answers[maxKey as TExam]!.split('/')[0])
-            ? key
-            : maxKey,
+          Number(answers[key as TExam].split('/')[0]) > Number(answers[maxKey as TExam]!.split('/')[0]) ? key : maxKey,
         'R',
       );
   }, [results, answers]);
-  const {isLoading, data} = useQuery<
-    unknown,
-    DefaultError,
-    IConclusionResponse
-  >({
+  const { isLoading, data } = useQuery<unknown, DefaultError, IConclusionResponse>({
     queryKey: [QUERY_KEY.CONCLUSION],
     queryFn: () =>
       api(ENDPOINTS_URL.CONCLUSION.GET_CONCLUSION, 'POST', {
@@ -70,17 +56,18 @@ const Conclusion = ({answers, results, scoreResults}: TConclusion) => {
           EQ: EQ_Result,
           SchoolScore: schoolResult,
           Holland: HollandResult,
+          IQScore: answers?.IQ?.split('/')?.[0] || 0,
+          EQScore: answers?.EQ?.split('/')?.[0] || 0,
         },
       }),
     enabled: !!IQ_Result && !!EQ_Result && !!HollandResult && !!schoolResult,
   });
 
   const conclusions = data?.data;
-  if (isLoading)
-    return <ActivityIndicator color={COLORS.green} size={'small'} />;
+  if (isLoading) return <ActivityIndicator color={COLORS.green} size={'small'} />;
   return (
     <View style={styles.container}>
-      <Title title="Kết luận" />
+      <Title title='Kết luận' />
       <View style={styles.wrapper}>
         <Text style={styles.subTitle}>
           ● Lĩnh vực:
