@@ -1,20 +1,25 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React, {useEffect} from 'react';
-import {COLORS, FONT, s, vs, WIDTH} from '@utils';
-import {AppButton} from '@components';
+import { AppButton } from '@components';
 import AppImage from '@components/AppImage';
-import {statusCodes, isErrorWithCode, GoogleSignin, isSuccessResponse} from '@react-native-google-signin/google-signin';
-import {ILoginResponse} from '@interfaces/DTO/Auth/auth';
-import {useMutation} from '@tanstack/react-query';
+import { ILoginResponse } from '@interfaces/DTO/Auth/auth';
+import { navigationRef } from '@navigation';
+import { GoogleSignin, isErrorWithCode, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
-import {KEY_STORE, storage} from '@store';
+import { KEY_STORE, storage } from '@store';
+import { useAuthStore } from '@store/auth.store';
+import { setLocalAccessToken } from '@store/local-storage.store';
+import { useMutation } from '@tanstack/react-query';
+import { COLORS, FONT, s, vs, WIDTH } from '@utils';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Toast from 'react-native-toast-message';
-import {navigationRef} from '@navigation';
 type SocialLoginInput = {
   email: string;
+  name: string | null;
 };
 const LoginWithGoogle = () => {
+  const authStore = useAuthStore();
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: '276591717037-10s611vbh4s4tkv6rf1ke60d0va208d0.apps.googleusercontent.com',
@@ -33,12 +38,16 @@ const LoginWithGoogle = () => {
     },
     onSuccess: (data: ILoginResponse) => {
       storage.set(KEY_STORE.ANNONYMOUS_TOKEN, data.data.accessToken);
+
+      const { accessToken, ...userInfo } = data?.data;
+      authStore?.setAuthStore({ ...userInfo });
+      setLocalAccessToken(accessToken);
       Toast.show({
         type: 'success',
         text1: 'Thông báo',
         text2: 'Đăng nhập thành công!',
       });
-      navigationRef.navigate('HomeScreen');
+      navigationRef.navigate('GroupList');
     },
     onError: () => {
       Toast.show({
@@ -58,6 +67,7 @@ const LoginWithGoogle = () => {
       if (isSuccessResponse(response)) {
         postLogin({
           email: response.data.user.email,
+          name: response.data.user.name,
         });
       } else {
         // sign in was cancelled by user
@@ -84,10 +94,10 @@ const LoginWithGoogle = () => {
   return (
     <View style={styles.container}>
       <AppButton
-        label="Đăng nhập với Google"
+        label='Đăng nhập với Google'
         buttonStyle={styles.buttonCont}
         labelStyle={styles.label}
-        size="S"
+        size='S'
         leading={<AppImage source={require('@assets/images/google.webp')} style={styles.image} />}
         onPress={signInWithGoogle}
         loading={isPending}
@@ -100,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: vs(20),
   },
-  error: {fontSize: 14, color: 'red', marginTop: 10},
+  error: { fontSize: 14, color: 'red', marginTop: 10 },
 
   w: {
     width: WIDTH * 0.85,
