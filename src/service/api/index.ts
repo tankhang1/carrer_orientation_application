@@ -72,8 +72,11 @@ const api = <P, D>(url: string, method: TMethod, options: { data?: D; params?: P
       return response.data;
     })
     .catch((error) => {
-      console.error(`API Error [${url} - ${method}]:`, error);
-      throw error;
+      const errorMessage = error.response?.data?.message || 'Unknown error occurred';
+      console.error(`API Error [${url} - ${method}]:`, errorMessage);
+
+      // Optionally, return a structured error object
+      throw new Error(errorMessage);
     });
 };
 
