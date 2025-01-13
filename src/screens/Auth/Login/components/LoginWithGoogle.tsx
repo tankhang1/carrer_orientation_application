@@ -50,6 +50,8 @@ const LoginWithGoogle = () => {
       navigationRef.navigate('GroupList');
     },
     onError: () => {
+      GoogleSignin.signOut();
+
       Toast.show({
         type: 'error',
         text1: 'Cảnh báo',
@@ -63,8 +65,12 @@ const LoginWithGoogle = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-
+      console.log('gg login', response);
       if (isSuccessResponse(response)) {
+        console.log({
+          email: response.data.user.email,
+          name: response.data.user.name,
+        });
         postLogin({
           email: response.data.user.email,
           name: response.data.user.name,
@@ -73,6 +79,7 @@ const LoginWithGoogle = () => {
         // sign in was cancelled by user
       }
     } catch (error) {
+      GoogleSignin.signOut();
       console.log('error', error);
 
       if (isErrorWithCode(error)) {
