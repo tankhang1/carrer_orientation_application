@@ -1,24 +1,25 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-import {COLORS, FONT, QUERY_KEY, s, vs, WIDTH} from '@utils';
-import {AppButton, AppTextInput} from '@components';
-import Feather from 'react-native-vector-icons/Feather';
+import { AppButton, AppTextInput } from '@components';
+import { ISignUpResponse, SignUpFormData } from '@interfaces/DTO/Auth/auth';
+import { navigationRef } from '@navigation';
+import { SignUpInput, signUpSchema } from '@schemas/sign-up.schema';
 import Checkbox from '@screens/ExamQuestion/components/Question/Checkbox';
-import {Title} from '@screens/Result/components';
-import {SignUpInput, signUpSchema} from '@schemas/sign-up.schema';
-import {useFormik} from 'formik';
-import {useMutation} from '@tanstack/react-query';
-import {ISignUpResponse, SignUpFormData} from '@interfaces/DTO/Auth/auth';
+import { Title } from '@screens/Result/components';
+import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
-import {ENDPOINTS_URL} from '@service';
-import {navigationRef} from '@navigation';
+import { useMutation } from '@tanstack/react-query';
+import { COLORS, FONT, QUERY_KEY, s, vs, WIDTH } from '@utils';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Toast from 'react-native-toast-message';
+import Feather from 'react-native-vector-icons/Feather';
 
 const SAMPLE_TERMS = [
   {
     id: 1,
-    content: 'Khi đăng ký là giáo viên, bạn sẽ được cung cấp link web, nơi bạn có thể tự thiết kế bài kiểm tra, tạo nhóm cho học sinh của mình.',
+    content:
+      'Khi đăng ký là giáo viên, bạn sẽ được cung cấp link web, nơi bạn có thể tự thiết kế bài kiểm tra, tạo nhóm cho học sinh của mình.',
   },
   {
     id: 2,
@@ -44,6 +45,78 @@ const SignUpForm = () => {
       return api(ENDPOINTS_URL.AUTH.SIGN_UP, 'POST', {
         data: {
           ...variables,
+          permissions: [
+            {
+              code: 'DASHBOARD',
+              name: 'Tổng quan',
+              permission: {
+                view: true,
+                create: false,
+                delete: false,
+                edit: false,
+              },
+            },
+            {
+              code: 'ACCOUNT',
+              name: 'Tài khoản',
+              permission: {
+                view: true,
+                create: true,
+                delete: true,
+                edit: true,
+              },
+            },
+            {
+              code: 'EXAM_SYSTEM',
+              name: 'Bài kiểm tra',
+              permission: {
+                view: false,
+                create: false,
+                delete: false,
+                edit: false,
+              },
+            },
+            {
+              code: 'EXAM_CUSTOM',
+              name: 'Bài kiểm tra tự thiết kế',
+              permission: {
+                view: true,
+                create: true,
+                delete: true,
+                edit: true,
+              },
+            },
+            {
+              code: 'NEWS',
+              name: 'Tin tức',
+              permission: {
+                view: false,
+                create: false,
+                delete: false,
+                edit: false,
+              },
+            },
+            {
+              code: 'CHATBOT',
+              name: 'Chat bot',
+              permission: {
+                view: true,
+                create: true,
+                delete: true,
+                edit: true,
+              },
+            },
+            {
+              code: 'LIBRARY',
+              name: 'Từ điển',
+              permission: {
+                view: false,
+                create: false,
+                delete: false,
+                edit: false,
+              },
+            },
+          ],
         },
       }) as Promise<ISignUpResponse>; // Type assertion
     },
@@ -64,7 +137,7 @@ const SignUpForm = () => {
       });
     },
   });
-  const {resetForm, values, handleChange, handleSubmit, errors} = useFormik<SignUpInput>({
+  const { resetForm, values, handleChange, handleSubmit, errors } = useFormik<SignUpInput>({
     initialValues,
     validationSchema: signUpSchema,
     onSubmit: (value: SignUpInput) => {
@@ -80,7 +153,7 @@ const SignUpForm = () => {
     <View style={styles.container}>
       <AppTextInput
         withAsterisk
-        label="Họ và tên"
+        label='Họ và tên'
         containerStyle={styles.w}
         value={values.name}
         onChangeText={handleChange('name')}
@@ -88,7 +161,7 @@ const SignUpForm = () => {
       />
       <AppTextInput
         withAsterisk
-        label="Tên đăng nhập"
+        label='Tên đăng nhập'
         containerStyle={styles.w}
         value={values.username}
         onChangeText={handleChange('username')}
@@ -96,7 +169,7 @@ const SignUpForm = () => {
       />
       <AppTextInput
         withAsterisk
-        label="Email"
+        label='Email'
         containerStyle={styles.w}
         value={values.email}
         onChangeText={handleChange('email')}
@@ -104,7 +177,7 @@ const SignUpForm = () => {
       />
       <AppTextInput
         withAsterisk
-        label="Mật khẩu"
+        label='Mật khẩu'
         secureTextEntry={hidePassword}
         trailing={<Feather name={hidePassword ? 'eye' : 'eye-off'} size={20} color={COLORS.grey} />}
         onTrailingPress={() => setHidePassword(!hidePassword)}
@@ -116,11 +189,11 @@ const SignUpForm = () => {
       {/* Term of use */}
 
       <View style={styles.termCont}>
-        <Title title="Điều khoản sử dụng" textStyle={styles.term} wrapperStyle={{marginHorizontal: -s(27)}} />
+        <Title title='Điều khoản sử dụng' textStyle={styles.term} wrapperStyle={{ marginHorizontal: -s(27) }} />
         {SAMPLE_TERMS?.map((term, index) => {
           return (
             <View key={index}>
-              <Text style={[styles.term, {textAlign: 'justify'}]}>● {term?.content}</Text>
+              <Text style={[styles.term, { textAlign: 'justify' }]}>● {term?.content}</Text>
             </View>
           );
         })}
@@ -133,10 +206,10 @@ const SignUpForm = () => {
       </View>
       {error?.message && <Text style={styles.error}>* {error?.message}</Text>}
       <AppButton
-        label="Đăng ký"
-        size="S"
-        buttonStyle={{width: WIDTH * 0.85, marginVertical: vs(20)}}
-        labelStyle={[FONT.content.L, {color: COLORS.white}]}
+        label='Đăng ký'
+        size='S'
+        buttonStyle={{ width: WIDTH * 0.85, marginVertical: vs(20) }}
+        labelStyle={[FONT.content.L, { color: COLORS.white }]}
         disable={!agreeTerm}
         type={agreeTerm ? 'fill' : 'disable'}
         loading={isPending}
@@ -150,7 +223,7 @@ const styles = StyleSheet.create({
     marginTop: vs(10),
     gap: vs(20),
   },
-  error: {fontSize: 14, color: 'red'},
+  error: { fontSize: 14, color: 'red' },
 
   w: {
     width: WIDTH * 0.85,
