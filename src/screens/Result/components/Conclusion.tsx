@@ -62,7 +62,14 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
       }),
     enabled: !!IQ_Result && !!EQ_Result && !!HollandResult && !!schoolResult,
   });
-
+  console.log({
+    IQ: IQ_Result,
+    EQ: EQ_Result,
+    SchoolScore: schoolResult,
+    Holland: HollandResult,
+    IQScore: answers?.IQ?.split('/')?.[0] || 0,
+    EQScore: answers?.EQ?.split('/')?.[0] || 0,
+  });
   const conclusions = data?.data;
   if (isLoading) return <ActivityIndicator color={COLORS.green} size={'small'} />;
   return (
