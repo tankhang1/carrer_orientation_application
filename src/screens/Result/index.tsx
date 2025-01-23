@@ -24,7 +24,6 @@ const Result = ({ navigation, route }: Props) => {
       resultContents: item.results ?? [],
     }));
   }, [data]);
-
   return (
     <AppView showsVerticalScrollIndicator={false}>
       <AppHeader title='Kết quả' onPress={() => navigation.pop(3)} />

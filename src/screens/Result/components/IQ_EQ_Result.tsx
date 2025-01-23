@@ -30,22 +30,29 @@ const IQ_EQ_Result = ({ answers, results }: Props) => {
     return newBenmark.flat();
   }, [results]);
   const IQ_Result = useMemo(() => {
-    const resultContents = results.find((r) => r.type === 'IQ')?.resultContents;
-    const score = answers?.IQ?.split('/')[0];
+    const resultContents = results?.find((r) => r.type === 'IQ')?.resultContents;
+    console.log(resultContents);
+
+    const score = answers?.IQ === '-' ? 0 : answers?.IQ.split('/')[0];
+
     const evaluation = resultContents?.find((item) => item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!);
+    console.log(evaluation);
+
     return {
       score: +score,
       content: evaluation?.content,
     };
   }, [results, answers]);
 
-  console.log('IQ_Result', IQ_Result);
+  console.log('IQ_Result', IQ_Result, results, answers);
 
   const EQ_Result = useMemo(() => {
-    const resultContents = results.find((r) => r.type === 'EQ')?.resultContents;
-
-    const score = answers?.EQ?.split('/')[0];
+    const resultContents = results?.find((r) => r.type === 'EQ')?.resultContents;
+    console.log(resultContents);
+    const score = answers?.EQ === '-' ? 0 : answers?.EQ?.split('/')[0];
+    console.log(answers);
     const evaluation = resultContents?.find((item) => item?.score && +score >= item!.score[0]! && +score <= item?.score[1]!);
+    console.log(evaluation);
     return {
       score: +score,
       content: evaluation?.content,
