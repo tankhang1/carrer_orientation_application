@@ -150,7 +150,7 @@ const DoExamScreen = ({ route }: Props) => {
   }, [exam?.data?.questions]);
 
   useEffect(() => {
-    if (doExam?.data?.length !== 0) {
+    if (doExam?.data && doExam?.data?.length !== 0) {
       setResult(doExam?.data[0] as IDoExam);
       setIsView(true);
     }

@@ -150,7 +150,7 @@ const ExamQuestion = () => {
       };
     }
     if (questionNumber < HOLLAND?.length + IQ?.length) {
-      return { headerTitle: 'Kiểm tra trí tuệ', examType: 'IQ' };
+      return { headerTitle: 'Kiểm tra tư duy, logic', examType: 'IQ' };
     }
     if (questionNumber < totalExams) {
       return { headerTitle: 'Kiểm tra cảm xúc', examType: 'EQ' };

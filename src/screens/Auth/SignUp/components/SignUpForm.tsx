@@ -125,7 +125,7 @@ const SignUpForm = () => {
       Toast.show({
         type: 'success',
         text1: 'Thông báo',
-        text2: 'Đăng ký thành công!',
+        text2: 'Đăng ký thành công! Vui lòng xác nhận email của bạn và đăng nhập bằng tài khoản vừa được tạo!',
       });
       navigationRef.navigate('Login');
     },

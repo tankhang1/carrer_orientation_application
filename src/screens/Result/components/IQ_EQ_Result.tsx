@@ -80,7 +80,7 @@ const IQ_EQ_Result = ({ answers, results }: Props) => {
   });
   return (
     <View style={styles.container}>
-      <Title title='Kiểm tra trí tuệ' />
+      <Title title='Kiểm tra tư duy logic' />
 
       <View
         style={{
