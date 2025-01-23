@@ -1,24 +1,24 @@
-import {View, StyleSheet} from 'react-native';
-import React, {Suspense} from 'react';
-import {WebView} from 'react-native-webview';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TRootStackNav} from '@utils/types/RootStackNav';
-import {AppHeader} from '@components';
-import {height, vs, width} from '@utils/config';
+import { AppHeader } from '@components';
 import AppSkeleton from '@components/AppSkeleton';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { height, vs, width } from '@utils/config';
+import { TRootStackNav } from '@utils/types/RootStackNav';
+import React, { Suspense } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 type Props = NativeStackScreenProps<TRootStackNav, 'ResultDetail'>;
-const ResultDetail = ({route}: Props) => {
+const ResultDetail = ({ route }: Props) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Suspense
         fallback={
-          <View style={{flex: 1, backgroundColor: 'red'}}>
+          <View style={{ flex: 1, backgroundColor: 'red' }}>
             <AppSkeleton width={width} height={height} />
           </View>
         }>
-        <WebView source={{uri: route?.params.url}} style={{flex: 1}} />
+        <WebView source={{ uri: route?.params.url }} style={{ flex: 1 }} />
       </Suspense>
-      <AppHeader style={{position: 'absolute', marginTop: vs(40)}} />
+      <AppHeader style={{ position: 'absolute', marginTop: vs(40) }} />
     </View>
   );
 };

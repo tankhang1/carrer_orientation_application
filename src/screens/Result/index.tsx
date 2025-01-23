@@ -24,6 +24,7 @@ const Result = ({ navigation, route }: Props) => {
       resultContents: item.results ?? [],
     }));
   }, [data]);
+
   return (
     <AppView showsVerticalScrollIndicator={false}>
       <AppHeader title='Kết quả' onPress={() => navigation.pop(3)} />
@@ -41,7 +42,7 @@ const Result = ({ navigation, route }: Props) => {
       <View style={{ gap: vs(20) }}>
         {answers && <HollandResult answers={answers!} results={results!} />}
         {scoreResults?.length > 0 && <ScoreResult scoreResults={scoreResults} />}
-        {answers?.IQ[0]?.split('/')[0] !== '0' && <IQ_EQ_Result answers={answers!} results={results!} />}
+        {answers?.IQ !== '-' && answers?.IQ[0]?.split('/')[0] !== '0' && <IQ_EQ_Result answers={answers!} results={results!} />}
         <Conclusion answers={answers} results={results!} scoreResults={scoreResults} />
       </View>
     </AppView>

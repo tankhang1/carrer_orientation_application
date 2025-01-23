@@ -70,7 +70,9 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
     IQScore: answers?.IQ?.split('/')?.[0] || 0,
     EQScore: answers?.EQ?.split('/')?.[0] || 0,
   });
-  const conclusions = data?.data;
+
+  const conclusions = useMemo(() => data?.data, [data?.data]);
+
   if (isLoading) return <ActivityIndicator color={COLORS.green} size={'small'} />;
   return (
     <View style={styles.container}>
