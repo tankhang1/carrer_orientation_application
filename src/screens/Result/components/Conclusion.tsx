@@ -79,12 +79,12 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
       <Title title='Kết luận' />
       <View style={styles.wrapper}>
         <Text style={styles.subTitle}>
-          ● Lĩnh vực:
+          • Lĩnh vực:
           <Text style={styles.content}> {conclusions?.Field}</Text>
         </Text>
-        <Text style={styles.subTitle}>● Ngành nghề phù hợp:</Text>
+        <Text style={styles.subTitle}>• Ngành nghề phù hợp:</Text>
         <Text style={styles.content}>{conclusions?.Jobs}</Text>
-        <Text style={styles.subTitle}>● Kết luận chung:</Text>
+        <Text style={styles.subTitle}>• Kết luận chung:</Text>
         <Text style={[styles.content]}>{conclusions?.Conclusion}</Text>
       </View>
     </View>

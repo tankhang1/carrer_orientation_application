@@ -129,8 +129,8 @@ const Chatbot = () => {
   return (
     <ImageBackground source={require('@assets/images/background_1.png')} resizeMode='cover' style={styles.container}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        //behavior="height"
+        //behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        //behavior='padding'
         //keyboardVerticalOffset={10}
         style={styles.container}>
         <SafeAreaView style={[styles.container, styles.wrapper]}>

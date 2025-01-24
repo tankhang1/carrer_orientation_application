@@ -144,7 +144,7 @@ const SchoolScore = ({ subjects, setSubjects }: TSchoolScore) => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior='padding'>
         <Text style={styles.title}>Vui lòng nhập điểm trung bình của từng môn nhé!</Text>
         <View style={styles.scanContainer}>
           <TouchableOpacity onPress={() => setOpenImagePicker(true)}>
