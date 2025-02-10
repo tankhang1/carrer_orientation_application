@@ -1,4 +1,5 @@
 import { IConclusionResponse, TExam } from '@interfaces/DTO';
+import { navigationRef } from '@navigation';
 import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
 import { DefaultError, useQuery } from '@tanstack/react-query';
@@ -6,7 +7,8 @@ import { COLORS, FONT, s, vs } from '@utils/config';
 import { QUERY_KEY } from '@utils/constants';
 import { TResults, TSchoolScoreResult } from '@utils/types/metaTypes';
 import React, { useMemo } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Title from './Title';
 type TConclusion = {
   answers: Record<TExam, string>;
@@ -62,6 +64,9 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
       }),
     enabled: !!IQ_Result && !!EQ_Result && !!HollandResult && !!schoolResult,
   });
+  const onSchoolScreen = () => {
+    navigationRef.navigate('School');
+  };
   console.log({
     IQ: IQ_Result,
     EQ: EQ_Result,
@@ -82,7 +87,12 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
           • Lĩnh vực:
           <Text style={styles.content}> {conclusions?.Field}</Text>
         </Text>
-        <Text style={styles.subTitle}>• Ngành nghề phù hợp:</Text>
+        <View style={styles.rows}>
+          <Text style={styles.subTitle}>• Ngành nghề phù hợp:</Text>
+          <TouchableOpacity hitSlop={10} onPress={onSchoolScreen}>
+            <AntDesign name='arrowright' size={24} color={COLORS.black} />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.content}>{conclusions?.Jobs}</Text>
         <Text style={styles.subTitle}>• Kết luận chung:</Text>
         <Text style={[styles.content]}>{conclusions?.Conclusion}</Text>
@@ -105,6 +115,11 @@ const styles = StyleSheet.create({
   },
   content: {
     ...FONT.content.M.regular,
+  },
+  rows: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 export default Conclusion;

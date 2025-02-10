@@ -18,6 +18,7 @@ import News from '@screens/News';
 import NewsDetail1 from '@screens/NewsDetail1';
 import Result from '@screens/Result';
 import ResultDetail from '@screens/ResultDetail/ResultDetail';
+import School from '@screens/School/School';
 import SplashScreen from '@screens/SplashScreen';
 import UploadResult from '@screens/UploadResult';
 import { TRootStackNav } from '@utils/types/RootStackNav';
@@ -54,6 +55,7 @@ const AppNavigation = () => {
         <Stack.Screen name='GroupDetail' component={GroupDetailScreen} />
         <Stack.Screen name='DoExam' component={DoExamScreen} />
         <Stack.Screen name='ChatbotInGroup' component={ChatbotInGroupScreen} />
+        <Stack.Screen name='School' component={School} />
       </Stack.Navigator>
     </NavigationContainer>
   );

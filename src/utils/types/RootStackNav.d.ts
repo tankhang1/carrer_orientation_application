@@ -44,4 +44,5 @@ export type TRootStackNav = {
   ChatbotInGroup: {
     groupId: string;
   };
+  School: undefined;
 };
