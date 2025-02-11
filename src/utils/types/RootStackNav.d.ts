@@ -45,4 +45,7 @@ export type TRootStackNav = {
     groupId: string;
   };
   School: undefined;
+  SchoolMajorDetail: {
+    _id: string;
+  };
 };

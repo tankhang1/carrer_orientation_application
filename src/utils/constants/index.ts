@@ -20,6 +20,7 @@ const QUERY_KEY = {
   MEMBER_SELECT: 'MEMBER_SELECT',
   DO_EXAM: 'DO_EXAM',
   DO_EXAM_DETAIL: 'DO_EXAM_DETAIL',
+  SCHOOL_DICTIONARY: 'SCHOOL',
 };
 export const queryClient = new QueryClient();
 export { QUERY_KEY };

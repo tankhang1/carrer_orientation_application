@@ -8,7 +8,7 @@ import { QUERY_KEY } from '@utils/constants';
 import { TResults, TSchoolScoreResult } from '@utils/types/metaTypes';
 import React, { useMemo } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Title from './Title';
 type TConclusion = {
   answers: Record<TExam, string>;
@@ -81,7 +81,12 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
   if (isLoading) return <ActivityIndicator color={COLORS.green} size={'small'} />;
   return (
     <View style={styles.container}>
-      <Title title='Kết luận' />
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <Title title='Kết luận' />
+        <TouchableOpacity hitSlop={10} onPress={onSchoolScreen} style={{ marginRight: 18 }}>
+          <Entypo name='chevron-right' size={24} color={COLORS.black} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.wrapper}>
         <Text style={styles.subTitle}>
           • Lĩnh vực:
@@ -89,11 +94,15 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
         </Text>
         <View style={styles.rows}>
           <Text style={styles.subTitle}>• Ngành nghề phù hợp:</Text>
-          <TouchableOpacity hitSlop={10} onPress={onSchoolScreen}>
+          {/* <TouchableOpacity hitSlop={10} onPress={onSchoolScreen}>
             <AntDesign name='arrowright' size={24} color={COLORS.black} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <Text style={styles.content}>{conclusions?.Jobs}</Text>
+
+        <Text style={styles.subTitle}>• Trường Đại học, cao đẳng đào tạo:</Text>
+        <Text style={[styles.content]}>{conclusions?.Schools}</Text>
+
         <Text style={styles.subTitle}>• Kết luận chung:</Text>
         <Text style={[styles.content]}>{conclusions?.Conclusion}</Text>
       </View>

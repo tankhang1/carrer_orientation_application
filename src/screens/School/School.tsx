@@ -1,24 +1,131 @@
 import { AppButton, AppTextInput } from '@components';
+import AppCollapse from '@components/AppCollapse';
 import AppHeader from '@components/AppHeader';
-import { INew } from '@interfaces/DTO';
+import AppSkeleton from '@components/AppSkeleton';
+import { ISchoolDictionary, ISchoolDictionaryResponse } from '@interfaces/School/school';
+import { navigationRef } from '@navigation';
+import { ENDPOINTS_URL } from '@service';
+import api from '@service/api';
+import { DefaultError, InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
+import { QUERY_KEY, queryClient } from '@utils';
 import { COLORS, FONT, s, vs } from '@utils/config';
-import React, { useState } from 'react';
-import { ImageBackground, KeyboardAvoidingView, ListRenderItemInfo, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { Suspense, useState } from 'react';
+import {
+  ImageBackground,
+  KeyboardAvoidingView,
+  ListRenderItemInfo,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const School = () => {
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('Công lập');
   const [searchInfo, setSearchInfo] = useState('');
   const onCategoryPress = (category: string) => {
     setCategory(category);
-    setSearchInfo('');
   };
 
-  const renderItem = ({ item, index }: ListRenderItemInfo<INew>) => (
-    <View>
-      <Text></Text>
-    </View>
+  // API
+  const {
+    data: schools,
+    isFetchingNextPage,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery<ISchoolDictionaryResponse, DefaultError, InfiniteData<ISchoolDictionaryResponse>>({
+    queryKey: [QUERY_KEY.SCHOOL_DICTIONARY, category, searchInfo],
+    queryFn: async ({ pageParam }) =>
+      api(ENDPOINTS_URL.SCHOOL.GET_LIST, 'GET', {
+        params: { page: pageParam ?? 1, category: category, search: searchInfo || undefined },
+      } as const) as Promise<ISchoolDictionaryResponse>,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.data?.length === 0) {
+        return undefined;
+      }
+      return allPages?.length + 1;
+    },
+  });
+
+  // METHOD
+  const onRefresh = () => {
+    if (isFetchingNextPage) return;
+    queryClient.fetchInfiniteQuery({
+      queryKey: [QUERY_KEY.SCHOOL_DICTIONARY],
+      initialPageParam: 1,
+    });
+  };
+
+  const renderItem = ({ item, index }: ListRenderItemInfo<ISchoolDictionary>) => (
+    <Suspense fallback={<AppSkeleton width={'100%'} height={200} />}>
+      <Animated.View entering={FadeIn.delay(index * 50)}>
+        <AppCollapse key={index} title={item.name} style={{ marginHorizontal: s(20) }}>
+          <View style={styles.collapseContainer}>
+            {item?.address?.map((address, i) => (
+              <View style={styles.collapseContent} key={i}>
+                <Feather name='map-pin' color={COLORS.red} size={16} style={{ marginTop: vs(4) }} />
+                <Text style={styles.collapseTitle}>{address}</Text>
+              </View>
+            ))}
+
+            {!!item.website && (
+              <View style={styles.collapseContent}>
+                <MaterialCommunityIcons name='web' color={COLORS.blue} size={16} style={{ marginTop: vs(4) }} />
+                <TouchableOpacity onPress={() => navigationRef.navigate('ResultDetail', { url: item.website! })}>
+                  <Text style={[styles.collapseTitle, styles.link]}>{item.website}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {!!item.email && (
+              <View style={styles.collapseContent}>
+                <Entypo name='email' color={COLORS.green} size={16} style={{ marginTop: vs(4) }} />
+                <Text style={styles.collapseTitle}>{item.email}</Text>
+              </View>
+            )}
+
+            {!!item.phone && (
+              <View style={styles.collapseContent}>
+                <Feather name='phone' color={COLORS.black} size={16} style={{ marginTop: vs(4) }} />
+                <Text style={styles.collapseTitle}>{item.phone}</Text>
+              </View>
+            )}
+
+            {!!item.addmissions && (
+              <View style={styles.collapseContent}>
+                <Entypo name='link' color={COLORS.purple} size={18} style={{ marginTop: vs(4) }} />
+                <TouchableOpacity>
+                  <Text style={[styles.collapseTitle, styles.link]}>{item.addmissions}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <View style={styles.collapseContent}>
+              <MaterialIcons name='work' color={COLORS.darkGrey} size={18} style={{ marginTop: vs(2) }} />
+              <TouchableOpacity
+                style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: s(4) }}
+                onPress={() => navigationRef.navigate('SchoolMajorDetail', { _id: item._id })}>
+                <Text style={styles.collapseTitle}>Nhóm ngành đào tạo</Text>
+                <Entypo name='chevron-with-circle-right' color={COLORS.darkGrey} size={20} style={{ marginTop: vs(2) }} />
+              </TouchableOpacity>
+            </View>
+
+            {/* <AppButton buttonContainerStyle={{ marginTop: vs(10) }} label='Chi tiết nhóm ngành' size='S' /> */}
+          </View>
+        </AppCollapse>
+      </Animated.View>
+    </Suspense>
   );
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -31,8 +138,11 @@ const School = () => {
             }}
           />
           <FlatList
+            refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
             scrollEventThrottle={16}
-            data={[]}
+            data={(schools?.pages.flatMap((page) => page?.data) as unknown as ISchoolDictionary[]) || []}
+            contentContainerStyle={{ gap: vs(16), marginBottom: vs(16) }}
+            style={{ marginBottom: vs(6) }}
             ListHeaderComponent={
               <View>
                 <AppTextInput
@@ -59,7 +169,7 @@ const School = () => {
                   style={{
                     marginVertical: vs(10),
                   }}>
-                  {['Tư thục', 'Công lập'].map((item, index) => (
+                  {['Công lập', 'Tư thục'].map((item, index) => (
                     <AppButton
                       key={index}
                       label={item}
@@ -87,6 +197,10 @@ const School = () => {
             keyboardDismissMode='on-drag'
             renderToHardwareTextureAndroid
             maxToRenderPerBatch={10}
+            onEndReached={() => {
+              if (!hasNextPage || isFetchingNextPage) return;
+              fetchNextPage();
+            }}
           />
         </SafeAreaView>
       </ImageBackground>
@@ -117,5 +231,22 @@ const styles = StyleSheet.create({
     ...FONT.content.L,
     color: COLORS.grey,
     textAlign: 'center',
+  },
+  collapseContainer: {
+    paddingHorizontal: s(24),
+    paddingVertical: vs(12),
+  },
+  collapseTitle: {
+    ...FONT.content.S,
+    color: COLORS.darkGrey,
+  },
+  collapseContent: {
+    flexDirection: 'row',
+    gap: s(4),
+    marginVertical: vs(4),
+  },
+  link: {
+    textDecorationLine: 'underline',
+    //color: COLORS.darkBlue,
   },
 });
