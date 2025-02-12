@@ -35,8 +35,9 @@ const HomeScreen = () => {
             type='fill'
             style={styles.floatingBtn}
             shadow={true}
-            // onPress={() => navigationRef.navigate('ChatBot')}
-            onPress={() => navigationRef.navigate('School', { search: undefined })}>
+            onPress={() => navigationRef.navigate('ChatBot')}
+            //onPress={() => navigationRef.navigate('School', { search: undefined })}
+          >
             <Ionicons name='chatbubble-ellipses-outline' color={COLORS.white} size={s(24)} />
           </AppRoundedButton>
         </View>
