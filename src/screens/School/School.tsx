@@ -2,14 +2,17 @@ import { AppButton, AppTextInput } from '@components';
 import AppCollapse from '@components/AppCollapse';
 import AppHeader from '@components/AppHeader';
 import AppSkeleton from '@components/AppSkeleton';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { ISchoolDictionary, ISchoolDictionaryResponse } from '@interfaces/School/school';
 import { navigationRef } from '@navigation';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ENDPOINTS_URL } from '@service';
 import api from '@service/api';
 import { DefaultError, InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { QUERY_KEY, queryClient } from '@utils';
 import { COLORS, FONT, s, vs } from '@utils/config';
-import React, { Suspense, useState } from 'react';
+import { TRootStackNav } from '@utils/types/RootStackNav';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -27,14 +30,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-const School = () => {
+import SchoolFilter, { TSchoolFilterREQ } from './components/SchoolFilter';
+
+type Props = NativeStackScreenProps<TRootStackNav, 'School'>;
+
+const School = ({ route }: Props) => {
   const [category, setCategory] = useState('Công lập');
   const [searchInfo, setSearchInfo] = useState('');
   const onCategoryPress = (category: string) => {
     setCategory(category);
   };
+  const [filter, setFilter] = useState<TSchoolFilterREQ>();
+
+  // REF
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   // API
   const {
@@ -44,10 +56,16 @@ const School = () => {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery<ISchoolDictionaryResponse, DefaultError, InfiniteData<ISchoolDictionaryResponse>>({
-    queryKey: [QUERY_KEY.SCHOOL_DICTIONARY, category, searchInfo],
+    queryKey: [QUERY_KEY.SCHOOL_DICTIONARY, category, searchInfo, filter],
     queryFn: async ({ pageParam }) =>
       api(ENDPOINTS_URL.SCHOOL.GET_LIST, 'GET', {
-        params: { page: pageParam ?? 1, category: category, search: searchInfo || undefined },
+        params: {
+          page: pageParam ?? 1,
+          category: category,
+          search: searchInfo || undefined,
+          provinces: filter?.provinces?.join(',') || undefined,
+          minScore: filter?.minScore || undefined,
+        },
       } as const) as Promise<ISchoolDictionaryResponse>,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -66,6 +84,13 @@ const School = () => {
       initialPageParam: 1,
     });
   };
+
+  // EFFECT
+  useEffect(() => {
+    if (route?.params?.search) {
+      setSearchInfo(route?.params?.search);
+    }
+  }, [route?.params?.search]);
 
   const renderItem = ({ item, index }: ListRenderItemInfo<ISchoolDictionary>) => (
     <Suspense fallback={<AppSkeleton width={'100%'} height={200} />}>
@@ -105,7 +130,7 @@ const School = () => {
             {!!item.addmissions && (
               <View style={styles.collapseContent}>
                 <Entypo name='link' color={COLORS.purple} size={18} style={{ marginTop: vs(4) }} />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigationRef.navigate('ResultDetail', { url: item.addmissions! })}>
                   <Text style={[styles.collapseTitle, styles.link]}>{item.addmissions}</Text>
                 </TouchableOpacity>
               </View>
@@ -145,19 +170,31 @@ const School = () => {
             style={{ marginBottom: vs(6) }}
             ListHeaderComponent={
               <View>
-                <AppTextInput
-                  width={'100%'}
-                  value={searchInfo}
-                  onChangeText={setSearchInfo}
-                  containerStyle={{
-                    backgroundColor: COLORS.white,
-                    borderWidth: 0,
-                  }}
-                  outStyle={{ marginHorizontal: s(20) }}
-                  placeholder='Tìm kiếm trường học'
-                  placeholderTextColor={COLORS.grey}
-                  trailing={<AntDesign name='search1' size={s(25)} color={COLORS.grey} />}
-                />
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: s(20), gap: s(8) }}>
+                  <AppTextInput
+                    width={'100%'}
+                    value={searchInfo}
+                    onChangeText={setSearchInfo}
+                    containerStyle={{
+                      backgroundColor: COLORS.white,
+                      borderWidth: 0,
+                    }}
+                    outStyle={{ flex: 1 }}
+                    placeholder='Tìm kiếm trường học'
+                    placeholderTextColor={COLORS.grey}
+                    trailing={<AntDesign name='search1' size={s(25)} color={COLORS.grey} />}
+                  />
+                  <AppButton
+                    type='outline'
+                    buttonStyle={{ borderWidth: 1, borderRadius: 8, borderColor: COLORS.white, padding: s(12) }}
+                    size='S'
+                    onPress={() => {
+                      if (!bottomSheetRef?.current) return;
+                      bottomSheetRef?.current?.expand();
+                    }}>
+                    <FontAwesome6 name='sliders' size={20} />
+                  </AppButton>
+                </View>
 
                 <ScrollView
                   horizontal
@@ -200,6 +237,15 @@ const School = () => {
             onEndReached={() => {
               if (!hasNextPage || isFetchingNextPage) return;
               fetchNextPage();
+            }}
+          />
+          <SchoolFilter
+            ref={bottomSheetRef}
+            filter={filter}
+            onSave={(value) => {
+              setFilter(value);
+              if (!bottomSheetRef?.current) return;
+              bottomSheetRef?.current?.close();
             }}
           />
         </SafeAreaView>

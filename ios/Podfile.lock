@@ -425,6 +425,9 @@ PODS:
     - React-Core
   - react-native-safe-area-context (4.9.0):
     - React-Core
+  - react-native-slider (4.5.5):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-webview (13.8.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -641,6 +644,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -758,6 +762,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
@@ -868,6 +874,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
+  react-native-slider: 3ce2efe4e261f6e000622ec44536faca44bb13d3
   react-native-webview: fa228e55c53372c2b361d2fa5e415844fa83eabf
   React-NativeModulesApple: 9f72feb8a04020b32417f768a7e1e40eec91fef4
   React-perflogger: cb433f318c6667060fc1f62e26eb58d6eb30a627

@@ -64,8 +64,8 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
       }),
     enabled: !!IQ_Result && !!EQ_Result && !!HollandResult && !!schoolResult,
   });
-  const onSchoolScreen = () => {
-    navigationRef.navigate('School');
+  const onSchoolScreen = (school?: string) => {
+    navigationRef.navigate('School', { search: school });
   };
   console.log({
     IQ: IQ_Result,
@@ -78,15 +78,13 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
 
   const conclusions = useMemo(() => data?.data, [data?.data]);
 
+  const schoolsOptions = useMemo(() => conclusions?.Schools?.split('\n') || [], [conclusions?.Schools]);
+
   if (isLoading) return <ActivityIndicator color={COLORS.green} size={'small'} />;
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-        <Title title='Kết luận' />
-        <TouchableOpacity hitSlop={10} onPress={onSchoolScreen} style={{ marginRight: 18 }}>
-          <Entypo name='chevron-right' size={24} color={COLORS.black} />
-        </TouchableOpacity>
-      </View>
+      <Title title='Kết luận' />
+
       <View style={styles.wrapper}>
         <Text style={styles.subTitle}>
           • Lĩnh vực:
@@ -100,11 +98,26 @@ const Conclusion = ({ answers, results, scoreResults }: TConclusion) => {
         </View>
         <Text style={styles.content}>{conclusions?.Jobs}</Text>
 
-        <Text style={styles.subTitle}>• Trường Đại học, cao đẳng đào tạo:</Text>
-        <Text style={[styles.content]}>{conclusions?.Schools}</Text>
-
         <Text style={styles.subTitle}>• Kết luận chung:</Text>
         <Text style={[styles.content]}>{conclusions?.Conclusion}</Text>
+
+        <View style={[styles.rows, { marginVertical: vs(16), width: '100%' }]}>
+          <Text style={styles.subTitle}>• Trường Đại học, cao đẳng đào tạo:</Text>
+          <TouchableOpacity hitSlop={10} onPress={() => onSchoolScreen()} style={{ marginRight: 18 }}>
+            <Entypo name='chevron-right' size={24} color={COLORS.black} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ flex: 1, gap: vs(8), marginBottom: vs(16) }}>
+          {schoolsOptions?.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={{ backgroundColor: COLORS.white, padding: s(10), borderRadius: s(8) }}
+              onPress={() => onSchoolScreen(item)}>
+              <Text style={[styles.content]}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
     </View>
   );
