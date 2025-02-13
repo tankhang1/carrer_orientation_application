@@ -175,7 +175,7 @@ const Chatbot = () => {
             }}
             value={message}
             onChangeText={setMessage}
-            onSubmitEditing={onSubmit}
+            //onSubmitEditing={onSubmit}
             placeholder='Nhập câu hỏi...'
             trailing={
               !getChat?.isPending ? (
